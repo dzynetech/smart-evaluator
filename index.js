@@ -1,6 +1,6 @@
 const express = require("express");
 const { postgraphile } = require("postgraphile");
-
+const postgisPlugin = require("@graphile/postgis")
 const app = express();
 
 app.use(
@@ -8,6 +8,9 @@ app.use(
     process.env.DATABASE_URL || "postgres://postgres:postgres@postgres:5432/smart",
     "public",
     {
+      appendPlugins: [
+       postgisPlugin.default
+      ],
       watchPg: true,
       graphiql: true,
       enhanceGraphiql: true,
