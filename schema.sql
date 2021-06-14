@@ -1,3 +1,11 @@
+CREATE EXTENSION postgis;
+
+-- sources schema
+CREATE TABLE public.sources(
+    id serial PRIMARY KEY,
+    name varchar(255) NOT NULL UNIQUE 
+);
+
 -- permits schema
 CREATE TABLE public.permits(
     id serial PRIMARY KEY, 
@@ -8,9 +16,12 @@ CREATE TABLE public.permits(
     street VARCHAR(255),
     city VARCHAR(255),
     state VARCHAR(255),
-    updated_at date DEFAULT now()
+    source_id int,
+    updated_at date DEFAULT now(),
+    CONSTRAINT fk_source
+        FOREIGN KEY(source_id)
+            REFERENCES sources(id)
 );
-
 SELECT AddGeometryColumn ('public','permits','location',4326,'POINT',2);
 
 
