@@ -26,6 +26,8 @@ SELECT AddGeometryColumn ('public','permits','location',4326,'POINT',2);
 
 
 -- example of adding data using WKT
-INSERT INTO public.permits
-(location)
-VALUES(2, ST_GeomFromText('POINT(-71.060316 48.432044)', 4326));
+INSERT INTO
+  public.permits(location)
+VALUES(
+    ST_GeomFromText('POINT(-71.060316 48.432044)', 4326)
+  );

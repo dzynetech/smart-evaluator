@@ -37,7 +37,7 @@ def main():
             # point_wkt = f"ST_GeomFromText('POINT({latitude},{longitude})',4326)"
             # print(point_wkt)
             data = (longitude, latitude, cost, sq_ft,
-                    street_number, street, city, state,source_id)
+                    street_number, street, city, state, source_id)
             query = sql.format(*data)
             cursor.execute(query)
 
