@@ -10,7 +10,8 @@ def main():
                                   port="5432",
                                   database="smart")
     cursor = connection.cursor()
-    query = """ INSERT INTO permits (latitude,longitude,cost,sqft,street_number,street,city,state) VALUES (%s,%s,%s,%s,%s,%s,%s,%s) """
+    sql = """ INSERT INTO permits (location,cost,sqft,street_number,street,city,state) 
+                VALUES (ST_GeomFromText('POINT({} {})'),{},{},{},'{}','{}','{}') """
 
 
     filename = "Loudoun_2017_2019.csv"
@@ -18,27 +19,24 @@ def main():
         reader = csv.reader(csvfile, delimiter=',')
         next(reader) #skip header line
         for row in reader:
-           cost =optional(row[10])
-           sq_ft = optional(row[9])
-           latitude = row[11]
-           longitude = row[12]
-           street_number =optional(row[15])
-           street = row[16]
-           city = row[19]
-           state = row[20]
-           data = (latitude,longitude,cost,sq_ft,street_number,street,city,state)
-           cursor.execute(query,data)
+            cost = row[10] or 'null'
+            sq_ft = row[9] or 'null'
+            latitude = row[11]
+            longitude = row[12]
+            street_number =row[15] or 'null'
+            street = row[16]
+            city = row[19]
+            state = row[20]
+
+            # point_wkt = f"ST_GeomFromText('POINT({latitude},{longitude})',4326)"
+            # print(point_wkt)
+            data = (latitude,longitude,cost,sq_ft,street_number,street,city,state)
+            query = sql.format(*data)
+            cursor.execute(query)
 
     connection.commit() 
     cursor.close()
     connection.close()
   
-def optional(x: int):
-    try:
-        return int(x)
-    except ValueError:
-        return None
-
-
 if __name__ == "__main__":
     main()
