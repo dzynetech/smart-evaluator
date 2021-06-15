@@ -18,6 +18,7 @@ CREATE TABLE public.permits(
     state VARCHAR(255),
     source_id int,
     updated_at date DEFAULT now(),
+    is_construction boolean,
     CONSTRAINT fk_source
         FOREIGN KEY(source_id)
             REFERENCES sources(id)
