@@ -1,6 +1,7 @@
 const express = require("express");
 const { postgraphile } = require("postgraphile");
 const postgisPlugin = require("@graphile/postgis")
+const ConnectionFilterPlugin = require("postgraphile-plugin-connection-filter")
 const app = express();
 
 app.use(
@@ -9,7 +10,8 @@ app.use(
     "public",
     {
       appendPlugins: [
-       postgisPlugin.default
+        postgisPlugin.default,
+        ConnectionFilterPlugin,
       ],
       watchPg: true,
       graphiql: true,
