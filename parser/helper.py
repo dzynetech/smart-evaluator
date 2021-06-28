@@ -32,6 +32,8 @@ if not args.generate:
 
 json_data = {}
 json_data['filename'] = os.path.basename(args.filename)
+json_data['has_lat_long'] = False
+
 if args.generate:
     sql_columns = ['cost', 'sq_ft', 'street_number',
                    'street', 'city', 'state', 'zip']
