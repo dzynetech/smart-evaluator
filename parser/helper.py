@@ -1,3 +1,4 @@
+#!/usr/bin/env python3
 import json
 import argparse
 import csv
@@ -29,26 +30,26 @@ for i, h in enumerate(headers):
 
 if not args.generate:
     print("run as 'python -i SCRIPTNAME' to interact with headers, data, and rows")
-
+    exit()
 json_data = {}
 json_data['filename'] = os.path.basename(args.filename)
 json_data['has_lat_long'] = False
 
-if args.generate:
-    sql_columns = ['cost', 'sq_ft', 'street_number',
-                   'street', 'city', 'state', 'zip']
+json_data['dataset_name'] = input("Enter a name for this dataset: ")
+sql_columns = ['cost', 'sq_ft', 'street_number',
+               'street', 'city', 'state', 'zip']
 
-    for name in sql_columns:
-        valid = False
-        while not valid:
-            response = input("which index is " + name + "?\t")
-            try:
-                col_number = int(response)
-                json_data[name + "_col"] = col_number
-                valid = True
-            except:
-                if not response.isspace():
-                    print("Please enter an integer")
+for name in sql_columns:
+    valid = False
+    while not valid:
+        response = input("which index is " + name + "?\t")
+        try:
+            col_number = int(response)
+            json_data[name + "_col"] = col_number
+            valid = True
+        except:
+            if not response.isspace():
+                print("Please enter an integer")
 
 #sample
 print("Sample entry:\n")

@@ -12,11 +12,12 @@ CREATE TABLE public.permits(
     permit_data text,
     cost bigint,
     sqft int,
-    street_number int,
+    street_number VARCHAR(16),
     street VARCHAR(255),
     city VARCHAR(255),
     state VARCHAR(255),
     source_id int,
+    import_id VARCHAR(16) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     is_construction boolean,
@@ -41,9 +42,13 @@ EXECUTE PROCEDURE trigger_set_timestamp();
 
 -- end automatic updated_at timestamp
 
+
+
+
 -- example of adding data using WKT
 INSERT INTO
   public.permits(location)
 VALUES(
     ST_GeomFromText('POINT(-71.060316 48.432044)', 4326)
   );
+-- end example
