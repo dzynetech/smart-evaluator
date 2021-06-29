@@ -71,9 +71,15 @@ query MyQuery {
 		console.log(data);
 		data.data.allPermits.edges.forEach(permit => {
 			let div = document.getElementById("permits")
-			let p = document.createElement("code")
-			p.innerText = JSON.stringify(permit.node)
-			div.appendChild(p)
+			let container = document.createElement('div')
+			let code = document.createElement("code")
+			let button = document.createElement("button")
+			button.innerText = `classify ${permit.node.id}`
+			button.onclick = () => {classify(permit.node.id)}
+			code.innerText = JSON.stringify(permit.node)
+			div.appendChild(container)
+			container.appendChild(code)
+			container.appendChild(button)
 			console.log(permit.node)
 		})
 	}
