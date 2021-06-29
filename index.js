@@ -1,4 +1,5 @@
 const express = require("express");
+const path = require("path");
 const { postgraphile } = require("postgraphile");
 const postgisPlugin = require("@graphile/postgis")
 const ConnectionFilterPlugin = require("postgraphile-plugin-connection-filter")
@@ -20,5 +21,6 @@ app.use(
     }
   )
 );
+app.use(express.static("frontend"));
 
 app.listen(process.env.PORT || 3000);

@@ -1,0 +1,49 @@
+<h1>Unclassified Permits</h1>
+
+<div id="permits">
+
+</div>
+
+<script>
+	async function get_list() {
+
+		let query = `
+		query MyQuery {
+  allPermits(
+    first: 10
+    orderBy: COST_DESC
+    filter: {isConstruction: {isNull: true}}
+  ) {
+    edges {
+      node {
+        id
+        cost
+        city
+        sqft
+        state
+        street
+        streetNumber
+        sourceBySourceId {
+          name
+        }
+      }
+    }
+  }
+}
+	`
+
+		var response = await fetch("/graphql", {
+			method: 'post',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: JSON.stringify({ 'query': query, "operationName": "MyQuery" })
+		});
+		var data = await response.json();
+		console.log(data);
+	}
+
+	get_list();
+
+
+</script>
