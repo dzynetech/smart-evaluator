@@ -11,7 +11,6 @@ parser.add_argument('--generate', action='store_true', default=False)
 args = parser.parse_args()
 headers = []
 data = []
-dir = None
 
 with open(args.filename) as csvfile:
     reader = csv.reader(csvfile, delimiter=',')

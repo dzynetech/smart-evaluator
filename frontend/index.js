@@ -24,7 +24,7 @@ function clear_permits() {
 async function classify(id) {
   let mutation = `
 	mutation mark_${id}_as_construction {
-		updatePermitById(input: { permitPatch: { isConstruction: true }, id: ${id}}) {
+		updatePermitById(input: { permitPatch: { classification: CONSTRUCTION }, id: ${id}}) {
 			clientMutationId
 			permit {
 				id
@@ -66,14 +66,16 @@ async function classify(id) {
 }
 
 async function get_list() {
-	let isConstruction = classified ? "{equalTo: true}" : "{isNull: true}";
+	let isConstruction = classified
+    ? "{equalTo: CONSTRUCTION}"
+    : "{equalTo: UNCLASSIFIED}";
   let query = `
 query MyQuery {
   allPermits(
     first: ${permits_per_page}
 	offset: ${page * permits_per_page}
     orderBy: COST_DESC
-    filter: {isConstruction: ${isConstruction}}
+    filter: {classification: ${isConstruction}}
   ) {
     edges {
       node {

@@ -5,6 +5,7 @@ CREATE TABLE public.sources(
     id serial PRIMARY KEY,
     name varchar(255) NOT NULL UNIQUE 
 );
+CREATE TYPE classification AS ENUM ('unclassified', 'construction', 'not_construction','unsure','duplicate');
 
 -- permits schema
 CREATE TABLE public.permits(
@@ -20,7 +21,7 @@ CREATE TABLE public.permits(
     import_id VARCHAR(16) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    is_construction boolean,
+    classification classification NOT NULL DEFAULT 'unclassified',
     CONSTRAINT fk_source
         FOREIGN KEY(source_id)
             REFERENCES sources(id)
