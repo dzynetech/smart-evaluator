@@ -24,7 +24,7 @@ function clear_permits() {
 async function classify(id) {
   let mutation = `
 	mutation mark_${id}_as_construction {
-		updatePermitById(input: { permitPatch: { isConstruction: true }, id: 8051 }) {
+		updatePermitById(input: { permitPatch: { isConstruction: true }, id: ${id}}) {
 			clientMutationId
 			permit {
 				id
@@ -66,13 +66,14 @@ async function classify(id) {
 }
 
 async function get_list() {
+	let isConstruction = classified ? "{equalTo: true}" : "{isNull: true}";
   let query = `
 query MyQuery {
   allPermits(
     first: ${permits_per_page}
-	offset: ${page}
+	offset: ${page * permits_per_page}
     orderBy: COST_DESC
-    filter: {isConstruction: {isNull: true}}
+    filter: {isConstruction: ${isConstruction}}
   ) {
     edges {
       node {
@@ -99,22 +100,22 @@ query MyQuery {
     body: JSON.stringify({ query: query, operationName: "MyQuery" }),
   });
   var data = await response.json();
-  console.log(data);
   data.data.allPermits.edges.forEach((permit) => {
     let div = document.getElementById("permits");
     let container = document.createElement("div");
     container.id = permit.node.id;
-    let code = document.createElement("code");
     let button = document.createElement("button");
+    let code = document.createElement("code");
     button.innerText = `classify ${permit.node.id}`;
     button.onclick = () => {
       classify(permit.node.id);
     };
     code.innerText = JSON.stringify(permit.node);
     div.appendChild(container);
+		if (!classified) {
+			container.appendChild(button);
+		}
     container.appendChild(code);
-    container.appendChild(button);
-    console.log(permit.node);
   });
 }
 
