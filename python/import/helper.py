@@ -6,8 +6,10 @@ import os
 
 parser = argparse.ArgumentParser(
     description='Helper to generate config.yml.')
-parser.add_argument('filename', metavar="FILENAME", type=str)
-parser.add_argument('--generate', action='store_true', default=False)
+parser.add_argument('filename', metavar="FILENAME", type=str,
+                    help="csv file to analyze")
+parser.add_argument('--generate', action='store_true',
+                    default=False, help="generate config.json for the given file")
 args = parser.parse_args()
 headers = []
 data = []
@@ -29,14 +31,20 @@ for i, h in enumerate(headers):
 
 if not args.generate:
     print("run as 'python -i SCRIPTNAME' to interact with headers, data, and rows")
+    print("run with '--generate' to  generate a config.json for this file")
     exit()
 json_data = {}
 json_data['filename'] = os.path.basename(args.filename)
-json_data['has_lat_long'] = False
 
 json_data['dataset_name'] = input("Enter a name for this dataset: ")
+has_lat_long = input("Does this dataset have lat/long information? [Y/n]")
+json_data['has_lat_long'] = (has_lat_long == "y" or has_lat_long == "Y")
+
 sql_columns = ['cost', 'sq_ft', 'street_number',
                'street', 'city', 'state', 'zip']
+if has_lat_long:
+    sql_columns.extend(('latitude', 'longitude'))
+
 
 for name in sql_columns:
     valid = False
@@ -56,6 +64,9 @@ print(f"{data[json_data['sq_ft_col']]} sq ft, ${data[json_data['cost_col']]}")
 print(f"{data[json_data['street_number_col']]} {data[json_data['street_col']]}")
 print(
     f"{data[json_data['city_col']]}, {data[json_data['state_col']]} {data[json_data['zip_col']]}")
+if has_lat_long:
+    print(
+        f"({data[json_data['latitude_col']]},{data[json_data['longitude_col']]})")
 
 ans = input("\nDoes this look correct [Y/n]? ")
 if (ans != "Y" and ans != 'y'):
