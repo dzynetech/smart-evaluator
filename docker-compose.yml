@@ -25,6 +25,14 @@ services:
       - '3000:3000'
     volumes: 
       - ./node:/usr/src/app
-        
+  
+  python:
+    build:
+      context: ./python
+    depends_on:
+      - postgres
+    volumes: 
+      - ./python:/app
+      
 volumes:
   pgdata:
