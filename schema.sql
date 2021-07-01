@@ -34,7 +34,8 @@ BEGIN
   NEW.updated_at = NOW();
   RETURN NEW;
 END;
-$$ LANGUAGE plpgsql;
+$$ LANGUAGE plpgsql
+VOLATILE;
 
 CREATE TRIGGER set_timestamp
 BEFORE UPDATE ON public.permits 

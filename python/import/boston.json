@@ -1,0 +1,10 @@
+{
+    "filename": "boston2017_19.csv",
+    "cost_col": 6,
+    "sq_ft_col": 13,
+    "street_number_col": 18,
+    "street_col": 19,
+    "city_col": 22,
+    "state_col": 23,
+    "zip_col": 25
+}
