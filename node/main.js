@@ -8,8 +8,8 @@ const app = express();
 
 app.use(
   postgraphile(
-    process.env.DATABASE_URL ||
-      "postgres://postgres:postgres@postgres:5432/smart",
+    process.env.LOCAL_DATABASE_URL ||
+      `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:5432/smart`,
     "public",
     {
       appendPlugins: [

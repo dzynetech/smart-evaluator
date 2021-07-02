@@ -15,7 +15,6 @@ services:
     build:
       context: ./node
     environment:
-      DB_SCHEMA: postgres
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: postgres
@@ -29,6 +28,10 @@ services:
   python:
     build:
       context: ./python
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
     depends_on:
       - postgres
     volumes: 

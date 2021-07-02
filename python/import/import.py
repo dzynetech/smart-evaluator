@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+import os
 import csv
 import json
 import uuid
@@ -14,11 +15,11 @@ def main():
 
     # a unique id for each invocation of this script, for tracking import and rollbacks
     import_id = uuid.uuid4().hex[:16]
-    connection = psycopg2.connect(user="postgres",
-                                  password="postgres",
-                                  host="127.0.0.1",
-                                  port="5432",
-                                  database="smart")
+
+    connection = psycopg2.connect(
+        user=os.getenv("DB_USER") or "postgres",
+        password=os.getenv("DB_PASSWORD") or "postgres",
+        host=os.getenv("DB_HOST") or "127.0.0.1", port="5432", database="smart")
     cursor = connection.cursor()
     # create source in db
     sql = f"INSERT INTO sources(name) VALUES('{config['dataset_name']}') RETURNING id"

@@ -19,6 +19,7 @@ CREATE TABLE public.permits(
     city VARCHAR(255),
     state VARCHAR(255),
     formatted_address VARCHAR(255),
+    location_accuracy int,
     source_id int,
     import_id VARCHAR(16) NOT NULL,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),

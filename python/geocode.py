@@ -1,4 +1,4 @@
-from os import truncate
+import os
 import psycopg2
 from geocodio import GeocodioClient, client
 import json
@@ -6,7 +6,7 @@ import time
 import signal
 
 API_KEY = "d1310b9b9eb7d5916bbd6443d66d0be7e7d4034"
-geocode_rate = 10  # per minute
+geocode_rate = 10  # per minute (1 per min will not exceed free tier limit)
 connection = None
 bad_permit_ids = []
 
@@ -14,11 +14,11 @@ bad_permit_ids = []
 def main():
 	global connection
 	geocode_client = GeocodioClient(API_KEY)
-	connection = psycopg2.connect(user="postgres",
-                               password="postgres",
-                               host="postgres",
-                               port="5432",
-                               database="smart")
+	connection = psycopg2.connect(
+            user=os.getenv("DB_USER") or "postgres",
+            password=os.getenv("DB_PASSWORD") or "postgres",
+            host=os.getenv("DB_HOST") or "127.0.0.1", port="5432", database="smart")
+
 
 	while True:
 		updated_permit = geocode_permit(geocode_client)
@@ -56,7 +56,7 @@ def geocode_permit(geocode_client):
 	formatted_addr = response['results'][0]['formatted_address']
 	print("Found: " + formatted_addr)
 	loc = response['results'][0]['location']
-	acc = response['results'][0]['accuracy'] * 100
+	acc = response.accuracy * 100
 	acc_type = response['results'][0]['accuracy_type']
 	print(f"Coord: ({loc['lat']}, {loc['lng']}) with accuracy: {acc}% {acc_type}")
 
@@ -66,13 +66,14 @@ def geocode_permit(geocode_client):
 		lng = float(loc['lng'])
 	except:
 		print("WARN: lat or lng was not a float. Geocode API is acting weird. Refusing to write to database")
+		print("Bad respose: " + response)
 		return
 
 	# update database
 	sql = f"UPDATE public.permits SET location=ST_GeomFromText('POINT({lng} {lat})')"
-	sql += ", formatted_address = %s, geocode_data= %s where id=%s"
+	sql += ", formatted_address=%s, location_accuracy=%s, geocode_data=%s where id=%s"
 
-	cursor.execute(sql, (formatted_addr, json.dumps(response), id))
+	cursor.execute(sql, (formatted_addr, int(acc), json.dumps(response), id))
 	connection.commit()
 	cursor.close()
 	return True
