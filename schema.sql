@@ -10,21 +10,22 @@ CREATE TYPE classification AS ENUM ('unclassified', 'construction', 'not_constru
 -- permits schema
 CREATE TABLE public.permits(
     id serial PRIMARY KEY, 
-    permit_data text,
-    geocode_data text,
     cost bigint,
     sqft int,
     street_number VARCHAR(16),
     street VARCHAR(255),
     city VARCHAR(255),
     state VARCHAR(255),
+    zip VARCHAR(16)
     formatted_address VARCHAR(255),
-    location_accuracy int,
+    location_accuracy real,
     source_id int,
     import_id VARCHAR(16) NOT NULL,
+    classification classification NOT NULL DEFAULT 'unclassified',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    classification classification NOT NULL DEFAULT 'unclassified',
+    permit_data text,
+    geocode_data text,
     CONSTRAINT fk_source
         FOREIGN KEY(source_id)
             REFERENCES sources(id)

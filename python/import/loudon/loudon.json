@@ -1,0 +1,14 @@
+{
+  "filename": "Loudoun_2017_2019.csv",
+  "dataset_name": "Loudon County",
+  "cost_col": 10,
+  "sq_ft_col": 9,
+  "street_number_col": 15,
+  "street_col": 16,
+  "city_col": 19,
+  "state_col": 20,
+  "zip_col": 22,
+  "latitude_col": 11,
+  "longitude_col": 12,
+  "location_accuracy_col": 13
+}

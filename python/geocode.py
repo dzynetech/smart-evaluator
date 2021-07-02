@@ -57,9 +57,10 @@ def geocode_permit(geocode_client):
 	formatted_addr = response['results'][0]['formatted_address']
 	print("Found: " + formatted_addr)
 	loc = response['results'][0]['location']
-	acc = response.accuracy * 100
+	acc = response.accuracy
 	acc_type = response['results'][0]['accuracy_type']
-	print(f"Coord: ({loc['lat']}, {loc['lng']}) with accuracy: {acc}% {acc_type}")
+	print(
+		f"Coord: ({loc['lat']}, {loc['lng']}) with accuracy: {acc * 100}% {acc_type}")
 
 	# sanitize lat and lng as they are injected into sql string directly
 	try:
@@ -74,7 +75,7 @@ def geocode_permit(geocode_client):
 	sql = f"UPDATE public.permits SET location=ST_GeomFromText('POINT({lng} {lat})')"
 	sql += ", formatted_address=%s, location_accuracy=%s, geocode_data=%s where id=%s"
 
-	cursor.execute(sql, (formatted_addr, int(acc), json.dumps(response), id))
+	cursor.execute(sql, (formatted_addr, acc, json.dumps(response), id))
 	connection.commit()
 	cursor.close()
 	return True

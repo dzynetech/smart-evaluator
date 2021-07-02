@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import sys
 import csv
 import json
 import uuid
@@ -10,6 +11,8 @@ def main():
     # read config
     config = {}
     config_file = "config.json"
+    if len(sys.argv) > 1:
+        config_file = sys.argv[1]
     with open(config_file) as f:
         config = json.load(f)
 
@@ -26,19 +29,20 @@ def main():
     cursor.execute(sql)
     source_id = cursor.fetchone()[0]
 
-    # insert permit data
-    if config['has_lat_long']:
-        # TODO: using string formatting is not recommended because of sql injection and parsing issues
-        # but POSTGRIS doesn't work well with format strings..maybe only format the POINT part?
+    sql_columns = []
+    for key in config:
+        if key[-4:] == "_col":
+            sql_columns.append(key[:-4])
 
-        sql = """ INSERT INTO permits (location,cost,sqft,street_number,street,city,state,source_id,import_id, permit_data) 
-                VALUES (ST_GeomFromText('POINT({} {})'),{},{},'{}','{}','{}','{}','{}','{}','{}') """
-    else:
-        sql = """ INSERT INTO permits (cost,sqft,street_number,street,city,state,source_id, import_id, permit_data) 
-                VALUES (%s,%s,%s,%s,%s,%s,%s,%s,%s) """
+    has_lat = ('latitude' in sql_columns)
+    has_long = ('longitude' in sql_columns)
+    if has_lat != has_long:
+        print("ERROR: cannot have only latitude or only longitude")
+        return
 
     headers = []
-    with open(config['filename']) as csvfile:
+    csv_path = os.path.join(os.path.dirname(config_file),  config['filename'])
+    with open(csv_path) as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
         for row in reader:
             if len(headers) == 0:
@@ -46,36 +50,38 @@ def main():
                 continue
             if len(row) == 0:
                 continue
-            cost = row[config['cost_col']] or 'null'
-            if "." in cost:
-                cost = cost[:cost.find('.')]
-            sq_ft = row[config['sq_ft_col']] or 'null'
-            if "." in sq_ft:
-                sq_ft = sq_ft[:sq_ft.find('.')]
-            latitude = None
-            longitude = None
-            if config['has_lat_long']:
-                latitude = row[config['latitude']]
-                longitude = row[config['longitude']]
-            street_number = row[config['street_number_col']] or None
-            # json.dumps escapes single quotes
-            street = (row[config['street_col']]).replace("'", "")
-            city = row[config['city_col']]
-            state = row[config['state_col']]
-            permit_data = create_permit_json(headers, row)
-            # point_wkt = f"ST_GeomFromText('POINT({latitude},{longitude})',4326)"
-            # print(point_wkt)
-            if config['has_lat_long']:
-                data = (longitude, latitude, cost, sq_ft,
-                        street_number, street, city, state, source_id, import_id, permit_data)
-                query = sql.format(*data)
-                cursor.execute(query)
-            else:
-                data = (cost, sq_ft, street_number,
-                        street, city, state, source_id, import_id, permit_data)
-                cursor.execute(sql, data)
+
+            data = []
+            columns = sql_columns[:]
+            for col in columns:
+                value = row[config[col + "_col"]] or None
+                data.append(value)
+            columns.append("import_id")
+            data.append(import_id)
+            columns.append("source_id")
+            data.append(source_id)
+            columns.append("permit_data")
+            data.append(create_permit_json(headers,  row))
+
+            first_value = ""
+            if has_lat and has_long:
+                lat_idx = columns.index('latitude')
+                long_idx = columns.index('longitude')
+                lat = data[lat_idx]
+                long = data[long_idx]
+                del columns[long_idx]
+                del columns[lat_idx]
+                del data[long_idx]
+                del data[lat_idx]
+                columns.insert(0,  'location')
+                first_value = f"ST_GeomFromText('POINT({long} {lat})'),"
+
+            sql = f"INSERT INTO permits {tuple(columns)}".replace("'",  "")
+            sql += " VALUES (" + first_value + "%s," * (len(data)-1) + "%s);"
+            cursor.execute(sql, tuple(data))
 
     connection.commit()
+    print("Import Complete. id: " + import_id)
     cursor.close()
     connection.close()
 
@@ -85,6 +91,7 @@ def create_permit_json(headers, row):
     for h, d in zip(headers, row):
         data[h] = d
     return json.dumps(data)
+
 
 if __name__ == "__main__":
     main()

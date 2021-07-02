@@ -48,7 +48,7 @@ def main():
 
     json_data['dataset_name'] = input("Enter a name for this dataset: ")
 
-    sql_columns = ['cost', 'sq_ft', 'street_number', 'street',
+    sql_columns = ['cost', 'sqft', 'street_number', 'street',
                    'city', 'state', 'zip', 'latitude', 'longitude', 'location_accuracy']
 
     for name in sql_columns:

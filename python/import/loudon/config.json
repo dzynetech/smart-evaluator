@@ -1,0 +1,11 @@
+{
+  "filename": "Loudoun_2017_2019.csv",
+  "dataset_name": "test12",
+  "cost_col": 10,
+  "sqft_col": 9,
+  "street_number_col": 15,
+  "street_col": 16,
+  "city_col": 19,
+  "state_col": 20,
+  "zip_col": 22
+}
