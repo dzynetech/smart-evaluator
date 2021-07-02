@@ -7,7 +7,7 @@ import time
 import signal
 
 API_KEY = "d1310b9b9eb7d5916bbd6443d66d0be7e7d4034"
-geocode_rate = 10  # per minute (1 per min will not exceed free tier limit)
+geocode_rate = 100  # per hour (100 per hour is within free tier limit)
 connection = None
 bad_permit_ids = []
 
@@ -26,7 +26,7 @@ def main():
 		if (updated_permit == False):
 			# all permits have lat/lon, don't check for at least a minute
 			time.sleep(60)
-		time.sleep(60/geocode_rate)
+		time.sleep(3600/geocode_rate)
 
 
 def geocode_permit(geocode_client):

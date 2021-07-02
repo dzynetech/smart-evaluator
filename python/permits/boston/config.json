@@ -1,9 +1,8 @@
 {
     "filename": "boston2017_19.csv",
     "dataset_name": "bostondata",
-    "has_lat_long": true,
     "cost_col": 6,
-    "sq_ft_col": 13,
+    "sqft_col": 13,
     "street_number_col": 18,
     "street_col": 19,
     "city_col": 22,

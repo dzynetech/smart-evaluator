@@ -88,13 +88,13 @@ def sampledata(column, data, json_data):
 
 
 def print_sample(data,  json_data):
-    print(f"{sampledata('sq_ft',data,json_data)} sq ft, ${sampledata('cost',data,json_data)}")
+    print(f"{sampledata('sqft',data,json_data)} sq ft, ${sampledata('cost',data,json_data)}")
     print(f"{sampledata('street_number',data,json_data)} {sampledata('street',data,json_data)}")
     print(f"{sampledata('city',data,json_data)}, {sampledata('state',data,json_data)} {sampledata('zip',data,json_data)}")
     print(f"({sampledata('latitude',data,json_data)},{sampledata('longitude',data,json_data)})")
-    print(
-
-        f"Accuracy: {float(sampledata('location_accuracy',data,json_data)) * 100}%")
+    if 'location_accuracy_col' in json_data:
+        print(
+            f"Accuracy: {float(sampledata('location_accuracy',data,json_data)) * 100}%")
 
 
 def check_config(config_file, data):

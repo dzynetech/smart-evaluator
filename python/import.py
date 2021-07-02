@@ -54,7 +54,7 @@ def main():
             data = []
             columns = sql_columns[:]
             for col in columns:
-                value = row[config[col + "_col"]] or None
+                value = sanitize(row[config[col + "_col"]]) or None
                 data.append(value)
             columns.append("import_id")
             data.append(import_id)
@@ -92,6 +92,20 @@ def create_permit_json(headers, row):
         data[h] = d
     return json.dumps(data)
 
+
+def sanitize(value: str):
+    # sanitize the value coming in from csv
+    if (value == False):
+        return value
+    value = value.replace("$", "")
+    maybe_num = value.replace(",", "")
+    try:
+        num = float(maybe_num)
+        # succeeded
+        value = maybe_num
+    except:
+        pass
+    return value
 
 if __name__ == "__main__":
     main()

@@ -1,5 +1,9 @@
 CREATE EXTENSION postgis;
 
+--clear old tables
+DROP TABLE IF EXISTS public.permits;
+DROP TABLE IF EXISTS public.sources;
+DROP TYPE IF EXISTS classification;
 -- sources schema
 CREATE TABLE public.sources(
     id serial PRIMARY KEY,
@@ -10,13 +14,13 @@ CREATE TYPE classification AS ENUM ('unclassified', 'construction', 'not_constru
 -- permits schema
 CREATE TABLE public.permits(
     id serial PRIMARY KEY, 
-    cost bigint,
-    sqft int,
+    cost real,
+    sqft real,
     street_number VARCHAR(16),
     street VARCHAR(255),
     city VARCHAR(255),
     state VARCHAR(255),
-    zip VARCHAR(16)
+    zip VARCHAR(16),
     formatted_address VARCHAR(255),
     location_accuracy real,
     source_id int,
@@ -31,6 +35,7 @@ CREATE TABLE public.permits(
             REFERENCES sources(id)
 );
 SELECT AddGeometryColumn ('public','permits','location',4326,'POINT',2);
+
 -- automatic updated_at timestamp
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
 RETURNS TRIGGER AS $$
@@ -47,14 +52,3 @@ FOR EACH ROW
 EXECUTE PROCEDURE trigger_set_timestamp();
 
 -- end automatic updated_at timestamp
-
-
-
-
--- example of adding data using WKT
-INSERT INTO
-  public.permits(location)
-VALUES(
-    ST_GeomFromText('POINT(-71.060316 48.432044)', 4326)
-  );
--- end example
