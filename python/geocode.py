@@ -82,10 +82,9 @@ def geocode_permit(geocode_client):
 
 
 def on_container_stop():
-	# not sure if this actually does anything
 	connection.close()
 
 
-signal.signal(signal.SIGINT, on_container_stop)
+signal.signal(signal.SIGTERM, on_container_stop)
 if __name__ == '__main__':
 	main()
