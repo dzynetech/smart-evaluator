@@ -11,7 +11,6 @@ import.py uses the config file and the csv file together to import the data into
 ```json
 {
     "filename": "boston2017_19.csv",
-    "has_lat_long": false,
     "dataset_name": "Boston 2017-2019",
     "cost_col": 6,
     "sq_ft_col": 13,

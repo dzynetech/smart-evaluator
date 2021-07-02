@@ -4,78 +4,110 @@ import argparse
 import csv
 import os
 
-parser = argparse.ArgumentParser(
-    description='Helper to generate config.yml.')
-parser.add_argument('filename', metavar="FILENAME", type=str,
-                    help="csv file to analyze")
-parser.add_argument('--generate', action='store_true',
-                    default=False, help="generate config.json for the given file")
-args = parser.parse_args()
-headers = []
-data = []
 
-with open(args.filename) as csvfile:
-    reader = csv.reader(csvfile, delimiter=',')
-    for row in reader:
-        if len(headers) == 0:
-            headers = row
-            continue
-        if len(row) == 0:
-            continue
-        data = row
-        break
+def main():
+    parser = argparse.ArgumentParser(
+        description='script to generate import configuration.')
+    parser.add_argument('filename', metavar="FILENAME", type=str,
+                        help="csv file to analyze")
+    parser.add_argument('--generate', action='store_true',
+                        default=False, help="generate config.json for the given file")
+    parser.add_argument(
+        '--check', help="check an existing config.json",  metavar='CONFIG_FILE')
+    args = parser.parse_args()
+    headers = []
+    data = []
 
-rows = tuple(zip(headers, data))
-for i, h in enumerate(headers):
-    print("{:<4} {:<20} {:<10}".format(i, h, data[i]))
+    with open(args.filename) as csvfile:
+        reader = csv.reader(csvfile, delimiter=',')
+        for row in reader:
+            if len(headers) == 0:
+                headers = row
+                continue
+            if len(row) == 0:
+                continue
+            data = row
+            if not args.check:
+                break
+            check_config(args.check,  data)
 
-if not args.generate:
-    print("run as 'python -i SCRIPTNAME' to interact with headers, data, and rows")
-    print("run with '--generate' to  generate a config.json for this file")
-    exit()
-json_data = {}
-json_data['filename'] = os.path.basename(args.filename)
+    if args.check:
+        return
+    rows = tuple(zip(headers, data))
+    print("\033[1m{:<5} {:<20} {:<10}\033[0m".format(
+        "Index", "Header", "Data"))
+    for i, h in enumerate(headers):
+        print("{:<5} {:<20} {:<10}".format(i, h, data[i]))
 
-json_data['dataset_name'] = input("Enter a name for this dataset: ")
-has_lat_long = input("Does this dataset have lat/long information? [Y/n]")
-json_data['has_lat_long'] = (has_lat_long == "y" or has_lat_long == "Y")
+    if not args.generate:
+        print("run as 'python -i SCRIPTNAME' to interact with headers, data, and rows")
+        print("run with '--generate' to  generate a config.json for this file")
+        exit()
+    json_data = {}
+    json_data['filename'] = os.path.basename(args.filename)
 
-sql_columns = ['cost', 'sq_ft', 'street_number',
-               'street', 'city', 'state', 'zip']
-if has_lat_long:
-    sql_columns.extend(('latitude', 'longitude'))
+    json_data['dataset_name'] = input("Enter a name for this dataset: ")
 
+    sql_columns = ['cost', 'sq_ft', 'street_number', 'street',
+                   'city', 'state', 'zip', 'latitude', 'longitude', 'location_accuracy']
 
-for name in sql_columns:
-    valid = False
-    while not valid:
-        response = input("which index is " + name + "?\t")
-        try:
-            col_number = int(response)
-            json_data[name + "_col"] = col_number
-            valid = True
-        except:
-            if not response.isspace():
+    for name in sql_columns:
+        valid = False
+        while not valid:
+            response = input("which index is " + name + "? [s to skip]  ")
+            try:
+                col_number = int(response)
+                json_data[name + "_col"] = col_number
+                valid = True
+            except:
+                if response.lower() in ['s', 'skip']:
+                    valid = True
                 print("Please enter an integer")
 
-#sample
-print("Sample entry:\n")
-print(f"{data[json_data['sq_ft_col']]} sq ft, ${data[json_data['cost_col']]}")
-print(f"{data[json_data['street_number_col']]} {data[json_data['street_col']]}")
-print(
-    f"{data[json_data['city_col']]}, {data[json_data['state_col']]} {data[json_data['zip_col']]}")
-if has_lat_long:
+    print("Sample entry:\n")
+    print_sample(data,  json_data)
+
+    ans = input("\nDoes this look correct [Y/n]? ")
+    if (ans != "Y" and ans != 'y'):
+        print("Aborting...")
+        exit()
+
+    json_file = os.path.join(os.path.dirname(args.filename), "config.json")
+    print("Writing config to "+json_file)
+    with open(json_file, 'w') as f:
+        f.seek(0)
+        json.dump(json_data, f, indent=4)
+        f.truncate()
+
+
+def sampledata(column, data, json_data):
+    column += "_col"
+    if column in json_data:
+        return data[json_data[column]]
+    return f"[no {column}]"
+
+
+def print_sample(data,  json_data):
+    print(f"{sampledata('sq_ft',data,json_data)} sq ft, ${sampledata('cost',data,json_data)}")
+    print(f"{sampledata('street_number',data,json_data)} {sampledata('street',data,json_data)}")
+    print(f"{sampledata('city',data,json_data)}, {sampledata('state',data,json_data)} {sampledata('zip',data,json_data)}")
+    print(f"({sampledata('latitude',data,json_data)},{sampledata('longitude',data,json_data)})")
     print(
-        f"({data[json_data['latitude_col']]},{data[json_data['longitude_col']]})")
 
-ans = input("\nDoes this look correct [Y/n]? ")
-if (ans != "Y" and ans != 'y'):
-    print("Aborting...")
-    exit()
+        f"Accuracy: {float(sampledata('location_accuracy',data,json_data)) * 100}%")
 
-json_file = os.path.join(os.path.dirname(args.filename), "config.json")
-print("Writing config to "+json_file)
-with open(json_file, 'w') as f:
-    f.seek(0)
-    json.dump(json_data, f, indent=4)
-    f.truncate()
+
+def check_config(config_file, data):
+    config_data = {}
+    with open(config_file, 'r') as f:
+        config_data = json.load(f)
+    print()
+    print_sample(data,  config_data)
+    print()
+    key = input("Press any key for next result. [Q] to quit. ")
+    if key.lower() in ['q', 'quit']:
+        exit(0)
+
+
+if __name__ == "__main__":
+    main()
