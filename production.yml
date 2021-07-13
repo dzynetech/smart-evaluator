@@ -2,8 +2,8 @@ version: "3.8"
 services:
   postgres:
     image: postgis/postgis 
-    env-file:
-      -.secrets
+    env_file:
+      - secrets
     expose: 
       - '5432' 
     volumes:
@@ -12,24 +12,20 @@ services:
   node:
     build:
       context: ./node
-    env-file:
-      -.secrets
+    env_file:
+      - secrets
     depends_on:
       - postgres
     ports:
       - '4401:3000'
-    volumes: 
-      - ./node:/usr/src/app
   
   python:
     build:
       context: ./python
-    env-file:
-      -.secrets
+    env_file:
+      - secrets
     depends_on:
       - postgres
-    volumes: 
-      - ./python:/app
       
 volumes:
   pgdata:
