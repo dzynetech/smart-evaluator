@@ -22,10 +22,13 @@ def main():
 
 
 	while True:
-		updated_permit = geocode_permit(geocode_client)
-		if (updated_permit == False):
-			# all permits have lat/lon, don't check for at least a minute
-			time.sleep(60)
+		try:
+			updated_permit = geocode_permit(geocode_client)
+			if (updated_permit == False):
+				# all permits have lat/lon, don't check for at least a minute
+				time.sleep(60)
+		except Exception as e:
+			print("EXCEPTION: ", e)
 		time.sleep(3600/geocode_rate)
 
 
