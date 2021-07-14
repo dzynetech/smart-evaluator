@@ -23,6 +23,8 @@ def main():
 
 	while True:
 		try:
+			#debugging to see if bad_permit_ids is not obsolete or not:
+			print("bad permits:", len(bad_permit_ids))
 			updated_permit = geocode_permit(geocode_client)
 			if (updated_permit == False):
 				# all permits have lat/lon, don't check for at least a minute
@@ -36,7 +38,7 @@ def geocode_permit(geocode_client):
 	global connection
 	cursor = connection.cursor()
 	# create source in db
-	sql = 'SELECT id,street_number, street, city, state FROM "permits" where location is NULL '
+	sql = 'SELECT id,street_number, street, city, state FROM "permits" where location is NULL AND street IS NOT NULL and city IS NOT NULL '
 	for permit_id in bad_permit_ids:
 		sql += f"AND NOT id={permit_id} "
 	sql += "limit 1"
