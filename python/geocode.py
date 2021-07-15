@@ -38,7 +38,7 @@ def geocode_permit(geocode_client):
 	global connection
 	cursor = connection.cursor()
 	# create source in db
-	sql = 'SELECT id,street_number, street, city, state FROM "permits" where location is NULL AND street IS NOT NULL and city IS NOT NULL '
+	sql = 'SELECT id,street_number, street, city, state FROM "permits" where location is NULL AND location_accuracy is NULL AND street IS NOT NULL and city IS NOT NULL '
 	for permit_id in bad_permit_ids:
 		sql += f"AND NOT id={permit_id} "
 	sql += "limit 1"
@@ -55,10 +55,16 @@ def geocode_permit(geocode_client):
 	except:
 		print(f"Permit {id} has no address. ")
 		bad_permit_ids.append(id)
-		return
+		return True
 
 	# use geocode API, get 2500 free requests per day
 	response = geocode_client.geocode(address)
+	if len(response['results']) == 0:
+		# no results, set loc accuracy to zero so we can skip and goto next addr
+		sql = "UPDATE public.permits SET location_accuracy=%s, geocode_data=%s where id=%s"
+		cursor.execute(sql, (0, json.dumps(response), id))
+		return True
+
 	formatted_addr = response['results'][0]['formatted_address']
 	print("Found: " + formatted_addr)
 	loc = response['results'][0]['location']
