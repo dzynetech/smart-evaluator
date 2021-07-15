@@ -61,6 +61,7 @@ def geocode_permit(geocode_client):
 	response = geocode_client.geocode(address)
 	if len(response['results']) == 0:
 		# no results, set loc accuracy to zero so we can skip and goto next addr
+		print("No location returned from geocodio API")
 		sql = "UPDATE public.permits SET location_accuracy=%s, geocode_data=%s where id=%s"
 		cursor.execute(sql, (0, json.dumps(response), id))
 		return True
