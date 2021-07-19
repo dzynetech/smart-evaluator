@@ -9,7 +9,6 @@ import signal
 API_KEY = "d1310b9b9eb7d5916bbd6443d66d0be7e7d4034"
 geocode_rate = 100  # per hour (100 per hour is within free tier limit)
 connection = None
-bad_permit_ids = []
 
 
 def main():
@@ -23,8 +22,6 @@ def main():
 
 	while True:
 		try:
-			#debugging to see if bad_permit_ids is not obsolete or not:
-			print("bad permits:", len(bad_permit_ids))
 			updated_permit = geocode_permit(geocode_client)
 			if (updated_permit == False):
 				# all permits have lat/lon, don't check for at least a minute
@@ -38,24 +35,15 @@ def geocode_permit(geocode_client):
 	global connection
 	cursor = connection.cursor()
 	# create source in db
-	sql = 'SELECT id,street_number, street, city, state FROM "permits" where location is NULL AND location_accuracy is NULL AND street IS NOT NULL and city IS NOT NULL '
-	for permit_id in bad_permit_ids:
-		sql += f"AND NOT id={permit_id} "
-	sql += "limit 1"
+	sql = 'SELECT id, street_number, street, city, state FROM permits where location is NULL AND location_accuracy is NULL AND street IS NOT NULL and city IS NOT NULL limit 1'
 	cursor.execute(sql)
 	permit_info = cursor.fetchone()
 	if (permit_info is None):
-		# no permits need geocoding
+		print("no permits need geocoding")
 		return False
 	id = permit_info[0]
-	address = None
-	try:
-		address = " ".join(permit_info[1:])
-		print(f"Getting Address for permit {id}: {address}")
-	except:
-		print(f"Permit {id} has no address. ")
-		bad_permit_ids.append(id)
-		return True
+	address = " ".join(permit_info[1:])
+	print(f"Getting Address for permit {id}: {address}")
 
 	# use geocode API, get 2500 free requests per day
 	response = geocode_client.geocode(address)
