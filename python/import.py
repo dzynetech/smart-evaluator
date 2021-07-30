@@ -56,19 +56,6 @@ def main():
             for col in columns:
                 value = sanitize(row[config[col + "_col"]]) or None
                 data.append(value)
-            # skip if this is a duplicate
-            try:
-                dup_check = "SELECT id,street_number,street,city,state,zip FROM permits where street_number=%s and street=%s and city=%s and state=%s"
-                street_no = data[columns.index('street_number')]
-                street = data[columns.index('street')]
-                city = data[columns.index('city')]
-                state = data[columns.index('state')]
-                cursor.execute(dup_check, (street_no, street, city, state))
-                dup = cursor.fetchone()
-                if (dup is not None):
-                    continue
-            except:
-                pass  # some column is missing, so just import that location regardless
             columns.append("import_id")
             data.append(import_id)
             columns.append("source_id")
@@ -92,8 +79,8 @@ def main():
             sql = f"INSERT INTO permits {tuple(columns)}".replace("'",  "")
             sql += " VALUES (" + first_value + "%s," * (len(data)-1) + "%s);"
             cursor.execute(sql, tuple(data))
-            connection.commit()
 
+    connection.commit()
     print("Import Complete. id: " + import_id)
     cursor.close()
     connection.close()
@@ -119,7 +106,6 @@ def sanitize(value: str):
     except:
         pass
     return value
-
 
 if __name__ == "__main__":
     main()
