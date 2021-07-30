@@ -28,8 +28,9 @@ CREATE TABLE public.permits(
     classification classification NOT NULL DEFAULT 'unclassified',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    permit_data text,
-    geocode_data text,
+    data jsonb,
+    permit_data jsonb,
+    geocode_data jsonb,
     CONSTRAINT fk_source
         FOREIGN KEY(source_id)
             REFERENCES sources(id)
