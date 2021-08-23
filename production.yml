@@ -33,5 +33,28 @@ services:
     depends_on:
       - postgres
       
+  pgbackups:
+    container_name: postgres_backup
+    image: prodrigestivill/postgres-backup-local
+    restart: always
+    volumes:
+      - ./backup:/backups
+    links:
+      - postgres:postgres
+    ports:
+      - '8081:8081'
+    depends_on:
+      - postgres 
+    env_file:
+      - secrets
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_EXTRA_OPTS=-Z9 --schema=public --blobs
+      - SCHEDULE=@every 6h00m00s
+      - BACKUP_KEEP_DAYS=7
+      - BACKUP_KEEP_WEEKS=4
+      - BACKUP_KEEP_MONTHS=6
+      - HEALTHCHECK_PORT=8081
+
 volumes:
   pgdata:
