@@ -9,7 +9,7 @@ CREATE TABLE public.sources(
     id serial PRIMARY KEY,
     name varchar(255) NOT NULL UNIQUE 
 );
-CREATE TYPE classification AS ENUM ('unclassified', 'construction', 'not_construction','unsure','duplicate');
+CREATE TYPE classification AS ENUM ('unclassified', 'construction', 'not_construction','possible_construction','duplicate');
 
 -- permits schema
 CREATE TABLE public.permits(
