@@ -4,8 +4,10 @@ services:
     image: postgis/postgis 
     env_file:
       - secrets
-    expose: 
-      - '5432' 
+    ports: 
+      - '5432:5432' 
+    #expose: 
+    #  - '5432' 
     volumes:
       - pgdata:/var/lib/postgresql/data
       - ./postgres:/docker-entrypoint-initdb.d
@@ -19,7 +21,10 @@ services:
       - postgres
     ports:
       - '4401:3000'
-  
+    volumes:
+     - ./node/frontend:/usr/src/app/frontend
+     - /data:/data
+
   python:
     build:
       context: ./python

@@ -26,6 +26,7 @@ services:
     volumes: 
       - ./node:/usr/src/app
       - /usr/src/app/node_modules
+      - /data:/data
   
   python:
     build:
