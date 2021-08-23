@@ -28,14 +28,15 @@ CREATE TABLE public.permits(
     classification classification NOT NULL DEFAULT 'unclassified',
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
-    permit_data text,
-    geocode_data text,
+    data jsonb,
+    permit_data jsonb,
+    geocode_data jsonb,
     CONSTRAINT fk_source
         FOREIGN KEY(source_id)
             REFERENCES sources(id)
 );
 SELECT AddGeometryColumn ('public','permits','location',4326,'POINT',2);
-
+ALTER TABLE public.permits ADD COLUMN has_location boolean GENERATED ALWAYS AS (location is not NULL) STORED;
 -- automatic updated_at timestamp
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
 RETURNS TRIGGER AS $$
