@@ -288,9 +288,10 @@ $.post(
     query: query,
   },
   function (data, status) {
+    setJsonFile(data);
     //console.log(JSON.stringify(data,null,'\t'));
     loadSites(data);
-      document.getElementById("curlQuery").innerText = JSON.stringify(query);
+    document.getElementById("curlQuery").innerText = JSON.stringify(query);
   }
 );
 /*
@@ -310,9 +311,16 @@ function onClassificationFilterChange() {
       query: query,
     },
     function (data, status) {
+      setJsonFile(data);
       //console.log(JSON.stringify(data,null,'\t'));
       loadSites(data);
       document.getElementById("curlQuery").innerText = JSON.stringify(query);
     }
   );
+}
+function setJsonFile(responseData) {
+  var queryResponseJSON = JSON.stringify(responseData)
+  var data = new Blob([queryResponseJSON], {type: 'text/plain'});
+  var url = window.URL.createObjectURL(data);
+  document.getElementById('jsonDownload').href = url;
 }

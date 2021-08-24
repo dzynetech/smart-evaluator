@@ -64,9 +64,13 @@
             <option value="DUPLICATE">Duplicate</option>
         </select>
 <!-- Button trigger modal -->
-<button type="button" class="btn btn-link" data-toggle="modal" data-target="#curlModal">
+<button type="button" class="btn btn-link" data-toggle="modal" data-target="#curlModal" data-toggle="tooltip"
+    data-placement="top" title="view cURL instructions">
     <h4><i class="bi bi-info-circle"></i></h4>
 </button>
+<a id="jsonDownload" data-toggle="tooltip" data-placement="top" title="view raw JSON">
+    <h4><i class="bi bi-file-earmark-code"></i></h4>
+</a>
 
 <!-- Modal -->
 <div class="modal fade" id="curlModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
