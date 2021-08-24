@@ -83,7 +83,7 @@
                     curl -g --user admin:admin \<br>
                     -X POST \<br>
                     -H "Content-Type: application/json" \<br>
-                    -d '{"query":"query MyQuery {\n  query {\n    permits(first: 1) {\n      edges {\n        node {\n          id\n        }\n      }\n    }\n  }\n}\n","operationName":"MyQuery"}'<br>
+                    -d '{"query":<span id='curlQuery'>test</span>,"operationName":"MyQuery"}' \<br>
                     http://smart.dzynetech.com:4401/graphql
         
                 </code>

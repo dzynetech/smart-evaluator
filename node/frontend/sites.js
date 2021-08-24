@@ -2,6 +2,7 @@ var current_site = 0;
 var sqft = 20000;
 var cost = 500000;
 var image_dir = "/data/";
+var query;
 
 colors = {
     "UNCLASSIFIED": {
@@ -280,14 +281,16 @@ $.post(
     console.log(JSON.stringify(data, null, "\t"));
   }
 );
+  query = buildQuery(sqft, cost, 8);
 $.post(
   "/graphql",
   {
-    query: buildQuery(sqft, cost, 8),
+    query: query,
   },
   function (data, status) {
     //console.log(JSON.stringify(data,null,'\t'));
     loadSites(data);
+      document.getElementById("curlQuery").innerText = JSON.stringify(query);
   }
 );
 /*
@@ -300,14 +303,16 @@ function onClassificationFilterChange() {
   var filter_value = document.getElementById("classification_filter").value;
   console.log(filter_value);
   document.getElementById("home").innerHTML = "";
+  query = buildQuery(sqft, cost, 8, filter_value);
   $.post(
     "/graphql",
     {
-      query: buildQuery(sqft, cost, 8, filter_value),
+      query: query,
     },
     function (data, status) {
       //console.log(JSON.stringify(data,null,'\t'));
       loadSites(data);
+      document.getElementById("curlQuery").innerText = JSON.stringify(query);
     }
   );
 }
