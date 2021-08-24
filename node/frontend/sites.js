@@ -32,18 +32,22 @@ colors = {
 
 querySites = "query ListSitesQuery { sources { nodes { name id } } }";
 
-function buildQuery(sqft, cost, site_number) {
-    var sourceId = "";
-    // add filter where image_url not null
-    if (site_number > 0) 
-        sourceId = `sourceId: { equalTo: ${site_number} }`;
-    var query = `query MyQuery {
+function buildQuery(sqft, cost, site_number, filter_value = "") {
+  var sourceId = "";
+  var classification_filter = "";
+  if (filter_value != "") {
+    var classification_filter = `classification: {equalTo: ${filter_value}}`;
+  }
+  // add filter where image_url not null
+  if (site_number > 0) sourceId = `sourceId: { equalTo: ${site_number} }`;
+  var query = `query MyQuery {
       permits(
         orderBy: COST_DESC
         filter: {
           and: {
             sqft: { greaterThan: ${sqft} }
             cost: { greaterThan: ${cost} }
+            ${classification_filter}
             ${sourceId}
             hasLocation: { equalTo: true }
             and: {
@@ -83,13 +87,12 @@ function buildQuery(sqft, cost, site_number) {
         totalCount
       }
     }`;
-    console.log(query);
-    return query;
+  console.log(query);
+  return query;
 }
 
-
 async function classify(id, classification) {
-    let mutation = `
+  let mutation = `
       mutation mark_${id}_as_construction {
         updatePermit(input: { patch: { classification: ${classification} }, id: ${id}}) {
           clientMutationId
@@ -108,110 +111,125 @@ async function classify(id, classification) {
         }
       } 
       `;
-    var response = await fetch("/graphql", {
-        method: "post",
-        headers: {
-            "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-            query: mutation,
-            operationName: `mark_${id}_as_construction`,
-        }),
-    });
-    if (!response.ok) {
-        console.log(response.status);
-        console.log(response.statusText);
-        var data = await response.json();
-        console.log(data);
-    }
+  var response = await fetch("/graphql", {
+    method: "post",
+    headers: {
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify({
+      query: mutation,
+      operationName: `mark_${id}_as_construction`,
+    }),
+  });
+  if (!response.ok) {
+    console.log(response.status);
+    console.log(response.statusText);
+    var data = await response.json();
+    console.log(data);
+  }
 }
 
 function setHighlighted(id) {
-    current_site = id;
-    //document.getElementById(id).style.border = colors.HIGHLIGHT.border;
-    //document.getElementById(id).style.backgroundColor = colors.HIGHLIGHT.backgroundColor;
-    document.getElementById(id).scrollIntoView({
-        behavior: 'smooth',
-        block: 'center'
-    });
+  current_site = id;
+  //document.getElementById(id).style.border = colors.HIGHLIGHT.border;
+  //document.getElementById(id).style.backgroundColor = colors.HIGHLIGHT.backgroundColor;
+  document.getElementById(id).scrollIntoView({
+    behavior: "smooth",
+    block: "center",
+  });
 }
 
 function setYes(id, image_id) {
-    document.getElementById(id).style.border = colors.CONSTRUCTION.border;
-    document.getElementById(id).style.backgroundColor = colors.CONSTRUCTION.backgroundColor;
-    setHighlighted(id + 1)
-    classify(image_id, "CONSTRUCTION");
+  document.getElementById(id).style.border = colors.CONSTRUCTION.border;
+  document.getElementById(id).style.backgroundColor =
+    colors.CONSTRUCTION.backgroundColor;
+  setHighlighted(id + 1);
+  classify(image_id, "CONSTRUCTION");
 }
 
 function setNo(id, image_id) {
-    document.getElementById(id).style.border = colors.NOT_CONSTRUCTION.border;
-    document.getElementById(id).style.backgroundColor = colors.NOT_CONSTRUCTION.backgroundColor;
-    setHighlighted(id + 1)
-    classify(image_id, "NOT_CONSTRUCTION");
+  document.getElementById(id).style.border = colors.NOT_CONSTRUCTION.border;
+  document.getElementById(id).style.backgroundColor =
+    colors.NOT_CONSTRUCTION.backgroundColor;
+  setHighlighted(id + 1);
+  classify(image_id, "NOT_CONSTRUCTION");
 }
 
 function setMaybe(id, image_id) {
-    document.getElementById(id).style.border = colors.POSSIBLE_CONSTRUCTION.border;
-    document.getElementById(id).style.backgroundColor = colors.POSSIBLE_CONSTRUCTION.backgroundColor;
-    setHighlighted(id + 1)
-    classify(image_id, "UNSURE");
+  document.getElementById(id).style.border =
+    colors.POSSIBLE_CONSTRUCTION.border;
+  document.getElementById(id).style.backgroundColor =
+    colors.POSSIBLE_CONSTRUCTION.backgroundColor;
+  setHighlighted(id + 1);
+  classify(image_id, "POSSIBLE_CONSTRUCTION");
 }
 
 function setDuplicate(id, image_id) {
-    document.getElementById(id).style.border = colors.DUPLICATE.border;
-    document.getElementById(id).style.backgroundColor = colors.DUPLICATE.backgroundColor;
-    setHighlighted(id + 1)
-    classify(image_id, "DUPLICATE");
+  document.getElementById(id).style.border = colors.DUPLICATE.border;
+  document.getElementById(id).style.backgroundColor =
+    colors.DUPLICATE.backgroundColor;
+  setHighlighted(id + 1);
+  classify(image_id, "DUPLICATE");
 }
 
 function setUnclassified(id, image_id) {
-    document.getElementById(id).style.border = colors.UNCLASSIFIED.border;
-    document.getElementById(id).style.backgroundColor = colors.UNCLASSIFIED.backgroundColor;
-    setHighlighted(id + 1)
-    classify(image_id, "UNCLASSIFIED");
+  document.getElementById(id).style.border = colors.UNCLASSIFIED.border;
+  document.getElementById(id).style.backgroundColor =
+    colors.UNCLASSIFIED.backgroundColor;
+  setHighlighted(id + 1);
+  classify(image_id, "UNCLASSIFIED");
 }
 
-window.onkeypress = function() {
-    var x;
-    x = event.which;
-    keychar = String.fromCharCode(x);
-    if (keychar == "y") {
-        setYes(current_site);
-    } else if (keychar == "n") {
-        setNo(current_site);
-    }
-}
+window.onkeypress = function () {
+  var x;
+  x = event.which;
+  keychar = String.fromCharCode(x);
+  if (keychar == "y") {
+    setYes(current_site);
+  } else if (keychar == "n") {
+    setNo(current_site);
+  }
+};
 
 document.onkeydown = checkKey;
 
 function checkKey(e) {
-    e = e || window.event;
-    if (e.keyCode == '37') {
-        setNo(current_site);
-    } else if (e.keyCode == '39') {
-        setYes(current_site);
-    }
+  e = e || window.event;
+  if (e.keyCode == "37") {
+    setNo(current_site);
+  } else if (e.keyCode == "39") {
+    setYes(current_site);
+  }
 }
 
 function loadSites(images) {
-    div = document.getElementById('home');
-    for (var i = 0; i < images.data.permits.edges.length; i++) {
-        var image = images.data.permits.edges[i].node;
-        var image_id = image["id"];
-        //var image_id = image["image_url"];
-        var classification = image["classification"];
-        var address = image["streetNumber"] + " " + image["street"] + ", " + image["city"] + ", " + image["state"] + " " + image["zip"];
-        cost = image["cost"].toLocaleString('en-US', {
-            style: 'currency',
-            currency: 'USD',
-        });
-        //first_image_filename = image["screenshots"][0]["filename"];
-        //gif_filename = first_image_filename.substring(0, first_image_filename.length-15) + ".gif";
-        //mp4_filename = first_image_filename.substring(0, first_image_filename.length-15) + ".mp4";
-        var mp4_filename = image_dir + image["id"] + ".mp4";
-        var border = colors[classification].border;
-        var backgroundColor = colors[classification].backgroundColor;
-        var str = `<table style="border: ${border}; background-color: ${backgroundColor};" id="${i}"><tr>
+  div = document.getElementById("home");
+  for (var i = 0; i < images.data.permits.edges.length; i++) {
+    var image = images.data.permits.edges[i].node;
+    var image_id = image["id"];
+    //var image_id = image["image_url"];
+    var classification = image["classification"];
+    var address =
+      image["streetNumber"] +
+      " " +
+      image["street"] +
+      ", " +
+      image["city"] +
+      ", " +
+      image["state"] +
+      " " +
+      image["zip"];
+    var cost = image["cost"].toLocaleString("en-US", {
+      style: "currency",
+      currency: "USD",
+    });
+    //first_image_filename = image["screenshots"][0]["filename"];
+    //gif_filename = first_image_filename.substring(0, first_image_filename.length-15) + ".gif";
+    //mp4_filename = first_image_filename.substring(0, first_image_filename.length-15) + ".mp4";
+    var mp4_filename = image_dir + image["id"] + ".mp4";
+    var border = colors[classification].border;
+    var backgroundColor = colors[classification].backgroundColor;
+    var str = `<table style="border: ${border}; background-color: ${backgroundColor};" id="${i}"><tr>
         <td>            
           <video autoplay loop muted controls>
           <source src="${mp4_filename}" type="video/mp4">
@@ -248,25 +266,48 @@ function loadSites(images) {
         </td>
         </tr></table>
         `;
-        //console.log(str);
-        div.insertAdjacentHTML('beforeend', str);
-    }
+    //console.log(str);
+    div.insertAdjacentHTML("beforeend", str);
+  }
 }
 
-$.post("/graphql", {
-    "query": querySites
-}, function(data, status) {
-    console.log(JSON.stringify(data, null, '\t'));
-});
-$.post("/graphql", {
-    "query": buildQuery(sqft, cost, 8) 
-}, function(data, status) {
+$.post(
+  "/graphql",
+  {
+    query: querySites,
+  },
+  function (data, status) {
+    console.log(JSON.stringify(data, null, "\t"));
+  }
+);
+$.post(
+  "/graphql",
+  {
+    query: buildQuery(sqft, cost, 8),
+  },
+  function (data, status) {
     //console.log(JSON.stringify(data,null,'\t'));
     loadSites(data);
-});
+  }
+);
 /*
 $.get("images.json", 
   function(data, status) {
   loadSites(data);
 });
 */
+function onClassificationFilterChange() {
+  var filter_value = document.getElementById("classification_filter").value;
+  console.log(filter_value);
+  document.getElementById("home").innerHTML = "";
+  $.post(
+    "/graphql",
+    {
+      query: buildQuery(sqft, cost, 8, filter_value),
+    },
+    function (data, status) {
+      //console.log(JSON.stringify(data,null,'\t'));
+      loadSites(data);
+    }
+  );
+}
