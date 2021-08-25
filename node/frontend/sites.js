@@ -181,27 +181,27 @@ function setUnclassified(id, image_id) {
   classify(image_id, "UNCLASSIFIED");
 }
 
-window.onkeypress = function () {
-  var x;
-  x = event.which;
-  keychar = String.fromCharCode(x);
-  if (keychar == "y") {
-    setYes(current_site);
-  } else if (keychar == "n") {
-    setNo(current_site);
-  }
-};
+// window.onkeypress = function () {
+//   var x;
+//   x = event.which;
+//   keychar = String.fromCharCode(x);
+//   if (keychar == "y") {
+//     setYes(current_site);
+//   } else if (keychar == "n") {
+//     setNo(current_site);
+//   }
+// };
 
-document.onkeydown = checkKey;
+// document.onkeydown = checkKey;
 
-function checkKey(e) {
-  e = e || window.event;
-  if (e.keyCode == "37") {
-    setNo(current_site);
-  } else if (e.keyCode == "39") {
-    setYes(current_site);
-  }
-}
+// function checkKey(e) {
+//   e = e || window.event;
+//   if (e.keyCode == "37") {
+//     setNo(current_site);
+//   } else if (e.keyCode == "39") {
+//     setYes(current_site);
+//   }
+// }
 
 function loadSites(images) {
   div = document.getElementById("home");
