@@ -231,7 +231,8 @@ function loadSites(images) {
     var mp4_filename = image_dir + image["id"] + ".mp4";
     var border = colors[classification].border;
     var backgroundColor = colors[classification].backgroundColor;
-    var str = `<table style="border: ${border}; background-color: ${backgroundColor};" id="${i}"><tr>
+    var str = `<div class="container-fluid"><div class="row align-items-center">
+    <table class="col-lg-8" style="border: ${border}; background-color: ${backgroundColor};" id="${i}"><tr>
         <td>            
           <video autoplay loop muted controls>
           <source src="${mp4_filename}" type="video/mp4">
@@ -258,7 +259,9 @@ function loadSites(images) {
           <button type="button" class="btn btn-primary" onclick="setUnclassified(${i},${image_id})">Reset</button> 
           <p/>
           <div class="form-group">
-            <textarea class="form-control" style="width:100%" id="notes-${image_id}" rows=2 placeholder="Enter a note" onblur="onTextAreaBlur(${image_id})">${image["notes"]||""}</textarea>
+            <textarea class="form-control" style="width:100%" id="notes-${image_id}" rows=2 placeholder="Enter a note" onblur="onTextAreaBlur(${image_id})">${
+      image["notes"] || ""
+    }</textarea>
           </div>
         </td>
         <td>
@@ -269,8 +272,8 @@ function loadSites(images) {
           <a href="${image_dir}${image["id"]} 2020-07-01.kml">2020</a><br/>
           <a href="${image_dir}${image["id"]} 2021-07-01.kml">2021</a><br/>
         </td>
-        </tr></table>
-        <table style="border: ${border}; background-color: ${backgroundColor}; width:25%" id="${i}">
+        </tr>
+        <table class="col-lg-3" style="border: ${border}; background-color: ${backgroundColor}; " id="${i}">
         <tr>
           <td>
             <h5>Permit Data</h5>
@@ -282,6 +285,9 @@ function loadSites(images) {
           </td>
         </tr>
         </table>
+        </table>
+        </div>
+        </div>
         `;
     //console.log(str);
     div.insertAdjacentHTML("beforeend", str);
