@@ -26,6 +26,7 @@ CREATE TABLE public.permits(
     source_id int,
     import_id VARCHAR(16) NOT NULL,
     classification classification NOT NULL DEFAULT 'unclassified',
+    notes text,
     created_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     updated_at TIMESTAMPTZ NOT NULL DEFAULT NOW(),
     data jsonb,

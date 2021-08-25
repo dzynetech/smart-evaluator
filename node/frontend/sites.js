@@ -256,6 +256,9 @@ function loadSites(images) {
           <button type="button" class="btn btn-primary" onclick="setDuplicate(${i},${image_id})">Duplicate</button> 
           <button type="button" class="btn btn-primary" onclick="setUnclassified(${i},${image_id})">Reset</button> 
           <p/>
+          <div class="form-group">
+            <textarea class="form-control" style="width:100%" id="notes-${image_id}" rows=2 placeholder="Enter a note" onblur="onTextAreaBlur(${image_id})" ></textarea>
+          </div>
         </td>
         <td>
           <a href="${image_dir}${image["id"]} 2016-07-01.kml">2016</a><br/>
@@ -323,4 +326,23 @@ function setJsonFile(responseData) {
   var data = new Blob([queryResponseJSON], {type: 'text/plain'});
   var url = window.URL.createObjectURL(data);
   document.getElementById('jsonDownload').href = url;
+}
+
+function onTextAreaBlur(id) {
+  console.log(id)
+  let text = document.getElementById(`notes-${id}`).value;
+  console.log(text)
+  let mutation = `
+  mutation UpdateNotes{
+    updatePermit(input: {patch: {notes: "${text}"}, id: ${id}}) {
+      clientMutationId
+    }
+  }
+  `;
+  console.log(mutation)
+  $.post(
+    "/graphql",
+    {
+      query: mutation,
+    });
 }
