@@ -270,6 +270,18 @@ function loadSites(images) {
           <a href="${image_dir}${image["id"]} 2021-07-01.kml">2021</a><br/>
         </td>
         </tr></table>
+        <table style="border: ${border}; background-color: ${backgroundColor}; width:25%" id="${i}">
+        <tr>
+          <td>
+            <h5>Permit Data</h5>
+          </td>
+        </tr>
+        <tr>
+          <td>
+            ${CleanPermitData(image["permitData"])}
+          </td>
+        </tr>
+        </table>
         `;
     //console.log(str);
     div.insertAdjacentHTML("beforeend", str);
@@ -346,4 +358,32 @@ function onTextAreaBlur(id) {
     {
       query: mutation,
     });
+}
+
+function CleanPermitData(json_data) {
+  var data = JSON.parse(json_data);
+  let unneeded = [
+    "Accuracy Score",
+    "Accuracy Type",
+    "Bldg Sqft",
+    "City",
+    "County",
+    "Country",
+    "Estimated Construction Cost",
+    "Latitude",
+    "Longitude",
+    "Source",
+    "State",
+    "Street",
+    "Zip",
+  ];
+  unneeded.forEach((x)=>{
+    delete data[x];
+  })
+  console.log(data);
+  var output = "";
+  for (const [key, value] of Object.entries(data)) {
+    output+= `<b>${key}</b>: ${value}<br>`;
+  }
+  return output;
 }
