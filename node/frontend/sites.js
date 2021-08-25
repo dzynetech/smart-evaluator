@@ -232,7 +232,7 @@ function loadSites(images) {
     var border = colors[classification].border;
     var backgroundColor = colors[classification].backgroundColor;
     var str = `<div class="container-fluid"><div class="row align-items-center">
-    <table class="col-lg-8" style="border: ${border}; background-color: ${backgroundColor};" id="${i}"><tr>
+    <table class="col-lg-8 col-md-auto" style="border: ${border}; background-color: ${backgroundColor};" id="${i}"><tr>
         <td>            
           <video autoplay loop muted controls>
           <source src="${mp4_filename}" type="video/mp4">
@@ -240,7 +240,7 @@ function loadSites(images) {
           </video>
         </td>
           <td style="width: 500px;"> 
-          <b style="font-size: 23px">${address}</b>'
+          <b style="font-size: 23px">${address}</b>
           <br/>
           Cost: <b>${cost}</b> Sqft: <b>${image["sqft"]}</b>
           <br/>
@@ -273,7 +273,7 @@ function loadSites(images) {
           <a href="${image_dir}${image["id"]} 2021-07-01.kml">2021</a><br/>
         </td>
         </tr>
-        <table class="col-lg-3" style="border: ${border}; background-color: ${backgroundColor}; " id="${i}">
+        <table class="col-lg-3 col-md-auto" style="border: ${border}; background-color: ${backgroundColor}; " id="${i}">
         <tr>
           <td>
             <h5>Permit Data</h5>
