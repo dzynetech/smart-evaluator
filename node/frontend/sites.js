@@ -33,11 +33,20 @@ colors = {
 
 querySites = "query ListSitesQuery { sources { nodes { name id } } }";
 
-function buildQuery(sqft, cost, site_number, filter_value = "") {
+function buildQuery(
+  sqft,
+  cost,
+  site_number,
+  classification_enum = "",
+  street = "",
+  city = "",
+  state = "",
+  zip = ""
+) {
   var sourceId = "";
   var classification_filter = "";
-  if (filter_value != "") {
-    var classification_filter = `classification: {equalTo: ${filter_value}}`;
+  if (classification_enum != "") {
+    var classification_filter = `classification: {equalTo: ${classification_enum}}`;
   }
   // add filter where image_url not null
   if (site_number > 0) sourceId = `sourceId: { equalTo: ${site_number} }`;
@@ -50,6 +59,10 @@ function buildQuery(sqft, cost, site_number, filter_value = "") {
             cost: { greaterThan: ${cost} }
             ${classification_filter}
             ${sourceId}
+            city: {includesInsensitive: "${city}"}
+            street: {includesInsensitive: "${street}"}
+            state: {includesInsensitive: "${state}"}
+            zip: {includesInsensitive: "${zip}"}
             hasLocation: { equalTo: true }
             and: {
               or: [
@@ -323,10 +336,24 @@ $.get("images.json",
 });
 */
 function onClassificationFilterChange() {
-  var filter_value = document.getElementById("classification_filter").value;
-  console.log(filter_value);
+  var classification_type = document.getElementById(
+    "classification_filter"
+  ).value;
+  var street = document.getElementById("streetFilter").value;
+  var city = document.getElementById("cityFilter").value;
+  var state = document.getElementById("stateFilter").value;
+  var zip = document.getElementById("zipFilter").value;
   document.getElementById("home").innerHTML = "";
-  query = buildQuery(sqft, cost, 8, filter_value);
+  query = buildQuery(
+    sqft,
+    cost,
+    8,
+    classification_type,
+    street,
+    city,
+    state,
+    zip
+  );
   $.post(
     "/graphql",
     {
@@ -384,7 +411,6 @@ function CleanPermitData(json_data) {
   unneeded.forEach((x) => {
     delete data[x];
   });
-  console.log(data);
   var output = "";
   for (const [key, value] of Object.entries(data)) {
     output += `<b>${key}</b>: ${value}<br>`;

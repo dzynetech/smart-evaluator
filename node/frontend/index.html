@@ -58,6 +58,7 @@
     Cost &gt;= $500K<br>
     Area &gt;= 20,000 sqft</h3>
     <div class="form-inline">
+        <div class="form-group mx-sm-3 mb-2">
         <label class="my-1 mr-2" for="classification_filter">Filter by: </label>
         <select class="custom-select my-1 mr-sm-2" id="classification_filter" onchange="onClassificationFilterChange()">
             <option selected value="">All</option>
@@ -67,6 +68,17 @@
             <option value="POSSIBLE_CONSTRUCTION">Maybe Construction</option>
             <option value="DUPLICATE">Duplicate</option>
         </select>
+        <label class="my-1 mr-2" for="streetFilter">Street: </label>
+        <input type="text" class="form-control" id="streetFilter" placeholder="Willow Oak"
+            onchange="onClassificationFilterChange()">
+        <label class="my-1 mr-2" for="cityFilter">City: </label>
+        <input type="text" class="form-control" id="cityFilter" placeholder="Fairfax" onchange="onClassificationFilterChange()">
+        <label class="my-1 mr-2" for="stateFilter">State: </label>
+        <input type="text" class="form-control" id="stateFilter" placeholder="VA" onchange="onClassificationFilterChange()">
+        <label class="my-1 mr-2" for="zipFilter">Zip: </label>
+        <input type="text" class="form-control" id="zipFilter" placeholder="22031" onchange="onClassificationFilterChange()">
+        </div>
+        <button class="btn btn-primary mb-2" onclick="onClassificationFilterChange()">Apply</button>
 <!-- Button trigger modal -->
         <button type="button" class="btn btn-link" data-toggle="modal" data-target="#curlModal" data-toggle="tooltip"
             data-placement="top" title="view cURL instructions">
