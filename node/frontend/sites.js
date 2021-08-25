@@ -273,7 +273,7 @@ function loadSites(images) {
           <a href="${image_dir}${image["id"]} 2021-07-01.kml">2021</a><br/>
         </td>
         </tr>
-        <table class="col-lg-3 col-md-auto" style="border: ${border}; background-color: ${backgroundColor}; " id="${i}">
+        <table class="col-lg-3 col-md-auto permitDataTable" style="border: ${border}; background-color: ${backgroundColor}; " id="${i}">
         <tr>
           <td>
             <h5>Permit Data</h5>
@@ -303,7 +303,7 @@ $.post(
     console.log(JSON.stringify(data, null, "\t"));
   }
 );
-  query = buildQuery(sqft, cost, 8);
+query = buildQuery(sqft, cost, 8);
 $.post(
   "/graphql",
   {
@@ -341,16 +341,16 @@ function onClassificationFilterChange() {
   );
 }
 function setJsonFile(responseData) {
-  var queryResponseJSON = JSON.stringify(responseData)
-  var data = new Blob([queryResponseJSON], {type: 'text/plain'});
+  var queryResponseJSON = JSON.stringify(responseData);
+  var data = new Blob([queryResponseJSON], { type: "text/plain" });
   var url = window.URL.createObjectURL(data);
-  document.getElementById('jsonDownload').href = url;
+  document.getElementById("jsonDownload").href = url;
 }
 
 function onTextAreaBlur(id) {
-  console.log(id)
+  console.log(id);
   let text = document.getElementById(`notes-${id}`).value;
-  console.log(text)
+  console.log(text);
   let mutation = `
   mutation UpdateNotes{
     updatePermit(input: {patch: {notes: ${JSON.stringify(text)}}, id: ${id}}) {
@@ -358,12 +358,10 @@ function onTextAreaBlur(id) {
     }
   }
   `;
-  console.log(mutation)
-  $.post(
-    "/graphql",
-    {
-      query: mutation,
-    });
+  console.log(mutation);
+  $.post("/graphql", {
+    query: mutation,
+  });
 }
 
 function CleanPermitData(json_data) {
@@ -383,13 +381,29 @@ function CleanPermitData(json_data) {
     "Street",
     "Zip",
   ];
-  unneeded.forEach((x)=>{
+  unneeded.forEach((x) => {
     delete data[x];
-  })
+  });
   console.log(data);
   var output = "";
   for (const [key, value] of Object.entries(data)) {
-    output+= `<b>${key}</b>: ${value}<br>`;
+    output += `<b>${key}</b>: ${value}<br>`;
   }
   return output;
+}
+
+function toggleShowPermitData() {
+  var displays = document.getElementsByClassName("permitDataTable");
+  var button = document.getElementById("permitDataButton");
+  for (var i = 0; i < displays.length; i++) {
+    if (displays[i].style.display === "none") {
+      displays[i].style.display = "block";
+      button.innerText = "Hide Permit Data";
+      // document.getElementById(i).className = "col-lg-8 col-md-auto";
+    } else {
+      displays[i].style.display = "none";
+      button.innerText = "Show Permit Data";
+      // document.getElementById(i).className = "";
+    }
+  }
 }
