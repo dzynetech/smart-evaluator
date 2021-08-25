@@ -83,6 +83,7 @@ function buildQuery(sqft, cost, site_number, filter_value = "") {
             zip
             permitData
             classification
+            notes
           }
         }
         totalCount
@@ -257,7 +258,7 @@ function loadSites(images) {
           <button type="button" class="btn btn-primary" onclick="setUnclassified(${i},${image_id})">Reset</button> 
           <p/>
           <div class="form-group">
-            <textarea class="form-control" style="width:100%" id="notes-${image_id}" rows=2 placeholder="Enter a note" onblur="onTextAreaBlur(${image_id})" ></textarea>
+            <textarea class="form-control" style="width:100%" id="notes-${image_id}" rows=2 placeholder="Enter a note" onblur="onTextAreaBlur(${image_id})">${image["notes"]||""}</textarea>
           </div>
         </td>
         <td>
@@ -334,7 +335,7 @@ function onTextAreaBlur(id) {
   console.log(text)
   let mutation = `
   mutation UpdateNotes{
-    updatePermit(input: {patch: {notes: "${text}"}, id: ${id}}) {
+    updatePermit(input: {patch: {notes: ${JSON.stringify(text)}}, id: ${id}}) {
       clientMutationId
     }
   }
