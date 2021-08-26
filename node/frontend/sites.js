@@ -219,6 +219,12 @@ function setUnclassified(id, image_id) {
 
 function loadSites(images) {
   div = document.getElementById("home");
+  let total_count = images.data.permits.totalCount;
+  div.insertAdjacentHTML(
+    "beforebegin",
+    `<p>Filter returned ${total_count} results</p>`
+  );
+  console.log(total_count);
   for (var i = 0; i < images.data.permits.edges.length; i++) {
     var image = images.data.permits.edges[i].node;
     var image_id = image["id"];
@@ -244,7 +250,8 @@ function loadSites(images) {
     var mp4_filename = image_dir + image["id"] + ".mp4";
     var border = colors[classification].border;
     var backgroundColor = colors[classification].backgroundColor;
-    var str = `<div class="container-fluid"><div class="row align-items-center">
+    var str = `<div class="container-fluid">
+    <div class="row align-items-center">
     <table class="col-lg-8 col-md-auto" style="border: ${border}; background-color: ${backgroundColor};" id="${i}"><tr>
         <td>            
           <video autoplay loop muted controls>
