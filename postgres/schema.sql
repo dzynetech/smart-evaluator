@@ -24,6 +24,7 @@ CREATE TABLE public.permits(
     zip VARCHAR(16),
     formatted_address VARCHAR(255),
     location_accuracy real,
+    image_url VARCHAR(255),
     source_id int,
     import_id VARCHAR(16) NOT NULL,
     classification classification NOT NULL DEFAULT 'unclassified',
