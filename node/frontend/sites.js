@@ -403,9 +403,11 @@ function CleanPermitData(json_data) {
     "Estimated Construction Cost",
     "Latitude",
     "Longitude",
+    "Site Location",
     "Source",
     "State",
     "Street",
+    "Unit Type",
     "Zip",
   ];
   unneeded.forEach((x) => {
