@@ -220,9 +220,12 @@ function setUnclassified(id, image_id) {
 function loadSites(images) {
   div = document.getElementById("home");
   let total_count = images.data.permits.totalCount;
+  try {
+    document.getElementById("filtercount").remove();
+  } catch {}
   div.insertAdjacentHTML(
     "beforebegin",
-    `<p>Filter returned ${total_count} results</p>`
+    `<p id="filtercount">Filter returned ${total_count} results</p>`
   );
   console.log(total_count);
   for (var i = 0; i < images.data.permits.edges.length; i++) {
@@ -333,7 +336,7 @@ $.post(
     setJsonFile(data);
     //console.log(JSON.stringify(data,null,'\t'));
     loadSites(data);
-    document.getElementById("curlQuery").innerText = JSON.stringify(query);
+    setCurlQuery(query);
   }
 );
 /*
@@ -370,7 +373,7 @@ function onClassificationFilterChange() {
       setJsonFile(data);
       //console.log(JSON.stringify(data,null,'\t'));
       loadSites(data);
-      document.getElementById("curlQuery").innerText = JSON.stringify(query);
+      setCurlQuery(query);
     }
   );
 }
@@ -410,6 +413,7 @@ function CleanPermitData(json_data) {
     "Estimated Construction Cost",
     "Latitude",
     "Longitude",
+    "Number",
     "Site Location",
     "Source",
     "State",
@@ -441,4 +445,10 @@ function toggleShowPermitData() {
       document.getElementById(i).className = "";
     }
   }
+}
+
+function setCurlQuery(query) {
+  document.getElementById("curlQuery").innerText = JSON.stringify(
+    query
+  ).replace(/\\n/g, " ");
 }
