@@ -425,11 +425,11 @@ function toggleShowPermitData() {
     if (displays[i].style.display === "none") {
       displays[i].style.display = "block";
       button.innerText = "Hide Permit Data";
-      // document.getElementById(i).className = "col-lg-8 col-md-auto";
+      document.getElementById(i).className = "col-lg-8 col-md-auto";
     } else {
       displays[i].style.display = "none";
       button.innerText = "Show Permit Data";
-      // document.getElementById(i).className = "";
+      document.getElementById(i).className = "";
     }
   }
 }
