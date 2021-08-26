@@ -54,42 +54,60 @@
 <body>
     <!--<script src="/node_modules/jquery/dist/jquery.min.js"></script>-->
     <h1>Construction sites</h1>
-    <h3>Permits: 2017 - 2019<br>
-    Cost &gt;= $500K<br>
-    Area &gt;= 20,000 sqft</h3>
-    <div class="form-inline">
-        <div class="form-group mx-sm-3 mb-2">
-        <label class="my-1 mr-2" for="classification_filter">Filter by: </label>
-        <select class="custom-select my-1 mr-sm-2" id="classification_filter" onchange="onClassificationFilterChange()">
-            <option selected value="">All</option>
-            <option value="UNCLASSIFIED">Unclassified</option>
-            <option value="CONSTRUCTION">Construction</option>
-            <option value="NOT_CONSTRUCTION">Not Construction</option>
-            <option value="POSSIBLE_CONSTRUCTION">Maybe Construction</option>
-            <option value="DUPLICATE">Duplicate</option>
-        </select>
-        <label class="my-1 mr-2" for="streetFilter">Street: </label>
-        <input type="text" class="my-1 mr-2 form-control" id="streetFilter"
-            onchange="onClassificationFilterChange()">
-        <label class="my-1 mr-2" for="cityFilter">City: </label>
-        <input type="text" class="form-control my-1 mr-2" id="cityFilter"
-            onchange="onClassificationFilterChange()">
-        <label class="my-1 mr-2" for="stateFilter">State: </label>
-        <input type="text" class="form-control my-1 mr-2" id="stateFilter"
-            onchange="onClassificationFilterChange()">
-        <label class="my-1 mr-2" for="zipFilter">Zip: </label>
-        <input type="text" class="form-control my-1 mr-2" id="zipFilter"
-            onchange="onClassificationFilterChange()">
+    <h3>Permits: 2017 - 2019</h3>
+    <h5>Filter By:</h5>
+    <div>
+    
+        <div class="form-row">
+            <div class="form-col">
+                <label class="my-1 mr-2" for="streetFilter">Street: </label>
+                <input type="text" class="my-1 mr-2 form-control" id="streetFilter">
+            </div>
+            <div class="form-col">
+                <label class="my-1 mr-2" for="cityFilter">City: </label>
+                <input type="text" class="form-control my-1 mr-2" id="cityFilter">
+            </div>
+            <div class="form-col">
+                <label class="my-1 mr-2" for="stateFilter">State: </label>
+                <input type="text" class="form-control my-1 mr-2" id="stateFilter">
+            </div>
+            <div class="form-col">
+                <label class="my-1 mr-2" for="zipFilter">Zip: </label>
+                <input type="text" class="form-control my-1 mr-2" id="zipFilter">
+            </div>
         </div>
-        <button class="btn btn-primary mb-2" onclick="onClassificationFilterChange()">Apply</button>
-<!-- Button trigger modal -->
-        <button type="button" class="btn btn-link" data-toggle="modal" data-target="#curlModal" data-toggle="tooltip"
-            data-placement="top" title="view cURL instructions">
-            <h4><i class="bi bi-info-circle"></i></h4>
-        </button>
-        <a id="jsonDownload" data-toggle="tooltip" data-placement="top" title="view raw JSON">
-            <h4><i class="bi bi-file-earmark-code"></i></h4>
-        </a>
+        <div class='form-row'>
+            <div class="form-col">
+                <label class="my-1 mr-2" for="classification_filter">Classification:</label>
+                <select class="custom-select my-1 mr-sm-2" id="classification_filter">
+                    <option selected value="">All</option>
+                    <option value="UNCLASSIFIED">Unclassified</option>
+                    <option value="CONSTRUCTION">Construction</option>
+                    <option value="NOT_CONSTRUCTION">Not Construction</option>
+                    <option value="POSSIBLE_CONSTRUCTION">Maybe Construction</option>
+                    <option value="DUPLICATE">Duplicate</option>
+                </select>
+            </div>
+            <div class="form-col">
+                <label class="my-1 mr-2" for="minCostFilter">Min Cost: </label>
+                <input type="number" class="form-control my-1 mr-2" id="minCostFilter" placeholder="$0">
+            </div>
+            <div class="form-col">
+                <label class="my-1 mr-2" for="minSqftFilter">Min Square Footage: </label>
+                <input type="number" class="form-control my-1 mr-2" id="minSqftFilter" placeholder="0">
+            </div>
+            <div class="form-col">
+                <div style="margin-top: 35px; margin-left: 10px;">
+                <button class="btn btn-primary mb-2" onclick="onClassificationFilterChange()">Apply</button>
+                <button type="button" class="btn btn-link" data-toggle="modal" data-target="#curlModal" data-toggle="tooltip"
+                    data-placement="top" title="view cURL instructions">
+                    <h4><i class="bi bi-info-circle"></i></h4>
+                </button>
+                <a id="jsonDownload" style="display:inline-block" data-toggle="tooltip" data-placement="top" title="view raw JSON">
+                    <h4><i class="bi bi-file-earmark-code"></i></h4>
+                </a>
+            </div>
+            </div>
     </div>
 
     <!-- Modal -->
@@ -118,6 +136,7 @@
             </div>
         </div>
     </div>
+
     <div id="home" style="min-height:1000px;position:relative;">
     </div>
 
