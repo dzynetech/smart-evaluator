@@ -7,7 +7,8 @@ DROP TYPE IF EXISTS classification;
 -- sources schema
 CREATE TABLE public.sources(
     id serial PRIMARY KEY,
-    name varchar(255) NOT NULL UNIQUE 
+    name varchar(255) NOT NULL UNIQUE,
+    description varchar(255)
 );
 CREATE TYPE classification AS ENUM ('unclassified', 'construction', 'not_construction','possible_construction','duplicate');
 
