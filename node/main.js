@@ -6,7 +6,7 @@ const PgSimplifyInflectorPlugin = require("@graphile-contrib/pg-simplify-inflect
 const ConnectionFilterPlugin = require("postgraphile-plugin-connection-filter")
 const app = express();
 const auth = require("./auth");
-app.use(auth);
+// app.use(auth);
 
 app.use(
   postgraphile(
