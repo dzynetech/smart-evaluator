@@ -317,34 +317,8 @@ function loadSites(images) {
   }
 }
 
-$.post(
-  "/graphql",
-  {
-    query: querySites,
-  },
-  function (data, status) {
-    console.log(JSON.stringify(data, null, "\t"));
-  }
-);
-query = buildQuery(8);
-$.post(
-  "/graphql",
-  {
-    query: query,
-  },
-  function (data, status) {
-    setJsonFile(data);
-    //console.log(JSON.stringify(data,null,'\t'));
-    loadSites(data);
-    setCurlQuery(query);
-  }
-);
-/*
-$.get("images.json", 
-  function(data, status) {
-  loadSites(data);
-});
-*/
+$("document").ready(onClassificationFilterChange);
+
 function onClassificationFilterChange() {
   var classification_type = document.getElementById(
     "classification_filter"
