@@ -1,0 +1,40 @@
+body {
+	background-color: #ffffff;
+	padding-top: 30px;
+	padding-right: 30px;
+	padding-bottom: 50px;
+	padding-left: 80px;
+}
+a:link {
+	font-size: smaller;
+	color: 585ea3;
+	text-decoration: none;
+}
+a {
+  color: #5555FF;
+}
+a:visited {
+  color: #5555FF;
+}
+a:hover {
+  color: #9999FF;
+}
+h1 {
+	color: #585ea3
+}
+table {
+	border-collapse:separate;
+	border:solid black 1px;
+	border-radius:6px;
+	-moz-border-radius:6px;
+	float: left; 
+	margin:  5px;
+}
+td {
+	padding: 8px;
+}
+#permitDataButton {
+	position: fixed;
+	right: 30px;;
+	bottom: 30px;
+}
