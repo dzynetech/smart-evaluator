@@ -8,6 +8,7 @@ import {
 } from "@apollo/client";
 
 import Stats from "./components/Stats.js";
+import Permits from "./components/Permits.js";
 
 const client = new ApolloClient({
   uri: "http://localhost:3000/graphql",
@@ -35,7 +36,8 @@ function App() {
   return (
     <ApolloProvider client={client}>
       <div className="App container-fluid">
-        <Stats />
+        {/* <Stats /> */}
+        <Permits />
       </div>
     </ApolloProvider>
   );

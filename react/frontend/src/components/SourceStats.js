@@ -40,18 +40,21 @@ function SourceStats(props) {
     variables: { sourceId: sourceId, classification: "DUPLICATE" },
   });
 
-  if (total.loading) return <p>Loading...</p>;
+  if (
+    total.loading ||
+    unclassified.loading ||
+    construction.loading ||
+    not_construction.loading ||
+    possible_construction.loading ||
+    duplicate.loading
+  )
+    return <p>Loading...</p>;
   if (total.error) return <p>Error with Total</p>;
-  if (unclassified.loading) return <p>Loading...</p>;
   if (unclassified.error) return <p>Error with unclassified</p>;
-  if (construction.loading) return <p>Loading...</p>;
   if (construction.error) return <p>Error with consruction</p>;
-  if (not_construction.loading) return <p>Loading...</p>;
   if (not_construction.error) return <p>Error with not consruction</p>;
-  if (possible_construction.loading) return <p>Loading...</p>;
   if (possible_construction.error)
     return <p>Error with possible consruction</p>;
-  if (duplicate.loading) return <p>Loading...</p>;
   if (duplicate.error) return <p>Error with duplicate</p>;
 
   const state = {
@@ -107,21 +110,7 @@ function SourceStats(props) {
             <p>Duplicate: {duplicate.data.permits.totalCount}</p>
           </div>
           <div className="col-8">
-            <Pie
-              className="chart"
-              data={state}
-              options={{
-                title: {
-                  display: true,
-                  text: "Average Rainfall per month",
-                  fontSize: 20,
-                },
-                legend: {
-                  display: true,
-                  position: "right",
-                },
-              }}
-            />
+            <Pie className="chart" data={state} />
           </div>
         </div>
       </div>
