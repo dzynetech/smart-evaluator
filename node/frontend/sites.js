@@ -39,7 +39,8 @@ function buildQuery(
   state = "",
   zip = "",
   min_cost = 0,
-  min_sqft = 0
+  min_sqft = 0,
+  order = "COST_DESC"
 ) {
   min_cost = Number(min_cost);
   min_sqft = Number(min_sqft);
@@ -52,7 +53,7 @@ function buildQuery(
   if (site_number > 0) sourceId = `sourceId: { equalTo: ${site_number} }`;
   var query = `query MyQuery {
       permits(
-        orderBy: COST_DESC
+        orderBy: ${order}
         filter: {
           and: {
             imageUrl: { isNull: false }
@@ -329,6 +330,7 @@ function onClassificationFilterChange() {
   var zip = document.getElementById("zipFilter").value;
   var minCost = document.getElementById("minCostFilter").value;
   var minSqft = document.getElementById("minSqftFilter").value;
+  var order = document.getElementById("selectOrder").value;
   document.getElementById("home").innerHTML = "";
   query = buildQuery(
     8,
@@ -338,7 +340,8 @@ function onClassificationFilterChange() {
     state,
     zip,
     minCost,
-    minSqft
+    minSqft,
+    order
   );
   $.post(
     "/graphql",
