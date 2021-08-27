@@ -142,9 +142,9 @@ function PermitsFilter(props) {
                       <i className="bi bi-info-circle"></i>
                     </h4>
                   </button>
-                  <a
-                    id="jsonDownload"
-                    style={{ display: "inline-block" }}
+                  <button
+                    onClick={props.getJsonFile}
+                    className="btn btn-link"
                     data-toggle="tooltip"
                     data-placement="top"
                     title="view raw JSON"
@@ -152,7 +152,7 @@ function PermitsFilter(props) {
                     <h4>
                       <i className="bi bi-file-earmark-code"></i>
                     </h4>
-                  </a>
+                  </button>
                 </div>
               </div>
             </div>

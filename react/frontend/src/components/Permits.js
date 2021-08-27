@@ -68,22 +68,27 @@ const PERMITS_QUERY = gql`
 `;
 
 function Permits() {
-  const [filterVars, setFilterVars] = useState({});
 
+  const [filterVars, setFilterVars] = useState({});
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY);
 
   useEffect(() => {
     getPermits({ variables: filterVars });
-    console.log(filterVars);
     if (error) console.log(error);
-    if (data) console.log(data);
   }, [filterVars]);
+
+  function getJsonFile() {
+    var queryResponseJSON = JSON.stringify(data);
+    var d = new Blob([queryResponseJSON], { type: "text/plain" });
+    var url = window.URL.createObjectURL(d);
+    window.location.href = url;
+  }
 
   return (
     <>
       <h1>Construction sites</h1>
       <h3>Permits: 2017 - 2019</h3>
-      <PermitsFilter setFilterVars={setFilterVars} />
+      <PermitsFilter setFilterVars={setFilterVars} getJsonFile={getJsonFile} />
       {/* <!-- Modal --> */}
       <div
         className="modal fade"
@@ -112,7 +117,7 @@ function Permits() {
                 curl -g --user admin:admin \<br />
                 -X POST \<br />
                 -H "Content-Type: application/json" \<br />
-                -d '&#123;"query":<span id="curlQuery">test</span>
+                -d '&#123;"query": {"FIX ME"}
                 ,"operationName":"MyQuery"&#125;' \<br />
                 http://smart.dzynetech.com:4401/graphql
               </code>

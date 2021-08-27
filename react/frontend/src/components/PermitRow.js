@@ -1,4 +1,6 @@
+import React from "react";
 import PermitDataTable from "./PermitDataTable";
+import PermitNote from "./PermitNote.js";
 
 function PermitRow(props) {
   const colors = {
@@ -108,43 +110,21 @@ function PermitRow(props) {
                     Reset
                   </button>
                   <p />
-                  <div className="form-group">
-                    <textarea
-                      className="form-control"
-                      style={{ width: "100%" }}
-                      id={"notes-" + props.permit.id}
-                      rows="2"
-                      placeholder="Enter a note"
-                      onblur="onTextAreaBlur(${image_id})"
-                      defaultValue={props.permit.notes || ""}
-                    ></textarea>
-                  </div>
+                  <PermitNote permit={props.permit} />
                 </td>
                 <td>
-                  <a href="${image_dir}${props.permit.id} 2016-07-01.kml">
-                    2016
-                  </a>
-                  <br />
-                  <a href="${image_dir}${props.permit.id} 2017-07-01.kml">
-                    2017
-                  </a>
-                  <br />
-                  <a href="${image_dir}${props.permit.id} 2018-07-01.kml">
-                    2018
-                  </a>
-                  <br />
-                  <a href="${image_dir}${props.permit.id} 2019-07-01.kml">
-                    2019
-                  </a>
-                  <br />
-                  <a href="${image_dir}${props.permit.id} 2020-07-01.kml">
-                    2020
-                  </a>
-                  <br />
-                  <a href="${image_dir}${props.permit.id} 2021-07-01.kml">
-                    2021
-                  </a>
-                  <br />
+                  {["2016", "2017", "2018", "2019", "2020", "2021"].map((y) => (
+                    <React.Fragment key={y}>
+                      <a
+                        href={
+                          image_dir + props.permit.id + " " + y + "-07-01.kml"
+                        }
+                      >
+                        {y}
+                      </a>
+                      <br />
+                    </React.Fragment>
+                  ))}
                 </td>
               </tr>
             </tbody>
