@@ -1,5 +1,5 @@
 import { useQuery, gql } from "@apollo/client";
-import SourceStats from "./SourceStats";
+import SourceStats from "./SourceStats.js";
 const SOURCES_QUERY = gql`
   query GetAllSources {
     sources {
@@ -27,6 +27,7 @@ function Stats() {
           </div>
         ))}
       </div>
+      <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </>
   );
 }

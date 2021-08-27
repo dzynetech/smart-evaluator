@@ -1,4 +1,5 @@
 import { useQuery, gql } from "@apollo/client";
+import { Pie } from "react-chartjs-2";
 
 const TOTAL_QUERY = gql`
   query TotalPermits($sourceId: Int) {
@@ -53,17 +54,77 @@ function SourceStats(props) {
   if (duplicate.loading) return <p>Loading...</p>;
   if (duplicate.error) return <p>Error with duplicate</p>;
 
+  const state = {
+    labels: [
+      "Unclassified",
+      "Construction",
+      "Not Construction",
+      "Possible Construction",
+      "Duplicate",
+    ],
+    datasets: [
+      {
+        label: "Rainfall",
+        backgroundColor: [
+          "#B21F00",
+          "#C9DE00",
+          "#2FDE00",
+          "#00A6B4",
+          "#6800B4",
+        ],
+        hoverBackgroundColor: [
+          "#501800",
+          "#4B5000",
+          "#175000",
+          "#003350",
+          "#35014F",
+        ],
+        data: [
+          unclassified.data.permits.totalCount,
+          construction.data.permits.totalCount,
+          not_construction.data.permits.totalCount,
+          possible_construction.data.permits.totalCount,
+          duplicate.data.permits.totalCount,
+        ],
+      },
+    ],
+  };
+
   return (
     <>
-      <h2 className="text-center">{props.source.name}</h2>
-      <p>Permits: {total.data.permits.totalCount}</p>
-      <p>Unclassified: {unclassified.data.permits.totalCount}</p>
-      <p>Construction: {construction.data.permits.totalCount}</p>
-      <p>Not Construction: {not_construction.data.permits.totalCount}</p>
-      <p>
-        Possible Construction: {possible_construction.data.permits.totalCount}
-      </p>
-      <p>Duplicate: {duplicate.data.permits.totalCount}</p>
+      <div className="statBox">
+        <h2 className="text-center">{props.source.name}</h2>
+        <div className="row">
+          <div className="col-4">
+            <p>Permits: {total.data.permits.totalCount}</p>
+            <p>Unclassified: {unclassified.data.permits.totalCount}</p>
+            <p>Construction: {construction.data.permits.totalCount}</p>
+            <p>Not Construction: {not_construction.data.permits.totalCount}</p>
+            <p>
+              Possible Construction:{" "}
+              {possible_construction.data.permits.totalCount}
+            </p>
+            <p>Duplicate: {duplicate.data.permits.totalCount}</p>
+          </div>
+          <div className="col-8">
+            <Pie
+              className="chart"
+              data={state}
+              options={{
+                title: {
+                  display: true,
+                  text: "Average Rainfall per month",
+                  fontSize: 20,
+                },
+                legend: {
+                  display: true,
+                  position: "right",
+                },
+              }}
+            />
+          </div>
+        </div>
+      </div>
     </>
   );
 }

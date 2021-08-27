@@ -38,3 +38,9 @@ td {
 	right: 30px;;
 	bottom: 30px;
 }
+.statBox{
+	border:solid lightsteelblue 5px;
+	border-radius:6px;
+	padding: 10px;
+	-moz-border-radius:6px;
+}

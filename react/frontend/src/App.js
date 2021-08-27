@@ -7,7 +7,7 @@ import {
   gql,
 } from "@apollo/client";
 
-import Stats from "./components/Stats";
+import Stats from "./components/Stats.js";
 
 const client = new ApolloClient({
   uri: "http://localhost:3000/graphql",
