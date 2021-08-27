@@ -1,48 +1,49 @@
 var current_site = 0;
-var sqft = 20000;
-var cost = 500000;
 var image_dir = "/data/";
 var query;
 
 colors = {
-    "UNCLASSIFIED": {
-        "border": "8px solid #EEE",
-        "backgroundColor": "#FFFFFF"
-    },
-    "CONSTRUCTION": {
-        "border": "8px solid #00CC00",
-        "backgroundColor": "#CCFFCC"
-    },
-    "NOT_CONSTRUCTION": {
-        "border": "8px solid #FF0000",
-        "backgroundColor": "#FFCCCC"
-    },
-    "POSSIBLE_CONSTRUCTION": {
-        "border": "8px solid #DDDD00",
-        "backgroundColor": "#FFFF99"
-    },
-    "DUPLICATE": {
-        "border": "8px solid #FF0000",
-        "backgroundColor": "#FFCCCC"
-    },
-    "HIGHLIGHT": {
-        "border": "8px solid #999",
-        "backgroundColor": "#EEEEEE"
-    }
+  UNCLASSIFIED: {
+    border: "8px solid #EEE",
+    backgroundColor: "#FFFFFF",
+  },
+  CONSTRUCTION: {
+    border: "8px solid #00CC00",
+    backgroundColor: "#CCFFCC",
+  },
+  NOT_CONSTRUCTION: {
+    border: "8px solid #FF0000",
+    backgroundColor: "#FFCCCC",
+  },
+  POSSIBLE_CONSTRUCTION: {
+    border: "8px solid #DDDD00",
+    backgroundColor: "#FFFF99",
+  },
+  DUPLICATE: {
+    border: "8px solid #FF0000",
+    backgroundColor: "#FFCCCC",
+  },
+  HIGHLIGHT: {
+    border: "8px solid #999",
+    backgroundColor: "#EEEEEE",
+  },
 };
 
 querySites = "query ListSitesQuery { sources { nodes { name id } } }";
 
 function buildQuery(
-  sqft,
-  cost,
   site_number,
   classification_enum = "",
   street = "",
   city = "",
   state = "",
-  zip = ""
+  zip = "",
+  min_cost = 0,
+  min_sqft = 0,
+  order = "COST_DESC"
 ) {
+  min_cost = Number(min_cost);
+  min_sqft = Number(min_sqft);
   var sourceId = "";
   var classification_filter = "";
   if (classification_enum != "") {
@@ -52,11 +53,12 @@ function buildQuery(
   if (site_number > 0) sourceId = `sourceId: { equalTo: ${site_number} }`;
   var query = `query MyQuery {
       permits(
-        orderBy: COST_DESC
+        orderBy: ${order}
         filter: {
           and: {
-            sqft: { greaterThan: ${sqft} }
-            cost: { greaterThan: ${cost} }
+            imageUrl: { isNull: false }
+            sqft: { greaterThanOrEqualTo: ${min_sqft} }
+            cost: { greaterThanOrEqualTo: ${min_cost} }
             ${classification_filter}
             ${sourceId}
             city: {includesInsensitive: "${city}"}
@@ -220,11 +222,13 @@ function setUnclassified(id, image_id) {
 function loadSites(images) {
   div = document.getElementById("home");
   let total_count = images.data.permits.totalCount;
+  try {
+    document.getElementById("filtercount").remove();
+  } catch {}
   div.insertAdjacentHTML(
     "beforebegin",
-    `<p>Filter returned ${total_count} results</p>`
+    `<p id="filtercount">Filter returned ${total_count} results</p>`
   );
-  console.log(total_count);
   for (var i = 0; i < images.data.permits.edges.length; i++) {
     var image = images.data.permits.edges[i].node;
     var image_id = image["id"];
@@ -314,34 +318,8 @@ function loadSites(images) {
   }
 }
 
-$.post(
-  "/graphql",
-  {
-    query: querySites,
-  },
-  function (data, status) {
-    console.log(JSON.stringify(data, null, "\t"));
-  }
-);
-query = buildQuery(sqft, cost, 8);
-$.post(
-  "/graphql",
-  {
-    query: query,
-  },
-  function (data, status) {
-    setJsonFile(data);
-    //console.log(JSON.stringify(data,null,'\t'));
-    loadSites(data);
-    document.getElementById("curlQuery").innerText = JSON.stringify(query);
-  }
-);
-/*
-$.get("images.json", 
-  function(data, status) {
-  loadSites(data);
-});
-*/
+$("document").ready(onClassificationFilterChange);
+
 function onClassificationFilterChange() {
   var classification_type = document.getElementById(
     "classification_filter"
@@ -350,16 +328,20 @@ function onClassificationFilterChange() {
   var city = document.getElementById("cityFilter").value;
   var state = document.getElementById("stateFilter").value;
   var zip = document.getElementById("zipFilter").value;
+  var minCost = document.getElementById("minCostFilter").value;
+  var minSqft = document.getElementById("minSqftFilter").value;
+  var order = document.getElementById("selectOrder").value;
   document.getElementById("home").innerHTML = "";
   query = buildQuery(
-    sqft,
-    cost,
     8,
     classification_type,
     street,
     city,
     state,
-    zip
+    zip,
+    minCost,
+    minSqft,
+    order
   );
   $.post(
     "/graphql",
@@ -370,7 +352,7 @@ function onClassificationFilterChange() {
       setJsonFile(data);
       //console.log(JSON.stringify(data,null,'\t'));
       loadSites(data);
-      document.getElementById("curlQuery").innerText = JSON.stringify(query);
+      setCurlQuery(query);
     }
   );
 }
@@ -410,11 +392,13 @@ function CleanPermitData(json_data) {
     "Estimated Construction Cost",
     "Latitude",
     "Longitude",
+    "Number",
     "Site Location",
     "Source",
     "State",
     "Street",
     "Unit Type",
+    "Unit Number",
     "Zip",
   ];
   unneeded.forEach((x) => {
@@ -441,4 +425,10 @@ function toggleShowPermitData() {
       document.getElementById(i).className = "";
     }
   }
+}
+
+function setCurlQuery(query) {
+  document.getElementById("curlQuery").innerText = JSON.stringify(
+    query
+  ).replace(/\\n/g, " ");
 }
