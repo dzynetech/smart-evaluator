@@ -6,6 +6,7 @@ import PermitRow from "./PermitRow.js";
 const PERMITS_QUERY = gql`
   query MyQuery(
     $order: [PermitsOrderBy!]
+    $classification: ClassificationFilter
     $min_sqft: Float
     $min_cost: Float
     $city: String
@@ -20,7 +21,7 @@ const PERMITS_QUERY = gql`
           imageUrl: { isNull: false }
           sqft: { greaterThanOrEqualTo: $min_sqft }
           cost: { greaterThanOrEqualTo: $min_cost }
-          # classification_filter
+          classification: $classification
           # sourceId
           city: { includesInsensitive: $city }
           street: { includesInsensitive: $street }
