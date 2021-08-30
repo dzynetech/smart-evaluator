@@ -9,35 +9,27 @@ import {
 
 import Stats from "./components/Stats.js";
 import Permits from "./components/Permits.js";
+import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 
 const client = new ApolloClient({
   uri: "http://localhost:3000/graphql",
   cache: new InMemoryCache(),
 });
 
-const PERMIT_QUERY = gql`
-  query MyQuery {
-    nodeId
-    permit(id: 75988) {
-      id
-    }
-  }
-`;
-
-function Permit() {
-  const { loading, error, data } = useQuery(PERMIT_QUERY);
-
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
-  return JSON.stringify(data.permit);
-}
-
 function App() {
   return (
     <ApolloProvider client={client}>
       <div className="App container-fluid">
-        {/* <Stats /> */}
-        <Permits />
+        <Router>
+          <Switch>
+            <Route path="/stats">
+              <Stats />
+            </Route>
+            <Route path="/">
+              <Permits />
+            </Route>
+          </Switch>
+        </Router>
       </div>
     </ApolloProvider>
   );
