@@ -1,5 +1,5 @@
 import { useQuery, gql } from "@apollo/client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 function PermitsFilter(props) {
   const [street, setStreet] = useState("");
@@ -9,10 +9,16 @@ function PermitsFilter(props) {
   const [minCost, setMinCost] = useState("");
   const [minSqft, setMinSqft] = useState("");
   const [classification, setClassification] = useState("ALL");
-  const [order, setOrder] = useState("COST_DESC");
+  const [order, setOrder] = useState("SQFT_DESC");
+
+  useEffect(() => {
+    setFilter();
+  }, [classification, order]);
 
   function setFilter(e) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
     var c;
     if (classification === "ALL") {
       c = undefined;
@@ -98,7 +104,9 @@ function PermitsFilter(props) {
                     className="custom-select my-1 mr-sm-2"
                     id="classification_filter"
                     value={classification}
-                    onChange={(e) => setClassification(e.target.value)}
+                    onChange={(e) => {
+                      setClassification(e.target.value);
+                    }}
                   >
                     <option value="ALL">All</option>
                     <option value="UNCLASSIFIED">Unclassified</option>
@@ -183,8 +191,8 @@ function PermitsFilter(props) {
                 // onChange={setFilter}
               >
                 {/* <!-- <option selected value="NATURAL">ID</option> --> */}
-                <option value="COST_DESC">Cost</option>
                 <option value="SQFT_DESC">Size</option>
+                <option value="COST_DESC">Cost</option>
                 {/* <!-- <option value="STREET_ASC">Street Name </option> --> */}
               </select>
             </div>
