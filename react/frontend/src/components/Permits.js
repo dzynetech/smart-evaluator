@@ -92,13 +92,7 @@ function Permits() {
       <PermitsFilter setFilterVars={setFilterVars} getJsonFile={getJsonFile} />
       {data && <p>Filter returned {data.permits.totalCount} results</p>}
       {/* <!-- Modal --> */}
-      <div
-        className="modal fade"
-        id="curlModal"
-        tabIndex="-1"
-        aria-labelledby="exampleModalLabel"
-        aria-hidden="true"
-      >
+      <div className="modal" id="curlModal" tabIndex="-1">
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">

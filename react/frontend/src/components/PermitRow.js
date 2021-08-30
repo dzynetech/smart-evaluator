@@ -1,6 +1,7 @@
 import React from "react";
 import PermitDataTable from "./PermitDataTable";
 import PermitNote from "./PermitNote.js";
+import PermitButtons from "./PermitButtons.js";
 
 function PermitRow(props) {
   const colors = {
@@ -30,56 +31,6 @@ function PermitRow(props) {
     },
   };
 
-	function setYes(id) {
-    document.getElementById(id).style.border = colors.CONSTRUCTION.border;
-    document.getElementById(id).style.backgroundColor =
-      colors.CONSTRUCTION.backgroundColor;
-    classify(id, "CONSTRUCTION");
-  }
-
-  function setNo(id) {
-    document.getElementById(id).style.border = colors.NOT_CONSTRUCTION.border;
-    document.getElementById(id).style.backgroundColor =
-      colors.NOT_CONSTRUCTION.backgroundColor;
-    classify(id, "NOT_CONSTRUCTION");
-  }
-
-  function setMaybe(id) {
-    document.getElementById(id).style.border =
-      colors.POSSIBLE_CONSTRUCTION.border;
-    document.getElementById(id).style.backgroundColor =
-      colors.POSSIBLE_CONSTRUCTION.backgroundColor;
-    classify(id, "POSSIBLE_CONSTRUCTION");
-  }
-
-  function setDuplicate(id) {
-    document.getElementById(id).style.border = colors.DUPLICATE.border;
-    document.getElementById(id).style.backgroundColor =
-      colors.DUPLICATE.backgroundColor;
-    classify(id, "DUPLICATE");
-  }
-
-  function setUnclassified(id) {
-    document.getElementById(id).style.border = colors.UNCLASSIFIED.border;
-    document.getElementById(id).style.backgroundColor =
-      colors.UNCLASSIFIED.backgroundColor;
-    classify(id, "UNCLASSIFIED");
-  }
-
-  async function classify(id, classification) {
-    let CLASSIFY_PERMIT_MUT = `
-		mutation classifyPermit($id: Int!, $classification: Classification) {
-			updatePermit(input: { patch: { classification: $classification }, id: $id }) {
-				clientMutationId
-				permit {
-					id
-					classification
-				}
-			}
-		}
-		`;
-  }
-
   const image_dir = "/data/";
   const mp4_filename = image_dir + props.permit.id + ".mp4";
   const border = colors[props.permit.classification].border;
@@ -102,7 +53,7 @@ function PermitRow(props) {
           <table
             className="col-lg-8 col-md-auto"
             style={{ border: border, backgroundColor: backgroundColor }}
-            id="{props.permit.id}"
+            id={props.permit.id}
           >
             <tbody>
               <tr>
@@ -124,51 +75,7 @@ function PermitRow(props) {
                   <p />
                   Construction?
                   <p />
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setNo(props.permit.id);
-                    }}
-                  >
-                    <u>N</u>o
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setYes(props.permit.id);
-                    }}
-                  >
-                    <u>Y</u>es
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setMaybe(props.permit.id);
-                    }}
-                  >
-                    Maybe
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setDuplicate(props.permit.id);
-                    }}
-                  >
-                    Duplicate
-                  </button>
-                  <button
-                    type="button"
-                    className="btn btn-primary"
-                    onClick={() => {
-                      setUnclassified(props.permit.id);
-                    }}
-                  >
-                    Reset
-                  </button>
+                  <PermitButtons permit={props.permit} />
                   <p />
                   <PermitNote permit={props.permit} />
                 </td>
