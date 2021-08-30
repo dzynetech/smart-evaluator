@@ -89,6 +89,7 @@ function Permits() {
       <h1>Construction sites</h1>
       <h3>Permits: 2017 - 2019</h3>
       <PermitsFilter setFilterVars={setFilterVars} getJsonFile={getJsonFile} />
+      {data && <p>Filter returned {data.permits.totalCount} results</p>}
       {/* <!-- Modal --> */}
       <div
         className="modal fade"

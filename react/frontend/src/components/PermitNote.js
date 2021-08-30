@@ -14,20 +14,17 @@ function PermitNote(props) {
   `;
   const [note, setNote] = useState(props.permit.notes || "");
   const [updateNote, { data, loading, error }] = useMutation(UPDATE_NOTE);
-  useEffect(
-    (note) => {
-      updateNote({
-        variables: {
-          note: note,
-          id: props.permit.id,
-        },
-      });
-    },
-    [note]
-  );
+  useEffect(() => {
+    updateNote({
+      variables: {
+        note: note,
+        id: props.permit.id,
+      },
+    });
+  }, [note]);
 
   if (error) console.log(error);
-  if (data) console.log(data);
+  // if (data) console.log(data);
 
   return (
     <div className="form-group">

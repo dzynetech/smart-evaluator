@@ -30,6 +30,56 @@ function PermitRow(props) {
     },
   };
 
+	function setYes(id) {
+    document.getElementById(id).style.border = colors.CONSTRUCTION.border;
+    document.getElementById(id).style.backgroundColor =
+      colors.CONSTRUCTION.backgroundColor;
+    classify(id, "CONSTRUCTION");
+  }
+
+  function setNo(id) {
+    document.getElementById(id).style.border = colors.NOT_CONSTRUCTION.border;
+    document.getElementById(id).style.backgroundColor =
+      colors.NOT_CONSTRUCTION.backgroundColor;
+    classify(id, "NOT_CONSTRUCTION");
+  }
+
+  function setMaybe(id) {
+    document.getElementById(id).style.border =
+      colors.POSSIBLE_CONSTRUCTION.border;
+    document.getElementById(id).style.backgroundColor =
+      colors.POSSIBLE_CONSTRUCTION.backgroundColor;
+    classify(id, "POSSIBLE_CONSTRUCTION");
+  }
+
+  function setDuplicate(id) {
+    document.getElementById(id).style.border = colors.DUPLICATE.border;
+    document.getElementById(id).style.backgroundColor =
+      colors.DUPLICATE.backgroundColor;
+    classify(id, "DUPLICATE");
+  }
+
+  function setUnclassified(id) {
+    document.getElementById(id).style.border = colors.UNCLASSIFIED.border;
+    document.getElementById(id).style.backgroundColor =
+      colors.UNCLASSIFIED.backgroundColor;
+    classify(id, "UNCLASSIFIED");
+  }
+
+  async function classify(id, classification) {
+    let CLASSIFY_PERMIT_MUT = `
+		mutation classifyPermit($id: Int!, $classification: Classification) {
+			updatePermit(input: { patch: { classification: $classification }, id: $id }) {
+				clientMutationId
+				permit {
+					id
+					classification
+				}
+			}
+		}
+		`;
+  }
+
   const image_dir = "/data/";
   const mp4_filename = image_dir + props.permit.id + ".mp4";
   const border = colors[props.permit.classification].border;
@@ -77,35 +127,45 @@ function PermitRow(props) {
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onclick="setNo(${i},${image_id})"
+                    onClick={() => {
+                      setNo(props.permit.id);
+                    }}
                   >
                     <u>N</u>o
                   </button>
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onclick="setYes(${i},${image_id})"
+                    onClick={() => {
+                      setYes(props.permit.id);
+                    }}
                   >
                     <u>Y</u>es
                   </button>
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onclick="setMaybe(${i},${image_id})"
+                    onClick={() => {
+                      setMaybe(props.permit.id);
+                    }}
                   >
                     Maybe
                   </button>
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onclick="setDuplicate(${i},${image_id})"
+                    onClick={() => {
+                      setDuplicate(props.permit.id);
+                    }}
                   >
                     Duplicate
                   </button>
                   <button
                     type="button"
                     className="btn btn-primary"
-                    onclick="setUnclassNameified(${i},${image_id})"
+                    onClick={() => {
+                      setUnclassified(props.permit.id);
+                    }}
                   >
                     Reset
                   </button>
