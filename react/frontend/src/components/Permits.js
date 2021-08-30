@@ -1,8 +1,10 @@
 import { useQuery, useLazyQuery, gql } from "@apollo/client";
 import React, { useState, useEffect } from "react";
+import { print } from "graphql/language/printer";
+
 import PermitsFilter from "./PermitsFilter.js";
 import PermitRow from "./PermitRow.js";
-
+import CurlModal from "./CurlModal";
 const PERMITS_QUERY = gql`
   query MyQuery(
     $order: [PermitsOrderBy!]
@@ -69,7 +71,6 @@ const PERMITS_QUERY = gql`
 `;
 
 function Permits() {
-
   const [filterVars, setFilterVars] = useState({});
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY);
 
@@ -91,45 +92,10 @@ function Permits() {
       <h3>Permits: 2017 - 2019</h3>
       <PermitsFilter setFilterVars={setFilterVars} getJsonFile={getJsonFile} />
       {data && <p>Filter returned {data.permits.totalCount} results</p>}
-      {/* <!-- Modal --> */}
-      <div className="modal" id="curlModal" tabIndex="-1">
-        <div className="modal-dialog">
-          <div className="modal-content">
-            <div className="modal-header">
-              <h5 className="modal-title" id="exampleModalLabel">
-                Using cURL
-              </h5>
-              <button
-                type="button"
-                className="close"
-                data-dismiss="modal"
-                aria-label="Close"
-              >
-                <span aria-hidden="true">&times;</span>
-              </button>
-            </div>
-            <div className="modal-body">
-              <code>
-                curl -g --user admin:admin \<br />
-                -X POST \<br />
-                -H "Content-Type: application/json" \<br />
-                -d '&#123;"query": {"FIX ME"}
-                ,"operationName":"MyQuery"&#125;' \<br />
-                http://smart.dzynetech.com:4401/graphql
-              </code>
-            </div>
-            <div className="modal-footer">
-              <button
-                type="button"
-                className="btn btn-secondary"
-                data-dismiss="modal"
-              >
-                Close
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
+      <CurlModal
+        query={JSON.stringify(print(PERMITS_QUERY))}
+        variables={JSON.stringify(filterVars)}
+      />
 
       <div id="home" style={{ minHeight: "1000px", position: "relative" }}>
         {data &&

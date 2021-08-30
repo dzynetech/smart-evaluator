@@ -38,6 +38,12 @@ function PermitsFilter(props) {
     });
   }
 
+  function openModal() {
+    document.getElementById("backdrop").style.display = "block";
+    document.getElementById("curlModal").style.display = "block";
+    document.getElementById("curlModal").classList.add("show");
+  }
+
   return (
     <>
       <h5>Filter By:</h5>
@@ -154,8 +160,7 @@ function PermitsFilter(props) {
                     <button
                       type="button"
                       className="btn btn-link"
-                      data-toggle="modal"
-                      data-target="#curlModal"
+                      onClick={openModal}
                       data-toggle="tooltip"
                       data-placement="top"
                       title="view cURL instructions"
