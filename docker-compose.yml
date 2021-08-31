@@ -47,6 +47,8 @@ services:
       context: ./frontend
     ports:
       - "8000:80"
+    depends_on:
+      - node
 
 volumes:
   pgdata:
