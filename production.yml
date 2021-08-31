@@ -19,8 +19,6 @@ services:
       - secrets
     depends_on:
       - postgres
-    ports:
-      - '4401:3000'
     volumes:
      - ./node/frontend:/usr/src/app/frontend
      - /data:/data
@@ -32,7 +30,13 @@ services:
       - secrets
     depends_on:
       - postgres
-      
+
+  frontend:
+    build: 
+      context: ./frontend
+    ports:
+      - "4401:80"
+
   pgbackups:
     container_name: postgres_backup
     image: prodrigestivill/postgres-backup-local
