@@ -11,6 +11,7 @@ function PermitsFilter(props) {
   const [minSqft, setMinSqft] = useState("");
   const [classification, setClassification] = useState("ALL");
   const [order, setOrder] = useState("SQFT_DESC");
+  const [permitData, setPermitData] = useState("");
 
   useEffect(() => {
     setFilter();
@@ -36,6 +37,7 @@ function PermitsFilter(props) {
       city: city,
       state: state,
       zip: zip,
+      permitData: permitData,
     });
   }
 
@@ -143,6 +145,18 @@ function PermitsFilter(props) {
                     className="form-control my-1 mr-2"
                     id="minSqftFilter"
                     placeholder="0"
+                  ></input>
+                </div>
+                <div className="form-col">
+                  <label className="my-1 mr-2" htmlFor="permitDataFilter">
+                    Permit Data Contains:
+                  </label>
+                  <input
+                    value={permitData}
+                    onChange={(e) => setPermitData(e.target.value)}
+                    type="text"
+                    className="form-control my-1 mr-2"
+                    id="permitDataFilter"
                   ></input>
                 </div>
                 <div className="form-col">

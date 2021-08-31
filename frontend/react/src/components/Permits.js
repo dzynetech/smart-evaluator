@@ -15,6 +15,7 @@ const PERMITS_QUERY = gql`
     $street: String
     $state: String
     $zip: String
+    $permitData: String
   ) {
     permits(
       orderBy: $order
@@ -29,6 +30,7 @@ const PERMITS_QUERY = gql`
           street: { includesInsensitive: $street }
           state: { includesInsensitive: $state }
           zip: { includesInsensitive: $zip }
+          permitData: { includesInsensitive: $permitData }
           hasLocation: { equalTo: true }
           and: {
             or: [
