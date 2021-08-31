@@ -36,6 +36,8 @@ services:
       context: ./frontend
     ports:
       - "4401:80"
+    depends_on:
+      - node 
 
   pgbackups:
     container_name: postgres_backup
