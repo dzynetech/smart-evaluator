@@ -41,6 +41,12 @@ services:
       - postgres
     volumes: 
       - ./python:/app
-      
+
+  frontend:
+    build: 
+      context: ./frontend
+    ports:
+      - "8000:80"
+
 volumes:
   pgdata:
