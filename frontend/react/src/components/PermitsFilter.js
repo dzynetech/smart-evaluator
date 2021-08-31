@@ -1,5 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
 import React, { useEffect, useState } from "react";
+import StateDropdown from "./StateDropdown";
 
 function PermitsFilter(props) {
   const [street, setStreet] = useState("");
@@ -13,7 +14,7 @@ function PermitsFilter(props) {
 
   useEffect(() => {
     setFilter();
-  }, [classification, order]);
+  }, [classification, order, state]);
 
   function setFilter(e) {
     if (e) {
@@ -80,13 +81,7 @@ function PermitsFilter(props) {
                   <label className="my-1 mr-2" htmlFor="stateFilter">
                     State:
                   </label>
-                  <input
-                    value={state}
-                    onChange={(e) => setState(e.target.value)}
-                    type="text"
-                    className="form-control my-1 mr-2"
-                    id="stateFilter"
-                  ></input>
+                  <StateDropdown state={state} setState={setState} />
                 </div>
                 <div className="form-col">
                   <label className="my-1 mr-2" htmlFor="zipFilter">
