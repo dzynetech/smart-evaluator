@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useMutation, gql, ApolloProvider } from "@apollo/client";
-
+import { permitContext } from "../App";
 function PermitNote(props) {
   const UPDATE_NOTE = gql`
     mutation UpdateNotes($note: String, $id: Int!) {
@@ -14,7 +14,14 @@ function PermitNote(props) {
   `;
   const [note, setNote] = useState(props.permit.notes || "");
   const [updateNote, { data, loading, error }] = useMutation(UPDATE_NOTE);
+  const { readonly } = useContext(permitContext);
+  const [firstRender, setFirstRender] = useState(true);
+  console.log(readonly);
   useEffect(() => {
+    if (firstRender) {
+      setFirstRender(false);
+      return;
+    }
     updateNote({
       variables: {
         note: note,
@@ -36,6 +43,7 @@ function PermitNote(props) {
         placeholder="Enter a note"
         value={note}
         onChange={(e) => setNote(e.target.value)}
+        disabled={readonly}
       ></textarea>
     </div>
   );

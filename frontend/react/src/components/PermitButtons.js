@@ -1,4 +1,5 @@
-import React from "react";
+import React, { useContext } from "react";
+import { permitContext } from "../App";
 import { useMutation, gql, ApolloProvider } from "@apollo/client";
 
 const CLASSIFY_PERMIT_MUT = gql`
@@ -44,6 +45,7 @@ const colors = {
 function PermitButtons(props) {
   const [classifyPermit, { data, loading, error }] =
     useMutation(CLASSIFY_PERMIT_MUT);
+  const { readonly } = useContext(permitContext);
 
   async function classify(classification) {
     classifyPermit({
@@ -95,6 +97,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
+        disabled={readonly}
         onClick={() => {
           setNo(props.permit.id);
         }}
@@ -104,6 +107,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
+        disabled={readonly}
         onClick={() => {
           setYes(props.permit.id);
         }}
@@ -113,6 +117,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
+        disabled={readonly}
         onClick={() => {
           setMaybe(props.permit.id);
         }}
@@ -122,6 +127,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
+        disabled={readonly}
         onClick={() => {
           setDuplicate(props.permit.id);
         }}
@@ -131,6 +137,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
+        disabled={readonly}
         onClick={() => {
           setUnclassified(props.permit.id);
         }}

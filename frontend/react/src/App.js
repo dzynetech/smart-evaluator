@@ -10,11 +10,14 @@ import {
 import Stats from "./components/Stats.js";
 import Permits from "./components/Permits.js";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { createContext } from "react";
 
 const client = new ApolloClient({
   uri: "http://localhost:8000/graphql",
   cache: new InMemoryCache(),
 });
+
+export const permitContext = createContext(null);
 
 function App() {
   return (
@@ -25,8 +28,15 @@ function App() {
             <Route path="/stats">
               <Stats />
             </Route>
+            <Route path="/annotate">
+              <permitContext.Provider value={{ readonly: false }}>
+                <Permits />
+              </permitContext.Provider>
+            </Route>
             <Route path="/">
-              <Permits />
+              <permitContext.Provider value={{ readonly: true }}>
+                <Permits />
+              </permitContext.Provider>
             </Route>
           </Switch>
         </Router>
