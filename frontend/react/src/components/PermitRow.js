@@ -100,7 +100,7 @@ function PermitRow(props) {
                   backgroundColor={backgroundColor}
                 />
               </td>
-              <td className="glassy">
+              <td className="glassy text-center">
                 <h3>
                   <i class="bi bi-geo-alt"></i>
                 </h3>
