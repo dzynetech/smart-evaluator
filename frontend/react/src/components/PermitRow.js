@@ -68,25 +68,27 @@ function PermitRow(props) {
                   <tr>
                     <td className="p0">Cost: </td>
                     <td className="p0">
-                      <b>${props.permit.cost.toLocaleString()}</b>
+                      <b className="f18">
+                        ${props.permit.cost.toLocaleString()}
+                      </b>
                     </td>
                   </tr>
                   <tr>
                     <td className="p0">Sqft: </td>
                     <td className="p0">
-                      <b>{props.permit.sqft.toLocaleString()}</b>
+                      <b className="f18">
+                        {props.permit.sqft.toLocaleString()}
+                      </b>
                     </td>
                   </tr>
                   <tr>
                     <td className="p0">Lat/Lng:&nbsp;&nbsp;&nbsp;</td>
                     <td className="p0">
-                      <b>
-                        ({props.permit.location.x}, {props.permit.location.y})
-                      </b>
+                      ({props.permit.location.x}, {props.permit.location.y})
                     </td>
                   </tr>
                 </table>
-                Construction? <br />
+                <br /> Construction? <br />
                 <PermitButtons permit={props.permit} />
                 <p />
                 <PermitNote permit={props.permit} />
@@ -100,7 +102,7 @@ function PermitRow(props) {
               </td>
               <td className="glassy">
                 <h3>
-                  <i class="bi bi-pin-map"></i>
+                  <i class="bi bi-geo-alt"></i>
                 </h3>
                 <br />
                 {["2016", "2017", "2018", "2019", "2020", "2021"].map((y) => (

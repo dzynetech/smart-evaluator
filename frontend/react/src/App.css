@@ -47,6 +47,9 @@ td {
 .p0  {
 	padding: 0px;
 }
+.f18 {
+	font-size: 18px;
+}
 
 .glassy {
 	background-color: rgba(0, 0, 0, 0.07);
