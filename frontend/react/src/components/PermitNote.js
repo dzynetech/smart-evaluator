@@ -39,7 +39,6 @@ function PermitNote(props) {
         style={{ width: "100%" }}
         id={"notes-" + props.permit.id}
         rows="2"
-        placeholder="Enter a note"
         value={note}
         onChange={(e) => setNote(e.target.value)}
         disabled={readonly}
