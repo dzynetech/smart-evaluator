@@ -68,13 +68,13 @@ function PermitRow(props) {
                   <tr>
                     <td className="p0">Cost: </td>
                     <td className="p0">
-                      <b>{props.permit.cost}</b>
+                      <b>${props.permit.cost.toLocaleString()}</b>
                     </td>
                   </tr>
                   <tr>
                     <td className="p0">Sqft: </td>
                     <td className="p0">
-                      <b>{props.permit.sqft}</b>
+                      <b>{props.permit.sqft.toLocaleString()}</b>
                     </td>
                   </tr>
                   <tr>
