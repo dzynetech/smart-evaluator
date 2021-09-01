@@ -3,7 +3,10 @@ import { Pie } from "react-chartjs-2";
 
 const TOTAL_QUERY = gql`
   query TotalPermits($sourceId: Int) {
-    permits(condition: { sourceId: $sourceId }) {
+    permits(
+      condition: { sourceId: $sourceId }
+      filter: { imageUrl: { isNull: false } }
+    ) {
       totalCount
     }
   }
@@ -13,6 +16,7 @@ const CLASSIFICATION_QUERY = gql`
   query TotalPermits($sourceId: Int, $classification: Classification) {
     permits(
       condition: { sourceId: $sourceId, classification: $classification }
+      filter: { imageUrl: { isNull: false } }
     ) {
       totalCount
     }

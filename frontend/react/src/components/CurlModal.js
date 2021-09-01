@@ -31,7 +31,7 @@ function CurlModal(props) {
             </div>
             <div className="modal-body">
               <code>
-                curl -g --user admin:admin \<br />
+                curl -g --user username:password \<br />
                 -X POST \<br />
                 -H "Content-Type: application/json" \<br />
                 -d '&#123;"query": {props.query}, "variables": {props.variables}
