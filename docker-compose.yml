@@ -28,7 +28,7 @@ services:
     volumes: 
       - ./node:/usr/src/app
       - /usr/src/app/node_modules
-      - /data:/data
+      - ./data:/data
   
   python:
     build:
@@ -42,13 +42,18 @@ services:
     volumes: 
       - ./python:/app
 
-  frontend:
+  react:
     build: 
       context: ./frontend
+      dockerfile: Dockerfile.dev
     ports:
-      - "8000:80"
+      - "8000:3000"
     depends_on:
       - node
-
+    environment:
+      REACT_APP_GRAPHQL_URL: http://localhost:3000/graphql
+    volumes:
+      - ./frontend/react:/app
+      - ./data:/app/public/data
 volumes:
   pgdata:

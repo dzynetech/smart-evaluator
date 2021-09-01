@@ -1,2 +1,3 @@
-docker-compose -f production.yml down
+#!/bin/bash
 
+docker-compose -f production.yml down

@@ -19,10 +19,7 @@ services:
       - secrets
     depends_on:
       - postgres
-    volumes:
-     - ./node/frontend:/usr/src/app/frontend
-     - /data:/data
-
+   
   python:
     build:
       context: ./python
@@ -31,13 +28,15 @@ services:
     depends_on:
       - postgres
 
-  frontend:
+  nginx:
     build: 
       context: ./frontend
     ports:
       - "4401:80"
     depends_on:
       - node 
+    volumes:
+      - ./data:/usr/share/nginx/html/data
 
   pgbackups:
     container_name: postgres_backup
