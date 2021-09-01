@@ -206,6 +206,7 @@ function PermitsFilter(props) {
                 {/* <!-- <option selected value="NATURAL">ID</option> --> */}
                 <option value="SQFT_DESC">Size</option>
                 <option value="COST_DESC">Cost</option>
+                <option value="STREET_ASC">Street Name</option>
                 {/* <!-- <option value="STREET_ASC">Street Name </option> --> */}
               </select>
             </div>
