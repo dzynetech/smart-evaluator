@@ -99,7 +99,11 @@ function Permits() {
         variables={JSON.stringify(filterVars)}
       />
 
-      <div id="home" style={{ minHeight: "1000px", position: "relative" }}>
+      <div
+        id="home"
+        className="container-fluid"
+        style={{ minHeight: "1000px", position: "relative" }}
+      >
         {data &&
           data.permits.edges.map((p) => (
             <PermitRow key={p.node.id} permit={p.node} />

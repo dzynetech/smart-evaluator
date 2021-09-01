@@ -29,31 +29,18 @@ function PermitDataTable(props) {
   }
 
   return (
-    <table
-      className="col-lg-3 col-md-auto permitDataTable"
-      style={{ border: props.border, backgroundColor: props.backgroundColor }}
-    >
-      <tbody>
-        <tr>
-          <td>
-            <h5>Permit Data</h5>
-          </td>
-        </tr>
-        <tr>
-          <td>
-            {props.permit.permitData &&
-              Object.entries(CleanPermitData(props.permit.permitData)).map(
-                ([key, value]) => (
-                  <React.Fragment key={key}>
-                    <b>{key}:</b> {value}
-                    <br />
-                  </React.Fragment>
-                )
-              )}
-          </td>
-        </tr>
-      </tbody>
-    </table>
+    <>
+      <h5>Additional Permit Data</h5>
+      {props.permit.permitData &&
+        Object.entries(CleanPermitData(props.permit.permitData)).map(
+          ([key, value]) => (
+            <React.Fragment key={key}>
+              <b>{key}:</b> {value}
+              <br />
+            </React.Fragment>
+          )
+        )}
+    </>
   );
 }
 

@@ -22,7 +22,7 @@ a:hover {
 h1 {
 	color: #585ea3
 }
-table {
+.permitTable {
 	border-collapse:separate;
 	border:solid black 1px;
 	border-radius:6px;
@@ -43,4 +43,14 @@ td {
 	border-radius:6px;
 	padding: 10px;
 	-moz-border-radius:6px;
+}
+.p0  {
+	padding: 0px;
+}
+
+.glassy {
+	background-color: rgba(0, 0, 0, 0.07);
+}
+.btn{
+	margin: 2px;
 }
