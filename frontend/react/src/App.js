@@ -8,7 +8,7 @@ import { createContext } from "react";
 
 var graphql_url = process.env.REACT_APP_GRAPHQL_URL;
 if (!graphql_url) {
-  graphql_url = window.location.href + "graphql";
+  graphql_url = "http://" + window.location.host + "/graphql";
 }
 const client = new ApolloClient({
   uri: graphql_url,
