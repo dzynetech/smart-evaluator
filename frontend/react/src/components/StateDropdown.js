@@ -1,10 +1,4 @@
-import {
-  ApolloClient,
-  InMemoryCache,
-  ApolloProvider,
-  useQuery,
-  gql,
-} from "@apollo/client";
+import { useQuery, gql } from "@apollo/client";
 import { useState, useEffect } from "react";
 
 const STATES_QUERY = gql`

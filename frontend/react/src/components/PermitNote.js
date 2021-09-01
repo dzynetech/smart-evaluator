@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useMutation, gql, ApolloProvider } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 import { permitContext } from "../App";
 function PermitNote(props) {
   const UPDATE_NOTE = gql`
@@ -31,7 +31,6 @@ function PermitNote(props) {
   }, [note]);
 
   if (error) console.log(error);
-  // if (data) console.log(data);
 
   return (
     <div className="form-group">

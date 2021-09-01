@@ -1,4 +1,4 @@
-import { useQuery, useLazyQuery, gql } from "@apollo/client";
+import { useLazyQuery, gql } from "@apollo/client";
 import React, { useState, useEffect } from "react";
 import { print } from "graphql/language/printer";
 

@@ -1,4 +1,3 @@
-import { useQuery, gql } from "@apollo/client";
 import React, { useEffect, useState } from "react";
 import StateDropdown from "./StateDropdown";
 

@@ -1,6 +1,6 @@
 import React, { useContext } from "react";
 import { permitContext } from "../App";
-import { useMutation, gql, ApolloProvider } from "@apollo/client";
+import { useMutation, gql } from "@apollo/client";
 
 const CLASSIFY_PERMIT_MUT = gql`
   mutation classifyPermit($id: Int!, $classification: Classification) {
@@ -43,8 +43,7 @@ const colors = {
   },
 };
 function PermitButtons(props) {
-  const [classifyPermit, { data, loading, error }] =
-    useMutation(CLASSIFY_PERMIT_MUT);
+  const [classifyPermit] = useMutation(CLASSIFY_PERMIT_MUT);
   const { readonly } = useContext(permitContext);
 
   async function classify(classification) {
