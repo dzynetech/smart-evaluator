@@ -64,6 +64,7 @@ const PERMITS_QUERY = gql`
           zip
           permitData
           classification
+          permitIssueDate
           notes
         }
       }

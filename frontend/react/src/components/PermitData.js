@@ -11,6 +11,7 @@ function PermitDataTable(props) {
       "County",
       "Country",
       "Estimated Construction Cost",
+      "Issue Date",
       "Latitude",
       "Longitude",
       "Number",

@@ -56,7 +56,11 @@ function PermitBox(props) {
                     </td>
                   </tr>
                   <tr>
-                    <td className="p0">Lat/Long:&nbsp;&nbsp;&nbsp;</td>
+                    <td className="p0">Permit Date:&nbsp;&nbsp;&nbsp;</td>
+                    <td className="p0">{props.permit.permitIssueDate}</td>
+                  </tr>
+                  <tr>
+                    <td className="p0">Lat/Long:</td>
                     <td className="p0">
                       ({props.permit.location.y},{props.permit.location.x})
                     </td>
