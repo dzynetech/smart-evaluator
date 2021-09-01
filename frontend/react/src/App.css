@@ -29,6 +29,7 @@ h1 {
 	-moz-border-radius:6px;
 	float: left; 
 	margin:  5px;
+	width: 100%;
 }
 td {
 	padding: 8px;

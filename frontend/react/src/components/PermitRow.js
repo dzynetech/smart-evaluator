@@ -56,7 +56,7 @@ function PermitRow(props) {
         >
           <tbody>
             <tr>
-              <td>
+              <td style={{ width: "512px" }}>
                 <video autoPlay loop muted controls>
                   <source src={mp4_filename} type="video/mp4" />
                   Your browser does not support the video tag.
