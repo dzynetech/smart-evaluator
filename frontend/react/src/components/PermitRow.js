@@ -6,27 +6,27 @@ import PermitButtons from "./PermitButtons.js";
 function PermitRow(props) {
   const colors = {
     UNCLASSIFIED: {
-      border: "8px solid #EEE",
+      border: "5px solid #EEE",
       backgroundColor: "#FFFFFF",
     },
     CONSTRUCTION: {
-      border: "8px solid #00CC00",
+      border: "5px solid #00CC00",
       backgroundColor: "#CCFFCC",
     },
     NOT_CONSTRUCTION: {
-      border: "8px solid #FF0000",
+      border: "5px solid #FF0000",
       backgroundColor: "#FFCCCC",
     },
     POSSIBLE_CONSTRUCTION: {
-      border: "8px solid #DDDD00",
+      border: "5px solid #DDDD00",
       backgroundColor: "#FFFF99",
     },
     DUPLICATE: {
-      border: "8px solid #FF0000",
+      border: "5px solid #FF0000",
       backgroundColor: "#FFCCCC",
     },
     HIGHLIGHT: {
-      border: "8px solid #999",
+      border: "5px solid #999",
       backgroundColor: "#EEEEEE",
     },
   };

@@ -24,7 +24,7 @@ h1 {
 }
 .permitTable {
 	border-collapse:separate;
-	border:solid black 1px;
+	border:solid black 5px;
 	border-radius:6px;
 	-moz-border-radius:6px;
 	float: left; 
