@@ -22,6 +22,7 @@ CREATE TABLE public.permits(
     city VARCHAR(255),
     state VARCHAR(255),
     zip VARCHAR(16),
+    permit_issue_date DATE,
     formatted_address VARCHAR(255),
     location_accuracy real,
     image_url VARCHAR(255),
