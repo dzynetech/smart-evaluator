@@ -3,7 +3,7 @@ import React, { useState, useEffect } from "react";
 import { print } from "graphql/language/printer";
 
 import PermitsFilter from "./PermitsFilter.js";
-import PermitRow from "./PermitRow.js";
+import PermitBox from "./PermitBox.js";
 import CurlModal from "./CurlModal";
 const PERMITS_QUERY = gql`
   query MyQuery(
@@ -74,7 +74,9 @@ const PERMITS_QUERY = gql`
 
 function Permits() {
   const [filterVars, setFilterVars] = useState({});
-  const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY);
+  const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
+    fetchPolicy: "no-cache",
+  });
 
   useEffect(() => {
     getPermits({ variables: filterVars });
@@ -106,7 +108,7 @@ function Permits() {
       >
         {data &&
           data.permits.edges.map((p) => (
-            <PermitRow key={p.node.id} permit={p.node} />
+            <PermitBox key={p.node.id} permit={p.node} />
           ))}
       </div>
 

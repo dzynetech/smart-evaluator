@@ -1,40 +1,14 @@
 import React from "react";
-import PermitDataTable from "./PermitDataTable";
+import PermitData from "./PermitData";
 import PermitNote from "./PermitNote.js";
 import PermitButtons from "./PermitButtons.js";
+import Colors from "../utils/Colors.js";
 
-function PermitRow(props) {
-  const colors = {
-    UNCLASSIFIED: {
-      border: "5px solid #EEE",
-      backgroundColor: "#FFFFFF",
-    },
-    CONSTRUCTION: {
-      border: "5px solid #00CC00",
-      backgroundColor: "#CCFFCC",
-    },
-    NOT_CONSTRUCTION: {
-      border: "5px solid #FF0000",
-      backgroundColor: "#FFCCCC",
-    },
-    POSSIBLE_CONSTRUCTION: {
-      border: "5px solid #DDDD00",
-      backgroundColor: "#FFFF99",
-    },
-    DUPLICATE: {
-      border: "5px solid #FF0000",
-      backgroundColor: "#FFCCCC",
-    },
-    HIGHLIGHT: {
-      border: "5px solid #999",
-      backgroundColor: "#EEEEEE",
-    },
-  };
-
+function PermitBox(props) {
   const image_dir = "/data/";
   const mp4_filename = image_dir + props.permit.id + ".mp4";
-  const border = colors[props.permit.classification].border;
-  const backgroundColor = colors[props.permit.classification].backgroundColor;
+  const border = Colors[props.permit.classification].border;
+  const backgroundColor = Colors[props.permit.classification].backgroundColor;
   const address =
     props.permit.streetNumber +
     " " +
@@ -82,9 +56,9 @@ function PermitRow(props) {
                     </td>
                   </tr>
                   <tr>
-                    <td className="p0">Lat/Lng:&nbsp;&nbsp;&nbsp;</td>
+                    <td className="p0">Lat/Long:&nbsp;&nbsp;&nbsp;</td>
                     <td className="p0">
-                      ({props.permit.location.x}, {props.permit.location.y})
+                      ({props.permit.location.y},{props.permit.location.x})
                     </td>
                   </tr>
                 </table>
@@ -94,7 +68,7 @@ function PermitRow(props) {
                 <PermitNote permit={props.permit} />
               </td>
               <td>
-                <PermitDataTable
+                <PermitData
                   permit={props.permit}
                   border={border}
                   backgroundColor={backgroundColor}
@@ -126,4 +100,4 @@ function PermitRow(props) {
   );
 }
 
-export default PermitRow;
+export default PermitBox;

@@ -1,6 +1,7 @@
 import React, { useContext } from "react";
 import { permitContext } from "../App";
 import { useMutation, gql } from "@apollo/client";
+import Colors from "../utils/Colors";
 
 const CLASSIFY_PERMIT_MUT = gql`
   mutation classifyPermit($id: Int!, $classification: Classification) {
@@ -16,32 +17,6 @@ const CLASSIFY_PERMIT_MUT = gql`
   }
 `;
 
-const colors = {
-  UNCLASSIFIED: {
-    border: "8px solid #EEE",
-    backgroundColor: "#FFFFFF",
-  },
-  CONSTRUCTION: {
-    border: "8px solid #00CC00",
-    backgroundColor: "#CCFFCC",
-  },
-  NOT_CONSTRUCTION: {
-    border: "8px solid #FF0000",
-    backgroundColor: "#FFCCCC",
-  },
-  POSSIBLE_CONSTRUCTION: {
-    border: "8px solid #DDDD00",
-    backgroundColor: "#FFFF99",
-  },
-  DUPLICATE: {
-    border: "8px solid #FF0000",
-    backgroundColor: "#FFCCCC",
-  },
-  HIGHLIGHT: {
-    border: "8px solid #999",
-    backgroundColor: "#EEEEEE",
-  },
-};
 function PermitButtons(props) {
   const [classifyPermit] = useMutation(CLASSIFY_PERMIT_MUT);
   const { readonly } = useContext(permitContext);
@@ -56,38 +31,38 @@ function PermitButtons(props) {
   }
 
   function setYes(id) {
-    document.getElementById(id).style.border = colors.CONSTRUCTION.border;
+    document.getElementById(id).style.border = Colors.CONSTRUCTION.border;
     document.getElementById(id).style.backgroundColor =
-      colors.CONSTRUCTION.backgroundColor;
+      Colors.CONSTRUCTION.backgroundColor;
     classify("CONSTRUCTION");
   }
 
   function setNo(id) {
-    document.getElementById(id).style.border = colors.NOT_CONSTRUCTION.border;
+    document.getElementById(id).style.border = Colors.NOT_CONSTRUCTION.border;
     document.getElementById(id).style.backgroundColor =
-      colors.NOT_CONSTRUCTION.backgroundColor;
+      Colors.NOT_CONSTRUCTION.backgroundColor;
     classify("NOT_CONSTRUCTION");
   }
 
   function setMaybe(id) {
     document.getElementById(id).style.border =
-      colors.POSSIBLE_CONSTRUCTION.border;
+      Colors.POSSIBLE_CONSTRUCTION.border;
     document.getElementById(id).style.backgroundColor =
-      colors.POSSIBLE_CONSTRUCTION.backgroundColor;
+      Colors.POSSIBLE_CONSTRUCTION.backgroundColor;
     classify("POSSIBLE_CONSTRUCTION");
   }
 
   function setDuplicate(id) {
-    document.getElementById(id).style.border = colors.DUPLICATE.border;
+    document.getElementById(id).style.border = Colors.DUPLICATE.border;
     document.getElementById(id).style.backgroundColor =
-      colors.DUPLICATE.backgroundColor;
+      Colors.DUPLICATE.backgroundColor;
     classify("DUPLICATE");
   }
 
   function setUnclassified(id) {
-    document.getElementById(id).style.border = colors.UNCLASSIFIED.border;
+    document.getElementById(id).style.border = Colors.UNCLASSIFIED.border;
     document.getElementById(id).style.backgroundColor =
-      colors.UNCLASSIFIED.backgroundColor;
+      Colors.UNCLASSIFIED.backgroundColor;
     classify("UNCLASSIFIED");
   }
 
@@ -98,20 +73,20 @@ function PermitButtons(props) {
         className="btn btn-primary"
         disabled={readonly}
         onClick={() => {
-          setNo(props.permit.id);
+          setYes(props.permit.id);
         }}
       >
-        <u>N</u>o
+        <u>Y</u>es
       </button>
       <button
         type="button"
         className="btn btn-primary"
         disabled={readonly}
         onClick={() => {
-          setYes(props.permit.id);
+          setNo(props.permit.id);
         }}
       >
-        <u>Y</u>es
+        <u>N</u>o
       </button>
       <button
         type="button"
