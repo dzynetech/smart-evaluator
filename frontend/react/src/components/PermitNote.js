@@ -36,7 +36,6 @@ function PermitNote(props) {
     <div className="form-group">
       <textarea
         className="form-control"
-        style={{ width: "95%" }}
         id={"notes-" + props.permit.id}
         rows="2"
         value={note}

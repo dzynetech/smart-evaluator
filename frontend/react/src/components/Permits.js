@@ -5,6 +5,7 @@ import { print } from "graphql/language/printer";
 import PermitsFilter from "./PermitsFilter.js";
 import PermitBox from "./PermitBox.js";
 import CurlModal from "./CurlModal";
+import FilterPagination from "./FilterPagination";
 import useMap from "./dzyne_components/hooks/useMap";
 const PERMITS_QUERY = gql`
   query MyQuery(
@@ -17,8 +18,12 @@ const PERMITS_QUERY = gql`
     $state: String
     $zip: String
     $permitData: String
+    $numPerPage: Int
+    $offset: Int
   ) {
     permits(
+      first: $numPerPage
+      offset: $offset
       orderBy: $order
       filter: {
         and: {
@@ -76,14 +81,21 @@ const PERMITS_QUERY = gql`
 
 function Permits() {
   const [filterVars, setFilterVars] = useState({});
+  const [page, setPage] = useState(1);
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
 
+  const permitsPerPage = 20;
+
   useEffect(() => {
-    getPermits({ variables: filterVars });
+    var queryVars = {};
+    Object.assign(queryVars, filterVars);
+    queryVars.numPerPage = permitsPerPage;
+    queryVars.offset = permitsPerPage * (page - 1);
+    getPermits({ variables: queryVars });
     if (error) console.log(error);
-  }, [filterVars]);
+  }, [filterVars, page]);
 
   useMap("map", {});
 
@@ -113,7 +125,21 @@ function Permits() {
         <div id="main" className="container-fluid">
           <h1>Construction sites</h1>
           <h3>Permits: 2017 - 2019</h3>
-          {data && <p>Filter returned {data.permits.totalCount} results</p>}
+          {data && (
+            <p>
+              Showing results {(page - 1) * permitsPerPage + 1} -
+              {" " + Math.min(page * permitsPerPage, data.permits.totalCount)}{" "}
+              of {data.permits.totalCount}
+            </p>
+          )}
+          {data && (
+            <FilterPagination
+              page={page}
+              setPage={setPage}
+              total={data.permits.totalCount}
+              permitsPerPage={permitsPerPage}
+            />
+          )}
           <CurlModal
             query={JSON.stringify(print(PERMITS_QUERY))}
             variables={JSON.stringify(filterVars)}
@@ -122,6 +148,15 @@ function Permits() {
             data.permits.edges.map((p) => (
               <PermitBox key={p.node.id} permit={p.node} />
             ))}
+          {data && (
+            <FilterPagination
+              page={page}
+              setPage={setPage}
+              total={data.permits.totalCount}
+              permitsPerPage={permitsPerPage}
+              center={true}
+            />
+          )}
         </div>
       </div>
       <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
