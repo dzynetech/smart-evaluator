@@ -5,6 +5,7 @@ import { print } from "graphql/language/printer";
 import PermitsFilter from "./PermitsFilter.js";
 import PermitBox from "./PermitBox.js";
 import CurlModal from "./CurlModal";
+import useMap from "./dzyne_components/hooks/useMap";
 const PERMITS_QUERY = gql`
   query MyQuery(
     $order: [PermitsOrderBy!]
@@ -84,6 +85,8 @@ function Permits() {
     if (error) console.log(error);
   }, [filterVars]);
 
+  useMap("map", {});
+
   function getJsonFile() {
     var queryResponseJSON = JSON.stringify(data);
     var d = new Blob([queryResponseJSON], { type: "text/plain" });
@@ -99,6 +102,13 @@ function Permits() {
             setFilterVars={setFilterVars}
             getJsonFile={getJsonFile}
           />
+          <div
+            id="map"
+            style={{
+              height: 300,
+              width: "100%",
+            }}
+          ></div>
         </div>
         <div id="main" className="container-fluid">
           <h1>Construction sites</h1>

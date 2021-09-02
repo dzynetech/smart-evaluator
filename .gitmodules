@@ -1,0 +1,3 @@
+[submodule "frontend/react/src/components/dzyne_components"]
+	path = frontend/react/src/components/dzyne_components
+	url = ssh://git@bitbucket.dzynetech.com:7999/dgd/dzyne_components.git
