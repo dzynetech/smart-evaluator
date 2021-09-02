@@ -63,6 +63,14 @@ def main():
             columns.append("permit_data")
             data.append(create_permit_json(headers,  row))
 
+            # parse out street no from street if there is no street number
+            if "street_number" not in sql_columns:
+                full_street = data[columns.index('street')]
+                street_number, street = full_street.strip().split(" ", 1)
+                data[columns.index('street')] = street
+                data.append(street_number)
+                columns.append("street_number")
+
             first_value = ""
             if has_lat and has_long:
                 lat_idx = columns.index('latitude')
