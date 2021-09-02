@@ -49,7 +49,7 @@ def main():
     json_data['dataset_name'] = input("Enter a name for this dataset: ")
 
     sql_columns = ['cost', 'sqft', 'street_number', 'street',
-                   'city', 'state', 'zip', 'latitude', 'longitude', 'location_accuracy']
+                   'city', 'state', 'zip', 'latitude', 'longitude', 'location_accuracy', 'issue_date']
 
     for name in sql_columns:
         valid = False
@@ -91,6 +91,7 @@ def print_sample(data,  json_data):
     print(f"{sampledata('sqft',data,json_data)} sq ft, ${sampledata('cost',data,json_data)}")
     print(f"{sampledata('street_number',data,json_data)} {sampledata('street',data,json_data)}")
     print(f"{sampledata('city',data,json_data)}, {sampledata('state',data,json_data)} {sampledata('zip',data,json_data)}")
+    print(f"issued on: {sampledata('issue_date',data,json_data)}")
     print(f"({sampledata('latitude',data,json_data)},{sampledata('longitude',data,json_data)})")
     if 'location_accuracy_col' in json_data:
         print(

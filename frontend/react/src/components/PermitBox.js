@@ -55,7 +55,7 @@ function PermitBox(props) {
               </tr>
               <tr>
                 <td>Permit Date:&nbsp;&nbsp;&nbsp;</td>
-                <td>{props.permit.permitIssueDate}</td>
+                <td>{props.permit.issueDate}</td>
               </tr>
               <tr>
                 <td>Lat/Long:</td>
