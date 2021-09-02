@@ -71,6 +71,26 @@ function PermitsFilter(props) {
       </div>
       <h5>Filter By:</h5>
       <form onSubmit={setFilter} class="filter-form">
+        <div id="classification-filter">
+          <label className="my-1 mr-2" htmlFor="classification_filter">
+            Classification:
+          </label>
+          <select
+            className="custom-select my-1 mr-sm-2"
+            id="classification_filter"
+            value={classification}
+            onChange={(e) => {
+              setClassification(e.target.value);
+            }}
+          >
+            <option value="ALL">All</option>
+            <option value="UNCLASSIFIED">Unclassified</option>
+            <option value="CONSTRUCTION">Construction</option>
+            <option value="NOT_CONSTRUCTION">Not Construction</option>
+            <option value="POSSIBLE_CONSTRUCTION">Maybe Construction</option>
+            <option value="DUPLICATE">Duplicate</option>
+          </select>
+        </div>
         <div id="street-filter">
           <label className="my-1 mr-2" htmlFor="streetFilter">
             Street:
