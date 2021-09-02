@@ -4,6 +4,8 @@ import PermitNote from "./PermitNote.js";
 import PermitButtons from "./PermitButtons.js";
 import Colors from "../utils/Colors.js";
 
+import "./PermitBox.css";
+
 function PermitBox(props) {
   const image_dir = "/data/";
   const mp4_filename = image_dir + props.permit.id + ".mp4";
@@ -22,83 +24,75 @@ function PermitBox(props) {
 
   return (
     <>
-      <div className="row align-items-center">
-        <table
-          className="permitTable"
+      <div className="row">
+        <div
+          className="permitBox"
           style={{ border: border, backgroundColor: backgroundColor }}
           id={props.permit.id}
         >
-          <tbody>
-            <tr>
-              <td style={{ width: "512px" }}>
-                <video autoPlay loop muted controls>
-                  <source src={mp4_filename} type="video/mp4" />
-                  Your browser does not support the video tag.
-                </video>
-              </td>
-              <td style={{ width: "500px" }}>
-                <b style={{ fontSize: "23px" }}>{address}</b>
-                <table>
-                  <tr>
-                    <td className="p0">Cost: </td>
-                    <td className="p0">
-                      <b className="f18">
-                        ${props.permit.cost.toLocaleString()}
-                      </b>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p0">Sqft: </td>
-                    <td className="p0">
-                      <b className="f18">
-                        {props.permit.sqft.toLocaleString()}
-                      </b>
-                    </td>
-                  </tr>
-                  <tr>
-                    <td className="p0">Permit Date:&nbsp;&nbsp;&nbsp;</td>
-                    <td className="p0">{props.permit.permitIssueDate}</td>
-                  </tr>
-                  <tr>
-                    <td className="p0">Lat/Long:</td>
-                    <td className="p0">
-                      ({props.permit.location.y},{props.permit.location.x})
-                    </td>
-                  </tr>
-                </table>
-                <br /> Construction? <br />
-                <PermitButtons permit={props.permit} />
-                <p />
-                <PermitNote permit={props.permit} />
-              </td>
-              <td>
-                <PermitData
-                  permit={props.permit}
-                  border={border}
-                  backgroundColor={backgroundColor}
-                />
-              </td>
-              <td className="glassy text-center vw4">
-                <h3>
-                  <i class="bi bi-geo-alt"></i>
-                </h3>
+          <div className="video">
+            <video autoPlay loop muted controls>
+              <source src={mp4_filename} type="video/mp4" />
+              Your browser does not support the video tag.
+            </video>
+          </div>
+          <div className="permit-title">
+            <b style={{ fontSize: "23px" }}>{address}</b>
+          </div>
+          <div className="permit-info">
+            <table>
+              <tr>
+                <td>Cost: </td>
+                <td>
+                  <b className="f18">${props.permit.cost.toLocaleString()}</b>
+                </td>
+              </tr>
+              <tr>
+                <td>Sqft: </td>
+                <td>
+                  <b className="f18">{props.permit.sqft.toLocaleString()}</b>
+                </td>
+              </tr>
+              <tr>
+                <td>Permit Date:&nbsp;&nbsp;&nbsp;</td>
+                <td>{props.permit.permitIssueDate}</td>
+              </tr>
+              <tr>
+                <td>Lat/Long:</td>
+                <td>
+                  ({props.permit.location.y},{props.permit.location.x})
+                </td>
+              </tr>
+            </table>
+          </div>
+          <div className="permit-actions">
+            <p>Construction?</p>
+            <PermitButtons permit={props.permit} />
+            <PermitNote permit={props.permit} />
+          </div>
+          <div className="permit-data">
+            <PermitData
+              permit={props.permit}
+              border={border}
+              backgroundColor={backgroundColor}
+            />
+          </div>
+          <div className="permit-sidebar text-center">
+            <br />
+            <h3>
+              <i class="bi bi-geo-alt"></i>
+            </h3>
+            <br />
+            {["2016", "2017", "2018", "2019", "2020", "2021"].map((y) => (
+              <React.Fragment key={y}>
+                <a href={image_dir + props.permit.id + " " + y + "-07-01.kml"}>
+                  {y}
+                </a>
                 <br />
-                {["2016", "2017", "2018", "2019", "2020", "2021"].map((y) => (
-                  <React.Fragment key={y}>
-                    <a
-                      href={
-                        image_dir + props.permit.id + " " + y + "-07-01.kml"
-                      }
-                    >
-                      {y}
-                    </a>
-                    <br />
-                  </React.Fragment>
-                ))}
-              </td>
-            </tr>
-          </tbody>
-        </table>
+              </React.Fragment>
+            ))}
+          </div>
+        </div>
       </div>
     </>
   );

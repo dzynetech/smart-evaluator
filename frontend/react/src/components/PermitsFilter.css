@@ -1,0 +1,45 @@
+
+.order {
+	margin-bottom: 1rem;
+}
+
+.filter-form{
+	display:grid;
+	grid-gap: .2rem;
+	grid-template-columns: repeat(12,minmax(0,1fr));
+	grid-template-areas:
+	"s s s s s c c c c y y y"
+	"z z z w w w w f f f f f"
+	"p p p p p p p o o o o o";
+}
+#street-filter {
+	grid-area: s;
+}
+#city-filter {
+	grid-area: c;
+}
+#state-filter {
+	grid-area: y;
+}
+#zip-filter{
+	grid-area: z;
+}
+#cost-filter {
+	grid-area: w;
+}
+#size-filter {
+	grid-area: f;
+}
+#permitdata-filter {
+	grid-area: p;
+}
+#apply-btn {
+	grid-area: o;
+	margin-top: 2rem;
+	margin-left: .5rem;
+}
+
+#apply-btn > button {
+	padding-left: .3rem;
+	padding-right: .3rem;
+}

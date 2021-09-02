@@ -30,8 +30,7 @@ function PermitDataTable(props) {
   }
 
   return (
-    <>
-      <h5>Additional Permit Data</h5>
+    <div>
       {props.permit.permitData &&
         Object.entries(CleanPermitData(props.permit.permitData)).map(
           ([key, value]) => (
@@ -41,7 +40,7 @@ function PermitDataTable(props) {
             </React.Fragment>
           )
         )}
-    </>
+    </div>
   );
 }
 

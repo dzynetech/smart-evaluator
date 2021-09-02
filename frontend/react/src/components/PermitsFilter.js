@@ -1,6 +1,8 @@
 import React, { useEffect, useState } from "react";
 import StateDropdown from "./StateDropdown";
 
+import "./PermitsFilter.css";
+
 function PermitsFilter(props) {
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");

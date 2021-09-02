@@ -1,0 +1,59 @@
+td  {
+	padding: 0px;
+}
+.f18 {
+	font-size: 18px;
+}
+
+.permitBox {
+	margin: .25rem;
+	border-collapse:separate;
+	border:solid black 5px;
+	border-radius:6px;
+	-moz-border-radius:6px;
+	width: 100%;
+
+	display:grid;
+	grid-gap: .5rem;
+	grid-template-columns: 524px repeat(2,minmax(0,1fr)) 4vw;
+	grid-template-rows: auto auto auto ;
+	grid-template-areas:
+"video title title side"
+"video info data side"
+"video actions data side";
+}
+
+.video {
+	grid-area: video;
+}
+
+.video > video {
+	position: relative;
+	top: 50%;
+	transform: translateY(-50%);
+	margin-left: .5rem;
+}
+
+.permit-title{
+	grid-area: title;
+	margin-top: .5rem;
+}
+.permit-info {
+	grid-area: info;
+}
+.permit-actions {
+	grid-area: actions;
+}
+.permit-data {
+	grid-area: data;
+}
+.permit-data > div {
+	position: relative;
+	top: 20%;
+	transform: translateY(-20%);	
+}
+.permit-sidebar {
+	grid-area: side;
+	width: 4vw;
+	background-color: rgba(0, 0, 0, 0.07);
+}

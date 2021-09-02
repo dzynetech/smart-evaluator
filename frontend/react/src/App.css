@@ -4,6 +4,9 @@
 body {
 	background-color: #ffffff;
 }
+h1 {
+	color: #585ea3
+}
 a:link {
 	font-size: smaller;
 	color: 585ea3;
@@ -18,47 +21,15 @@ a:visited {
 a:hover {
   color: #9999FF;
 }
-h1 {
-	color: #585ea3
-}
-.permitTable {
-	border-collapse:separate;
-	border:solid black 5px;
-	border-radius:6px;
-	-moz-border-radius:6px;
-	float: left; 
-	margin:  5px;
-	width: 100%;
-}
-td {
-	padding: 8px;
-}
 .btn{
 	margin: 2px;
 }
-#permitDataButton {
-	position: fixed;
-	right: 30px;;
-	bottom: 30px;
-}
+
 .statBox{
 	border:solid lightsteelblue 5px;
 	border-radius:6px;
 	padding: 10px;
 	-moz-border-radius:6px;
-}
-.p0  {
-	padding: 0px;
-}
-.f18 {
-	font-size: 18px;
-}
-
-.vw4 {
-	width: 4vw;
-}
-.glassy {
-	background-color: rgba(0, 0, 0, 0.07);
 }
 
 .site {
@@ -69,7 +40,7 @@ td {
 
 #main {
 	grid-column-start: 2;
-	min-height: 1000px;	
+	padding-top: 1rem;
 }
 
 .sidebar{
@@ -78,60 +49,4 @@ td {
 	height: 100%;
 	background-color: lightsteelblue;
 	padding: 2rem;
-}
-
-.form-col > input {
-	width: 10rem;
-}
-
-.state-col{
-	margin-right: .5rem;
-}
-#permitDataFilter{
-	width: 100%;
-}
-
-.order {
-	margin-bottom: 1rem;
-}
-
-.filter-form{
-	display:grid;
-	grid-gap: .2rem;
-	grid-template-columns: repeat(12,minmax(0,1fr));
-	grid-template-areas:
-	"s s s s s c c c c y y y"
-	"z z z w w w w f f f f f"
-	"p p p p p p p o o o o o";
-}
-#street-filter {
-	grid-area: s;
-}
-#city-filter {
-	grid-area: c;
-}
-#state-filter {
-	grid-area: y;
-}
-#zip-filter{
-	grid-area: z;
-}
-#cost-filter {
-	grid-area: w;
-}
-#size-filter {
-	grid-area: f;
-}
-#permitdata-filter {
-	grid-area: p;
-}
-#apply-btn {
-	grid-area: o;
-	margin-top: 2rem;
-	margin-left: .5rem;
-}
-
-#apply-btn > button {
-	padding-left: .3rem;
-	padding-right: .3rem;
 }
