@@ -20,25 +20,23 @@ export const permitContext = createContext(null);
 function App() {
   return (
     <ApolloProvider client={client}>
-      <div className="App container-fluid">
-        <Router>
-          <Switch>
-            <Route path="/stats">
-              <Stats />
-            </Route>
-            <Route path="/annotate">
-              <permitContext.Provider value={{ readonly: false }}>
-                <Permits />
-              </permitContext.Provider>
-            </Route>
-            <Route path="/">
-              <permitContext.Provider value={{ readonly: true }}>
-                <Permits />
-              </permitContext.Provider>
-            </Route>
-          </Switch>
-        </Router>
-      </div>
+      <Router>
+        <Switch>
+          <Route path="/stats">
+            <Stats />
+          </Route>
+          <Route path="/annotate">
+            <permitContext.Provider value={{ readonly: false }}>
+              <Permits />
+            </permitContext.Provider>
+          </Route>
+          <Route path="/">
+            <permitContext.Provider value={{ readonly: true }}>
+              <Permits />
+            </permitContext.Provider>
+          </Route>
+        </Switch>
+      </Router>
     </ApolloProvider>
   );
 }

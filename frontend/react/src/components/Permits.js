@@ -93,26 +93,27 @@ function Permits() {
 
   return (
     <>
-      <h1>Construction sites</h1>
-      <h3>Permits: 2017 - 2019</h3>
-      <PermitsFilter setFilterVars={setFilterVars} getJsonFile={getJsonFile} />
-      {data && <p>Filter returned {data.permits.totalCount} results</p>}
-      <CurlModal
-        query={JSON.stringify(print(PERMITS_QUERY))}
-        variables={JSON.stringify(filterVars)}
-      />
-
-      <div
-        id="home"
-        className="container-fluid"
-        style={{ minHeight: "1000px", position: "relative" }}
-      >
-        {data &&
-          data.permits.edges.map((p) => (
-            <PermitBox key={p.node.id} permit={p.node} />
-          ))}
+      <div className="site">
+        <div className="sidebar">
+          <PermitsFilter
+            setFilterVars={setFilterVars}
+            getJsonFile={getJsonFile}
+          />
+        </div>
+        <div id="main" className="container-fluid">
+          <h1>Construction sites</h1>
+          <h3>Permits: 2017 - 2019</h3>
+          {data && <p>Filter returned {data.permits.totalCount} results</p>}
+          <CurlModal
+            query={JSON.stringify(print(PERMITS_QUERY))}
+            variables={JSON.stringify(filterVars)}
+          />
+          {data &&
+            data.permits.edges.map((p) => (
+              <PermitBox key={p.node.id} permit={p.node} />
+            ))}
+        </div>
       </div>
-
       <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>
       <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js"></script>
     </>
