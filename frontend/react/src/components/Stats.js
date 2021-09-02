@@ -1,5 +1,7 @@
 import { useQuery, gql } from "@apollo/client";
 import SourceStats from "./SourceStats.js";
+
+import "./Stats.css";
 const SOURCES_QUERY = gql`
   query GetAllSources {
     sources {
@@ -20,11 +22,9 @@ function Stats() {
   return (
     <>
       <h1 className="text-center">Source Statistics</h1>
-      <div className="row">
+      <div className="stats-container">
         {data.sources.nodes.map((n) => (
-          <div className="col-md-4">
-            <SourceStats source={n} />
-          </div>
+          <SourceStats source={n} />
         ))}
       </div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
