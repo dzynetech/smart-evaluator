@@ -1,13 +1,14 @@
 {
-    "filename": "boston2017_19.csv",
-    "dataset_name": "bostondata",
-    "cost_col": 6,
-    "sqft_col": 13,
-    "street_number_col": 18,
-    "street_col": 19,
-    "city_col": 22,
-    "state_col": 23,
-    "zip_col": 25,
-    "latitude_col": 16,
-    "longitude_col": 17
+  "filename": "boston2017_19.csv",
+  "dataset_name": "bostondata",
+  "cost_col": 6,
+  "sqft_col": 13,
+  "street_number_col": 18,
+  "street_col": 19,
+  "city_col": 22,
+  "state_col": 23,
+  "zip_col": 25,
+  "latitude_col": 16,
+  "longitude_col": 17,
+  "issue_date_col": 8
 }

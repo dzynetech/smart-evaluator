@@ -1,12 +1,13 @@
 {
-    "filename": "Permits_2017_2019_Dallas_TX.csv",
-    "dataset_name": "dallas",
-    "cost_col": 7,
-    "sqft_col": 8,
-    "street_col": 3,
-    "city_col": 17,
-    "state_col": 18,
-    "zip_col": 20,
-    "latitude_col": 11,
-    "longitude_col": 12
+  "filename": "Permits_2017_2019_Dallas_TX.csv",
+  "dataset_name": "dallas",
+  "cost_col": 7,
+  "sqft_col": 8,
+  "street_col": 3,
+  "city_col": 17,
+  "state_col": 18,
+  "zip_col": 20,
+  "latitude_col": 11,
+  "longitude_col": 12,
+  "issue_date_col": 2
 }
