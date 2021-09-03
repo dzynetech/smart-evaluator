@@ -16,7 +16,6 @@ function PermitNote(props) {
   const [updateNote, { data, loading, error }] = useMutation(UPDATE_NOTE);
   const { readonly } = useContext(permitContext);
   const [firstRender, setFirstRender] = useState(true);
-  console.log(readonly);
   useEffect(() => {
     if (firstRender) {
       setFirstRender(false);
