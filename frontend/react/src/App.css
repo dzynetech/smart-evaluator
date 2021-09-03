@@ -21,9 +21,6 @@ a:visited {
 a:hover {
   color: #9999FF;
 }
-.btn{
-	margin: 2px;
-}
 
 .site {
 	display:grid;

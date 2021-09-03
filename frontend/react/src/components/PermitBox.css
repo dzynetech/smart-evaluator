@@ -1,6 +1,11 @@
 td  {
 	padding: 0px;
 }
+
+.btn{
+	margin: 2px;
+}
+
 .f18 {
 	font-size: 18px;
 }

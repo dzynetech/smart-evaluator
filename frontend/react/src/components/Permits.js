@@ -124,7 +124,9 @@ function Permits() {
           {data && (
             <p>
               Showing results {(page - 1) * permitsPerPage + 1} -
-              {" " + Math.min(page * permitsPerPage, data.permits.totalCount)}{" "}
+              {" " +
+                Math.min(page * permitsPerPage, data.permits.totalCount) +
+                " "}
               of {data.permits.totalCount}
             </p>
           )}
