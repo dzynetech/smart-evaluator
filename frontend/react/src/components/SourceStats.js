@@ -102,16 +102,20 @@ function SourceStats(props) {
       <div className="statBox">
         <h2 className="text-center">{props.source.name}</h2>
         <div className="row">
-          <div className="col-4">
-            <p>Permits: {total.data.permits.totalCount}</p>
-            <p>Unclassified: {unclassified.data.permits.totalCount}</p>
-            <p>Construction: {construction.data.permits.totalCount}</p>
-            <p>Not Construction: {not_construction.data.permits.totalCount}</p>
-            <p>
-              Possible Construction:{" "}
-              {possible_construction.data.permits.totalCount}
-            </p>
-            <p>Duplicate: {duplicate.data.permits.totalCount}</p>
+          <div className="col-4 stat-data">
+            <b>Permits:</b> {total.data.permits.totalCount}
+            <br />
+            <b>Unclassified:</b> {unclassified.data.permits.totalCount}
+            <br />
+            <b>Construction:</b> {construction.data.permits.totalCount}
+            <br />
+            <b>Not Construction:</b> {not_construction.data.permits.totalCount}
+            <br />
+            <b>Possible Construction:</b>
+            {possible_construction.data.permits.totalCount}
+            <br />
+            <b>Duplicate:</b> {duplicate.data.permits.totalCount}
+            <br />
           </div>
           <div className="col-8">
             <Pie className="chart" data={state} />

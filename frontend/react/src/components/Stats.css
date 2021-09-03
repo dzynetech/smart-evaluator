@@ -9,6 +9,7 @@
 	display:flex;
 	flex-wrap: wrap;
 	margin: 1rem;
+	gap: .5rem;
 }
 
 .chart {
@@ -18,4 +19,7 @@
 .statBox > p {
 	margin-block-start: .25rem;
 	margin-block-end: .25rem;
+}
+.stat-data{
+	margin-top: 4rem;
 }
