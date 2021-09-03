@@ -110,17 +110,13 @@ function Permits() {
     <>
       <div className="site">
         <div className="sidebar">
-          <PermitsFilter
-            setFilterVars={setFilterVars}
-            getJsonFile={getJsonFile}
-          />
-          <div
-            id="map"
-            style={{
-              height: 300,
-              width: "100%",
-            }}
-          ></div>
+          <div className="filter">
+            <PermitsFilter
+              setFilterVars={setFilterVars}
+              getJsonFile={getJsonFile}
+            />
+          </div>
+          <div id="map"></div>
         </div>
         <div id="main" className="container-fluid">
           <h1>Construction sites</h1>
