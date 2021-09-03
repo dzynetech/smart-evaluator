@@ -39,7 +39,12 @@ function StateDropdown(props) {
       }}
     >
       <option value="">All</option>
-      {states && states.map((state) => <option value={state}>{state}</option>)}
+      {states &&
+        states.map((state) => (
+          <option key={state} value={state}>
+            {state}
+          </option>
+        ))}
     </select>
   );
 }

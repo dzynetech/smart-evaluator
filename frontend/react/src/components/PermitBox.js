@@ -41,28 +41,30 @@ function PermitBox(props) {
           </div>
           <div className="permit-info">
             <table>
-              <tr>
-                <td>Cost: </td>
-                <td>
-                  <b className="f18">${props.permit.cost.toLocaleString()}</b>
-                </td>
-              </tr>
-              <tr>
-                <td>Sqft: </td>
-                <td>
-                  <b className="f18">{props.permit.sqft.toLocaleString()}</b>
-                </td>
-              </tr>
-              <tr>
-                <td>Permit Date:&nbsp;&nbsp;&nbsp;</td>
-                <td>{props.permit.issueDate}</td>
-              </tr>
-              <tr>
-                <td>Lat/Long:</td>
-                <td>
-                  ({props.permit.location.y},{props.permit.location.x})
-                </td>
-              </tr>
+              <tbody>
+                <tr>
+                  <td>Cost: </td>
+                  <td>
+                    <b className="f18">${props.permit.cost.toLocaleString()}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Sqft: </td>
+                  <td>
+                    <b className="f18">{props.permit.sqft.toLocaleString()}</b>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Permit Date:&nbsp;&nbsp;&nbsp;</td>
+                  <td>{props.permit.issueDate}</td>
+                </tr>
+                <tr>
+                  <td>Lat/Long:</td>
+                  <td>
+                    ({props.permit.location.y},{props.permit.location.x})
+                  </td>
+                </tr>
+              </tbody>
             </table>
           </div>
           <div className="permit-actions">
@@ -80,7 +82,7 @@ function PermitBox(props) {
           <div className="permit-sidebar text-center">
             <br />
             <h3>
-              <i class="bi bi-geo-alt"></i>
+              <i className="bi bi-geo-alt"></i>
             </h3>
             <br />
             {["2016", "2017", "2018", "2019", "2020", "2021"].map((y) => (

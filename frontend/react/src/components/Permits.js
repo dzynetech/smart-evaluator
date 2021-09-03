@@ -1,7 +1,7 @@
 import { useLazyQuery, gql } from "@apollo/client";
 import React, { useState, useEffect } from "react";
 import { print } from "graphql/language/printer";
-
+import Leaflet from "leaflet";
 import PermitsFilter from "./PermitsFilter.js";
 import PermitBox from "./PermitBox.js";
 import CurlModal from "./CurlModal";
@@ -97,7 +97,9 @@ function Permits() {
     if (error) console.log(error);
   }, [filterVars, page]);
 
-  useMap("map", {});
+  const map = useMap("map", {}, {});
+
+  // Leaflet.marker([51.5, -0.09]).addTo(map);
 
   function getJsonFile() {
     var queryResponseJSON = JSON.stringify(data);

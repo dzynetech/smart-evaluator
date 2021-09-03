@@ -2,7 +2,7 @@ function FilterPagination(props) {
   const numPages = Math.ceil(props.total / props.permitsPerPage);
 
   const prevDisabled = props.page === 1;
-  const nextDisabled = props.page === numPages || props.total == 0;
+  const nextDisabled = props.page === numPages || props.total === 0;
 
   return (
     <nav>

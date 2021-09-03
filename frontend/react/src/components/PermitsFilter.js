@@ -70,7 +70,7 @@ function PermitsFilter(props) {
         </div>
       </div>
       <h5>Filter By:</h5>
-      <form onSubmit={setFilter} class="filter-form">
+      <form onSubmit={setFilter} className="filter-form">
         <div id="classification-filter">
           <label className="my-1 mr-2" htmlFor="classification_filter">
             Classification:
