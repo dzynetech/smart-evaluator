@@ -44,7 +44,7 @@ a:hover {
 	padding: 2rem;
 }
 
-.map {
+#map {
 	height: 100%;
 	width: 100%;
 }
