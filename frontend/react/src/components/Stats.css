@@ -1,0 +1,25 @@
+.statBox{
+	border:solid lightsteelblue 5px;
+	border-radius:6px;
+	padding: 10px;
+	-moz-border-radius:6px;
+}
+
+.stats-container {
+	display:flex;
+	flex-wrap: wrap;
+	margin: 1rem;
+	gap: .5rem;
+}
+
+.chart {
+	max-width: 20rem;
+}
+
+.statBox > p {
+	margin-block-start: .25rem;
+	margin-block-end: .25rem;
+}
+.stat-data{
+	margin-top: 4rem;
+}

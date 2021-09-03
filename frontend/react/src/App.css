@@ -25,13 +25,6 @@ a:hover {
 	margin: 2px;
 }
 
-.statBox{
-	border:solid lightsteelblue 5px;
-	border-radius:6px;
-	padding: 10px;
-	-moz-border-radius:6px;
-}
-
 .site {
 	display:grid;
 	grid-gap: 1rem;
