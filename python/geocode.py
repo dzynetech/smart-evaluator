@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 import os
+import sys
 import psycopg2
 from geocodio import GeocodioClient, client
 import json
@@ -99,8 +100,9 @@ def geocode_permit(geocode_client):
     return True
 
 
-def on_container_stop():
+def on_container_stop(*args):
     connection.close()
+    sys.exit(0)
 
 
 signal.signal(signal.SIGTERM, on_container_stop)
