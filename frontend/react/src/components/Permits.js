@@ -1,91 +1,24 @@
-import { useLazyQuery, gql } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import React, { useState, useEffect } from "react";
 import { print } from "graphql/language/printer";
-import Leaflet from "leaflet";
+import Leaflet, { marker } from "leaflet";
 import PermitsFilter from "./PermitsFilter.js";
 import PermitBox from "./PermitBox.js";
 import CurlModal from "./CurlModal";
 import FilterPagination from "./FilterPagination";
 import useMap from "./dzyne_components/hooks/useMap";
-const PERMITS_QUERY = gql`
-  query MyQuery(
-    $order: [PermitsOrderBy!]
-    $classification: ClassificationFilter
-    $min_sqft: Float
-    $min_cost: Float
-    $city: String
-    $street: String
-    $state: String
-    $zip: String
-    $permitData: String
-    $numPerPage: Int
-    $offset: Int
-  ) {
-    permits(
-      first: $numPerPage
-      offset: $offset
-      orderBy: $order
-      filter: {
-        and: {
-          imageUrl: { isNull: false }
-          sqft: { greaterThanOrEqualTo: $min_sqft }
-          cost: { greaterThanOrEqualTo: $min_cost }
-          classification: $classification
-          # sourceId
-          city: { includesInsensitive: $city }
-          street: { includesInsensitive: $street }
-          state: { includesInsensitive: $state }
-          zip: { includesInsensitive: $zip }
-          permitData: { includesInsensitive: $permitData }
-          hasLocation: { equalTo: true }
-          and: {
-            or: [
-              { permitData: { includes: "COMOTH" } }
-              { permitData: { includes: "COMRET" } }
-              { permitData: { includes: "Commercial" } }
-              { permitData: { includes: "New Construction" } }
-              { permitData: { includes: "NEWCON" } }
-              { permitData: { includes: "ERECT" } }
-            ]
-          }
-        }
-      }
-    ) {
-      edges {
-        node {
-          id
-          cost
-          city
-          sqft
-          state
-          street
-          streetNumber
-          source {
-            name
-          }
-          location {
-            x
-            y
-          }
-          zip
-          permitData
-          classification
-          issueDate
-          notes
-        }
-      }
-      totalCount
-    }
-  }
-`;
+
+import PERMITS_QUERY from "../queries/PermitsQuery";
+import { computeMarkers } from "../utils/LocationGrouping";
 
 function Permits() {
   const [filterVars, setFilterVars] = useState({});
   const [page, setPage] = useState(1);
+  const [locations, setLocations] = useState([]);
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
-
+  console.log(data);
   const permitsPerPage = 20;
 
   useEffect(() => {
@@ -97,21 +30,54 @@ function Permits() {
     if (error) console.log(error);
   }, [filterVars, page]);
 
-  const map = useMap("map", {}, {}, (map) => {
-    console.log(map);
+  window.locs = [];
+  function onZoomUpdate() {
+    const zoom = map.getZoom();
+    const lat = map.getCenter().lat;
+    const markerLocations = computeMarkers(zoom, lat, window.locs);
+    //remove old markers
+    for (let layer in map._layers) {
+      const l = map._layers[layer];
+      if (l instanceof Leaflet.CircleMarker) {
+        map.removeLayer(l);
+      }
+    }
+    for (let m of markerLocations) {
+      const marker = Leaflet.circleMarker([m.y, m.x], {
+        radius: m.r,
+      });
+      marker.bindTooltip(JSON.stringify(m.ids), {
+        // permanent: true,
+        direction: "right",
+      });
+      marker.addTo(map);
+    }
+  }
 
-    const layer = Object.values(map._layers)[0];
-    // layer.on("tileload", (event) => {
-    // console.log(event);
-    // });
+  const map = useMap("map", {}, {}, (map) => {
+    map.on("zoomend", onZoomUpdate);
   });
+
+  useEffect(() => {
+    if (data) {
+      var locs = [];
+      data.permits.edges.forEach((p) => {
+        locs.push({
+          id: p.node.id,
+          x: p.node.location.x,
+          y: p.node.location.y,
+        });
+      });
+      window.locs = locs;
+    }
+  }, [data]);
 
   useEffect(() => {
     if (data && map) {
       var bounds = [];
       data.permits.edges.forEach((p) => {
         const loc = [p.node.location.y, p.node.location.x];
-        const marker = Leaflet.circleMarker(loc);
+        const marker = Leaflet.circleMarker(loc, { radius: 10 });
         marker.addTo(map);
         bounds.push(loc);
       });
