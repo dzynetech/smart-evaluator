@@ -39,7 +39,7 @@ export function computeMarkers(zoom, lat, locations) {
     var thisMarkerLocs = [location];
     for (var i = 0; i < locations.length; i++) {
       if (
-        !doneIds.includes(i) &&
+        !doneIds.includes(locations[i].id) &&
         location.id != locations[i].id &&
         haversineDistance(
           location.y,
