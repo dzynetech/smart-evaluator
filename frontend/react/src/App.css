@@ -38,6 +38,9 @@ a:hover {
 	width: var(--sidebar-width);
 	height: 100%;
 	background-color: lightsteelblue;
+	display:grid;
+	grid-gap: 1rem;
+	grid-template-rows: auto minmax(0,1fr) ;
 }
 
 .filter {

@@ -97,9 +97,27 @@ function Permits() {
     if (error) console.log(error);
   }, [filterVars, page]);
 
-  const map = useMap("map", {}, {});
+  const map = useMap("map", {}, {}, (map) => {
+    console.log(map);
 
-  // Leaflet.marker([51.5, -0.09]).addTo(map);
+    const layer = Object.values(map._layers)[0];
+    // layer.on("tileload", (event) => {
+    // console.log(event);
+    // });
+  });
+
+  useEffect(() => {
+    if (data && map) {
+      var bounds = [];
+      data.permits.edges.forEach((p) => {
+        const loc = [p.node.location.y, p.node.location.x];
+        const marker = Leaflet.circleMarker(loc);
+        marker.addTo(map);
+        bounds.push(loc);
+      });
+      map.fitBounds(bounds);
+    }
+  }, [data]);
 
   function getJsonFile() {
     var queryResponseJSON = JSON.stringify(data);
