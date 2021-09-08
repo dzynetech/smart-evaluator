@@ -87,6 +87,7 @@ function Permits() {
   });
 
   const permitsPerPage = 20;
+  var locs = [];
 
   useEffect(() => {
     var queryVars = {};
@@ -98,20 +99,28 @@ function Permits() {
   }, [filterVars, page]);
 
   const map = useMap("map", {}, {}, (map) => {
-    console.log(map);
-
-    const layer = Object.values(map._layers)[0];
-    // layer.on("tileload", (event) => {
-    // console.log(event);
-    // });
+    map.on("zoomend", () => {
+      const zoom = map.getZoom();
+      const metresPerPixel =
+        (40075016.686 *
+          Math.abs(Math.cos((map.getCenter().lat * Math.PI) / 180))) /
+        Math.pow(2, map.getZoom() + 8);
+      console.log(metresPerPixel);
+    });
   });
 
   useEffect(() => {
+    if (data) {
+      data.permits.edges.forEach((p) => {
+        locs.push({ x: p.node.location.x, y: p.node.location.y });
+      });
+      console.log(locs);
+    }
     if (data && map) {
       var bounds = [];
       data.permits.edges.forEach((p) => {
         const loc = [p.node.location.y, p.node.location.x];
-        const marker = Leaflet.circleMarker(loc);
+        const marker = Leaflet.circleMarker(loc, { radius: 10 });
         marker.addTo(map);
         bounds.push(loc);
       });
