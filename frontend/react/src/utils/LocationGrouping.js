@@ -36,7 +36,7 @@ export function computeMarkers(zoom, lat, locations) {
       continue;
     }
     doneIds.push(location.id);
-    var thisMarkerIds = [location.id];
+    var thisMarkerLocs = [location];
     for (var i = 0; i < locations.length; i++) {
       if (
         !doneIds.includes(i) &&
@@ -50,15 +50,21 @@ export function computeMarkers(zoom, lat, locations) {
       ) {
         //combine these two
         doneIds.push(locations[i].id);
-        thisMarkerIds.push(locations[i].id);
+        thisMarkerLocs.push(locations[i]);
       }
     }
-    //TODO: take the avg point for the marker location
+    //take the avg point for the marker location
+    const avgX =
+      thisMarkerLocs.reduce((prev, curr) => prev + curr.x, 0) /
+      thisMarkerLocs.length;
+    const avgY =
+      thisMarkerLocs.reduce((prev, curr) => prev + curr.y, 0) /
+      thisMarkerLocs.length;
     let marker = {
-      x: location.x,
-      y: location.y,
-      r: 10 + 3 * thisMarkerIds.length,
-      ids: thisMarkerIds,
+      x: avgX,
+      y: avgY,
+      r: 8 + 2 * thisMarkerLocs.length,
+      ids: thisMarkerLocs.map((x) => x.id),
     };
     markers.push(marker);
   }

@@ -46,6 +46,10 @@ function Permits() {
       const marker = Leaflet.circleMarker([m.y, m.x], {
         radius: m.r,
       });
+      marker.bindTooltip(JSON.stringify(m.ids), {
+        // permanent: true,
+        direction: "right",
+      });
       marker.addTo(map);
     }
   }
