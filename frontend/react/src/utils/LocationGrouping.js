@@ -1,3 +1,5 @@
+import Leaflet from "leaflet";
+
 function metersPerPixel(zoom, lat) {
   return (
     (40075016.686 * Math.abs(Math.cos((lat * Math.PI) / 180))) /
@@ -40,7 +42,7 @@ export function computeMarkers(zoom, lat, locations) {
     for (var i = 0; i < locations.length; i++) {
       if (
         !doneIds.includes(locations[i].id) &&
-        location.id != locations[i].id &&
+        location.id !== locations[i].id &&
         haversineDistance(
           location.y,
           location.x,
@@ -63,7 +65,7 @@ export function computeMarkers(zoom, lat, locations) {
     let marker = {
       x: avgX,
       y: avgY,
-      r: 8 + 2 * thisMarkerLocs.length,
+      r: 12 + 2 * thisMarkerLocs.length,
       ids: thisMarkerLocs.map((x) => x.id),
     };
     markers.push(marker);
@@ -71,4 +73,26 @@ export function computeMarkers(zoom, lat, locations) {
   console.log(markers);
   return markers;
   //return  array of: {x: y: r: ids:[]}
+}
+
+export function circleWithText(latLng, txt, radius, borderWidth) {
+  var size = radius * 2;
+  var style =
+    'style="width: ' +
+    size +
+    "px; height: " +
+    size +
+    "px; border-width: " +
+    borderWidth +
+    'px;"';
+  var iconSize = size + borderWidth * 2;
+  var icon = Leaflet.divIcon({
+    html: '<span class="' + "circle " + '" ' + style + ">" + txt + "</span>",
+    className: "",
+    iconSize: [iconSize, iconSize],
+  });
+  var marker = Leaflet.marker(latLng, {
+    icon: icon,
+  });
+  return marker;
 }

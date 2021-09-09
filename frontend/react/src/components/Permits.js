@@ -1,7 +1,7 @@
 import { useLazyQuery } from "@apollo/client";
 import React, { useState, useEffect } from "react";
 import { print } from "graphql/language/printer";
-import Leaflet, { marker } from "leaflet";
+import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PermitsFilter from "./PermitsFilter.js";
 import PermitBox from "./PermitBox.js";
 import CurlModal from "./CurlModal";
@@ -9,17 +9,17 @@ import FilterPagination from "./FilterPagination";
 import useMap from "./dzyne_components/hooks/useMap";
 
 import PERMITS_QUERY from "../queries/PermitsQuery";
-import { computeMarkers } from "../utils/LocationGrouping";
+import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 
 function Permits() {
   const [filterVars, setFilterVars] = useState({});
   const [page, setPage] = useState(1);
-  const [locations, setLocations] = useState([]);
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
-  console.log(data);
+
   const permitsPerPage = 20;
+  window.locs = [];
 
   useEffect(() => {
     var queryVars = {};
@@ -30,22 +30,19 @@ function Permits() {
     if (error) console.log(error);
   }, [filterVars, page]);
 
-  window.locs = [];
-  function onZoomUpdate() {
+  function updateMarkers() {
     const zoom = map.getZoom();
     const lat = map.getCenter().lat;
     const markerLocations = computeMarkers(zoom, lat, window.locs);
     //remove old markers
     for (let layer in map._layers) {
       const l = map._layers[layer];
-      if (l instanceof Leaflet.CircleMarker) {
+      if (l instanceof Leaflet.Marker) {
         map.removeLayer(l);
       }
     }
     for (let m of markerLocations) {
-      const marker = Leaflet.circleMarker([m.y, m.x], {
-        radius: m.r,
-      });
+      const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2);
       marker.bindTooltip(JSON.stringify(m.ids), {
         // permanent: true,
         direction: "right",
@@ -55,7 +52,7 @@ function Permits() {
   }
 
   const map = useMap("map", {}, {}, (map) => {
-    map.on("zoomend", onZoomUpdate);
+    map.on("zoomend", updateMarkers);
   });
 
   useEffect(() => {
@@ -74,14 +71,12 @@ function Permits() {
 
   useEffect(() => {
     if (data && map) {
-      var bounds = [];
-      data.permits.edges.forEach((p) => {
-        const loc = [p.node.location.y, p.node.location.x];
-        const marker = Leaflet.circleMarker(loc, { radius: 10 });
-        marker.addTo(map);
-        bounds.push(loc);
-      });
+      var bounds = data.permits.edges.map((p) => [
+        p.node.location.y,
+        p.node.location.x,
+      ]);
       map.fitBounds(bounds);
+      updateMarkers();
     }
   }, [data]);
 
