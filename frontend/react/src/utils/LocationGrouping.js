@@ -62,15 +62,21 @@ export function computeMarkers(zoom, lat, locations) {
     const avgY =
       thisMarkerLocs.reduce((prev, curr) => prev + curr.y, 0) /
       thisMarkerLocs.length;
+    // get the size of the circle by computing furthest locations
+    const minY = thisMarkerLocs.reduce((prev,curr)=> Math.min(prev,curr.y),thisMarkerLocs[0].y);
+    const minX = thisMarkerLocs.reduce((prev,curr)=> Math.min(prev,curr.x),thisMarkerLocs[0].x);
+    const maxY= thisMarkerLocs.reduce((prev,curr)=> Math.max(prev,curr.y),thisMarkerLocs[0].y);
+    const maxX = thisMarkerLocs.reduce((prev,curr)=> Math.max(prev,curr.x),thisMarkerLocs[0].x);
+    const dist = haversineDistance(minY,minX,maxY,maxX);
+    const diameter = (1/ metersPerPixel(zoom,lat)) * dist;
     let marker = {
       x: avgX,
       y: avgY,
-      r: 12 + 2 * thisMarkerLocs.length,
+      r: Math.max(diameter/2,12),
       ids: thisMarkerLocs.map((x) => x.id),
     };
     markers.push(marker);
   }
-  console.log(markers);
   return markers;
   //return  array of: {x: y: r: ids:[]}
 }
