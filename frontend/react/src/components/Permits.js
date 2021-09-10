@@ -75,7 +75,9 @@ function Permits() {
         p.node.location.y,
         p.node.location.x,
       ]);
-      map.fitBounds(bounds);
+      if (bounds.length > 0) {
+        map.fitBounds(bounds);
+      }
       updateMarkers();
     }
   }, [data]);
