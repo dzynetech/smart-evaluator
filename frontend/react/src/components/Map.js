@@ -1,4 +1,9 @@
-import React, { useState, useEffect } from "react";
+import React, {
+  useState,
+  useEffect,
+  forwardRef,
+  useImperativeHandle,
+} from "react";
 import useMap from "./dzyne_components/hooks/useMap";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PERMITS_QUERY from "../queries/PermitsQuery";
@@ -8,12 +13,22 @@ import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 
 window.locs = [];
 
-function Map(props) {
+const Map = forwardRef((props, ref) => {
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
 
   if (error) console.log(error);
+
+  useImperativeHandle(ref, () => ({
+    zoomToPermit() {
+      //this -> calling JSX component
+      const loc = [this.permit.location.y, this.permit.location.x];
+      map.flyTo(loc, 15, {
+        duration: 0.6,
+      });
+    },
+  }));
 
   function updateMarkers() {
     const zoom = map.getZoom();
@@ -48,13 +63,11 @@ function Map(props) {
     Object.assign(queryVars, props.filterVars);
     queryVars.numPerPage = 9999;
     queryVars.offset = 0;
-    console.log(queryVars);
     getPermits({ variables: queryVars });
   }, [props.filterVars]);
 
   useEffect(() => {
     if (data) {
-      console.log(data);
       var locs = [];
       data.permits.edges.forEach((p) => {
         locs.push({
@@ -81,6 +94,6 @@ function Map(props) {
   }, [data]);
 
   return <div id="map"></div>;
-}
+});
 
 export default Map;

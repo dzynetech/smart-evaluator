@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { print } from "graphql/language/printer";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PermitsFilter from "./PermitsFilter.js";
@@ -27,7 +27,6 @@ function Permits() {
     Object.assign(queryVars, filterVars);
     queryVars.numPerPage = permitsPerPage;
     queryVars.offset = permitsPerPage * (page - 1);
-    console.log(queryVars);
     getPermits({ variables: queryVars });
   }, [filterVars, page]);
 
@@ -37,6 +36,8 @@ function Permits() {
     var url = window.URL.createObjectURL(d);
     window.location.href = url;
   }
+
+  const mapRef = useRef();
 
   return (
     <>
@@ -48,7 +49,7 @@ function Permits() {
               getJsonFile={getJsonFile}
             />
           </div>
-          <Map filterVars={filterVars} />
+          <Map ref={mapRef} filterVars={filterVars} />
         </div>
         <div id="main" className="container-fluid">
           <h1>Construction sites</h1>
@@ -76,7 +77,11 @@ function Permits() {
           />
           {data &&
             data.permits.edges.map((p) => (
-              <PermitBox key={p.node.id} permit={p.node} />
+              <PermitBox
+                key={p.node.id}
+                permit={p.node}
+                zoomToPermit={mapRef.current.zoomToPermit}
+              />
             ))}
           {data && (
             <FilterPagination

@@ -81,7 +81,11 @@ function PermitBox(props) {
           </div>
           <div className="permit-sidebar text-center">
             <br />
-            <h3>
+            <h3
+              onClick={() => {
+                props.zoomToPermit();
+              }}
+            >
               <i className="bi bi-geo-alt"></i>
             </h3>
             <br />
