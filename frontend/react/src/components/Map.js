@@ -24,7 +24,7 @@ const Map = forwardRef((props, ref) => {
     zoomToPermit() {
       //this -> calling JSX component
       const loc = [this.permit.location.y, this.permit.location.x];
-      map.flyTo(loc, 15, {
+      map.flyTo(loc, 17, {
         duration: 0.6,
       });
     },

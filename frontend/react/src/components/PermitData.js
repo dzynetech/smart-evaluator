@@ -1,29 +1,10 @@
 import React from "react";
+import ignoredPermitData from "../utils/IgnoredPermitData.js";
 
 function PermitDataTable(props) {
   function CleanPermitData(json_data) {
     var data = JSON.parse(json_data);
-    let unneeded = [
-      "Accuracy Score",
-      "Accuracy Type",
-      "Bldg Sqft",
-      "City",
-      "County",
-      "Country",
-      "Estimated Construction Cost",
-      "Issue Date",
-      "Latitude",
-      "Longitude",
-      "Number",
-      "Site Location",
-      "Source",
-      "State",
-      "Street",
-      "Unit Type",
-      "Unit Number",
-      "Zip",
-    ];
-    unneeded.forEach((x) => {
+    ignoredPermitData.forEach((x) => {
       delete data[x];
     });
     return data;
