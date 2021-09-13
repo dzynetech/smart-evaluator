@@ -40,7 +40,6 @@ function Permits() {
   }, [data]);
 
   useEffect(() => {
-    console.log(prevActivePermit);
     const permitDiv = document.getElementById(activePermit?.id);
     document.getElementById(prevActivePermit?.id)?.classList.remove("selected");
     permitDiv?.classList.add("selected");
@@ -53,7 +52,7 @@ function Permits() {
     if (activePermit) {
       mapRef.current.zoomTo(activePermit.location);
     }
-    console.log(activePermit);
+    window.activePermit = activePermit;
   }, [activePermit]);
 
   function getJsonFile() {
@@ -75,7 +74,11 @@ function Permits() {
               getJsonFile={getJsonFile}
             />
           </div>
-          <Map ref={mapRef} filterVars={filterVars} />
+          <Map
+            ref={mapRef}
+            filterVars={filterVars}
+            activePermit={activePermit}
+          />
         </div>
         <div id="main" className="container-fluid">
           <h1>Construction sites</h1>

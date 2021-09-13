@@ -52,16 +52,22 @@ a:hover {
 	width: 100%;
 }
 
- .circle {
-    display: table-cell;
-    text-align: center;
-    vertical-align: middle;
-    border-radius: 50%;
+.circle {
+	display: table-cell;
+	text-align: center;
+	vertical-align: middle;
+	border-radius: 50%;
 	border-width: 2px;
-    border-style: solid;
-    font-size: 16px;
-    font-weight: bold;
-    background: rgba(0, 57, 128, 0.2);
-    border-color: #3388FF;
-    color: #405c78
-  }
+	border-style: solid;
+	font-size: 16px;
+	font-weight: bold;
+	background: rgba(0, 57, 128, 0.2);
+	border-color: #3388FF;
+	color: #405c78
+}
+
+.activeMarker {
+	border-color: #062046;
+	border-style: dashed !important;
+	box-shadow: 5px 5px 5px;
+}

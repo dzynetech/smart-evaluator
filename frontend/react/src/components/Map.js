@@ -32,7 +32,12 @@ const Map = forwardRef((props, ref) => {
   function updateMarkers() {
     const zoom = map.getZoom();
     const lat = map.getCenter().lat;
-    const markerLocations = computeMarkers(zoom, lat, window.locs);
+    const markerLocations = computeMarkers(
+      zoom,
+      lat,
+      window.locs,
+      window.activePermit
+    );
     //remove old markers
     for (let layer in map._layers) {
       const l = map._layers[layer];
@@ -41,7 +46,7 @@ const Map = forwardRef((props, ref) => {
       }
     }
     for (let m of markerLocations) {
-      const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2);
+      const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2, m.active);
       marker.bindTooltip(JSON.stringify(m.ids), {
         // permanent: true,
         direction: "right",
