@@ -64,5 +64,6 @@ td  {
 }
 
 .selected {
-	box-shadow: 5px 5px;
+	border-style: dashed !important;
+	box-shadow: 5px 5px 5px;
 }

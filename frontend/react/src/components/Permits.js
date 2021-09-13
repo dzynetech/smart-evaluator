@@ -35,7 +35,7 @@ function Permits() {
   useEffect(() => {
     if (data) {
       setPrevActivePermit(activePermit);
-      setActivePermit(data.permits.edges[0].node);
+      setActivePermit(data.permits.edges[0]?.node);
     }
   }, [data]);
 
@@ -45,7 +45,7 @@ function Permits() {
     document.getElementById(prevActivePermit?.id)?.classList.remove("selected");
     permitDiv?.classList.add("selected");
     permitDiv?.scrollIntoView({
-      behavior: "auto",
+      behavior: "smooth",
       block: "center",
       inline: "center",
     });
