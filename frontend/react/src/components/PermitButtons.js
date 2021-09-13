@@ -22,6 +22,7 @@ function PermitButtons(props) {
   const { readonly } = useContext(permitContext);
 
   async function classify(classification) {
+    props.setActivePermit(props.nextPermit);
     classifyPermit({
       variables: {
         id: props.permit.id,

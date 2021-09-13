@@ -13,6 +13,8 @@ import PERMITS_QUERY from "../queries/PermitsQuery";
 function Permits() {
   const [filterVars, setFilterVars] = useState({});
   const [page, setPage] = useState(1);
+  const [activePermit, setActivePermit] = useState(null);
+  const [prevActivePermit, setPrevActivePermit] = useState(null);
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
@@ -29,6 +31,30 @@ function Permits() {
     queryVars.offset = permitsPerPage * (page - 1);
     getPermits({ variables: queryVars });
   }, [filterVars, page]);
+
+  useEffect(() => {
+    if (data) {
+      setPrevActivePermit(activePermit);
+      setActivePermit(data.permits.edges[0].node);
+    }
+  }, [data]);
+
+  useEffect(() => {
+    console.log(prevActivePermit);
+    const permitDiv = document.getElementById(activePermit?.id);
+    document.getElementById(prevActivePermit?.id)?.classList.remove("selected");
+    permitDiv?.classList.add("selected");
+    permitDiv?.scrollIntoView({
+      behavior: "auto",
+      block: "center",
+      inline: "center",
+    });
+    setPrevActivePermit(activePermit);
+    if (activePermit) {
+      mapRef.current.zoomTo(activePermit.location);
+    }
+    console.log(activePermit);
+  }, [activePermit]);
 
   function getJsonFile() {
     var queryResponseJSON = JSON.stringify(data);
@@ -76,11 +102,13 @@ function Permits() {
             variables={JSON.stringify(filterVars)}
           />
           {data &&
-            data.permits.edges.map((p) => (
+            data.permits.edges.map((p, i, permits) => (
               <PermitBox
                 key={p.node.id}
                 permit={p.node}
-                zoomToPermit={mapRef.current.zoomToPermit}
+                zoomTo={mapRef.current.zoomTo}
+                nextPermit={permits[i + 1]?.node}
+                setActivePermit={setActivePermit}
               />
             ))}
           {data && (

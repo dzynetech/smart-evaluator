@@ -21,10 +21,9 @@ const Map = forwardRef((props, ref) => {
   if (error) console.log(error);
 
   useImperativeHandle(ref, () => ({
-    zoomToPermit() {
-      //this -> calling JSX component
-      const loc = [this.permit.location.y, this.permit.location.x];
-      map.flyTo(loc, 17, {
+    zoomTo(loc) {
+      const location = [loc.y, loc.x];
+      map.flyTo(location, 17, {
         duration: 0.6,
       });
     },

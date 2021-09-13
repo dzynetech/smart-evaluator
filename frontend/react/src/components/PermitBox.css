@@ -62,3 +62,7 @@ td  {
 	width: 4vw;
 	background-color: rgba(0, 0, 0, 0.07);
 }
+
+.selected {
+	box-shadow: 5px 5px;
+}

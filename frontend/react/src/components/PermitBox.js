@@ -69,7 +69,11 @@ function PermitBox(props) {
           </div>
           <div className="permit-actions">
             <p>Construction?</p>
-            <PermitButtons permit={props.permit} />
+            <PermitButtons
+              permit={props.permit}
+              nextPermit={props.nextPermit}
+              setActivePermit={props.setActivePermit}
+            />
             <PermitNote permit={props.permit} />
           </div>
           <div className="permit-data">
@@ -83,7 +87,7 @@ function PermitBox(props) {
             <br />
             <h3
               onClick={() => {
-                props.zoomToPermit();
+                props.zoomTo(props.permit.location);
               }}
             >
               <i className="bi bi-geo-alt"></i>
