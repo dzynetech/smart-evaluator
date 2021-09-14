@@ -87,7 +87,7 @@ function PermitBox(props) {
             <br />
             <h3
               onClick={() => {
-                props.zoomTo(props.permit.location);
+                props.setActivePermit(props.permit);
               }}
             >
               <i className="bi bi-geo-alt"></i>

@@ -1,4 +1,4 @@
-# How to copy production database to local
+# How to copy production database locally 
 1. login to remote server, and get into postgres container via:
 ```
 docker-compose -f production.yml exec postgres /bin/bash
