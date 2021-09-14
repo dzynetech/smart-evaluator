@@ -1,28 +1,16 @@
-const Colors = {
-  UNCLASSIFIED: {
-    border: "5px solid #EEE",
-    backgroundColor: "#FFFFFF",
-  },
-  CONSTRUCTION: {
-    border: "5px solid #00CC00",
-    backgroundColor: "#CCFFCC",
-  },
-  NOT_CONSTRUCTION: {
-    border: "5px solid #FF0000",
-    backgroundColor: "#FFCCCC",
-  },
-  POSSIBLE_CONSTRUCTION: {
-    border: "5px solid #DDDD00",
-    backgroundColor: "#FFFF99",
-  },
-  DUPLICATE: {
-    border: "5px solid #FF0000",
-    backgroundColor: "#FFCCCC",
-  },
-  HIGHLIGHT: {
-    border: "5px solid #999",
-    backgroundColor: "#EEEEEE",
-  },
+export const colorMap = {
+  UNCLASSIFIED: "#FFFFFF",
+  CONSTRUCTION: "#CCFFCC",
+  NOT_CONSTRUCTION: "#FFCCCC",
+  POSSIBLE_CONSTRUCTION: "#FFFF99",
+  DUPLICATE: "#FFCCCC",
+  HIGHLIGHT: "#EEEEEE",
 };
 
-export default Colors;
+export const borderColorMap = {
+  UNCLASSIFIED: "#EEE",
+  CONSTRUCTION: " #00CC00",
+  NOT_CONSTRUCTION: "#FF0000",
+  POSSIBLE_CONSTRUCTION: "#DDDD00",
+  DUPLICATE: "#FF0000",
+};

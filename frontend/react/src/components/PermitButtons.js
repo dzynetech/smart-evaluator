@@ -1,7 +1,7 @@
 import React, { useContext } from "react";
 import { permitContext } from "../App";
 import { useMutation, gql } from "@apollo/client";
-import Colors from "../utils/Colors";
+import { colorMap, borderColorMap } from "../utils/Colors";
 
 const CLASSIFY_PERMIT_MUT = gql`
   mutation classifyPermit($id: Int!, $classification: Classification) {
@@ -32,38 +32,36 @@ function PermitButtons(props) {
   }
 
   function setYes(id) {
-    document.getElementById(id).style.border = Colors.CONSTRUCTION.border;
-    document.getElementById(id).style.backgroundColor =
-      Colors.CONSTRUCTION.backgroundColor;
+    document.getElementById(id).style.borderColor = borderColorMap.CONSTRUCTION;
+    document.getElementById(id).style.backgroundColor = colorMap.CONSTRUCTION;
     classify("CONSTRUCTION");
   }
 
   function setNo(id) {
-    document.getElementById(id).style.border = Colors.NOT_CONSTRUCTION.border;
+    document.getElementById(id).style.borderColor =
+      borderColorMap.NOT_CONSTRUCTION;
     document.getElementById(id).style.backgroundColor =
-      Colors.NOT_CONSTRUCTION.backgroundColor;
+      colorMap.NOT_CONSTRUCTION;
     classify("NOT_CONSTRUCTION");
   }
 
   function setMaybe(id) {
-    document.getElementById(id).style.border =
-      Colors.POSSIBLE_CONSTRUCTION.border;
+    document.getElementById(id).style.borderColor =
+      borderColorMap.POSSIBLE_CONSTRUCTION;
     document.getElementById(id).style.backgroundColor =
-      Colors.POSSIBLE_CONSTRUCTION.backgroundColor;
+      colorMap.POSSIBLE_CONSTRUCTION;
     classify("POSSIBLE_CONSTRUCTION");
   }
 
   function setDuplicate(id) {
-    document.getElementById(id).style.border = Colors.DUPLICATE.border;
-    document.getElementById(id).style.backgroundColor =
-      Colors.DUPLICATE.backgroundColor;
+    document.getElementById(id).style.borderColor = borderColorMap.DUPLICATE;
+    document.getElementById(id).style.backgroundColor = colorMap.DUPLICATE;
     classify("DUPLICATE");
   }
 
   function setUnclassified(id) {
-    document.getElementById(id).style.border = Colors.UNCLASSIFIED.border;
-    document.getElementById(id).style.backgroundColor =
-      Colors.UNCLASSIFIED.backgroundColor;
+    document.getElementById(id).style.borderColor = borderColorMap.UNCLASSIFIED;
+    document.getElementById(id).style.backgroundColor = colorMap.UNCLASSIFIED;
     classify("UNCLASSIFIED");
   }
 

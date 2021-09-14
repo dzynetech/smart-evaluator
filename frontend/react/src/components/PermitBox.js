@@ -2,15 +2,15 @@ import React from "react";
 import PermitData from "./PermitData";
 import PermitNote from "./PermitNote.js";
 import PermitButtons from "./PermitButtons.js";
-import Colors from "../utils/Colors.js";
+import { colorMap, borderColorMap } from "../utils/Colors.js";
 
 import "./PermitBox.css";
 
 function PermitBox(props) {
   const image_dir = "/data/";
   const mp4_filename = image_dir + props.permit.id + ".mp4";
-  const border = Colors[props.permit.classification].border;
-  const backgroundColor = Colors[props.permit.classification].backgroundColor;
+  const borderColor = borderColorMap[props.permit.classification];
+  const backgroundColor = colorMap[props.permit.classification];
   const address =
     props.permit.streetNumber +
     " " +
@@ -27,7 +27,7 @@ function PermitBox(props) {
       <div className="row">
         <div
           className="permitBox"
-          style={{ border: border, backgroundColor: backgroundColor }}
+          style={{ borderColor: borderColor, backgroundColor: backgroundColor }}
           id={props.permit.id}
         >
           <div className="video">
@@ -79,7 +79,7 @@ function PermitBox(props) {
           <div className="permit-data">
             <PermitData
               permit={props.permit}
-              border={border}
+              border={borderColor}
               backgroundColor={backgroundColor}
             />
           </div>
