@@ -1,9 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  forwardRef,
-  useImperativeHandle,
-} from "react";
+import React, { useState, useEffect } from "react";
 import useMap from "./dzyne_components/hooks/useMap";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PERMITS_QUERY from "../queries/PermitsQuery";
@@ -13,21 +8,12 @@ import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 
 window.locs = [];
 
-const Map = forwardRef((props, ref) => {
+function Map(props) {
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
 
   if (error) console.log(error);
-
-  useImperativeHandle(ref, () => ({
-    zoomTo(loc) {
-      const location = [loc.y, loc.x];
-      map.flyTo(location, 17, {
-        duration: 0.6,
-      });
-    },
-  }));
 
   function updateMarkers() {
     const zoom = map.getZoom();
@@ -59,6 +45,11 @@ const Map = forwardRef((props, ref) => {
     map.on("zoomend", updateMarkers);
   });
 
+  if (props.zoomTarget) {
+    map.flyTo([props.zoomTarget.y, props.zoomTarget.x], 17, {
+      duration: 0.6,
+    });
+  }
   useEffect(() => {
     if (Object.keys(props.filterVars).length === 0) {
       return;
@@ -98,6 +89,6 @@ const Map = forwardRef((props, ref) => {
   }, [data]);
 
   return <div id="map"></div>;
-});
+}
 
 export default Map;

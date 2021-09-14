@@ -1,5 +1,5 @@
 import { useLazyQuery } from "@apollo/client";
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect } from "react";
 import { print } from "graphql/language/printer";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PermitsFilter from "./PermitsFilter.js";
@@ -13,6 +13,7 @@ import PERMITS_QUERY from "../queries/PermitsQuery";
 function Permits() {
   const [filterVars, setFilterVars] = useState({});
   const [page, setPage] = useState(1);
+  const [zoomTarget, setZoomTarget] = useState(null);
   const [activePermit, setActivePermit] = useState(null);
   const [prevActivePermit, setPrevActivePermit] = useState(null);
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
@@ -50,7 +51,7 @@ function Permits() {
     });
     setPrevActivePermit(activePermit);
     if (activePermit) {
-      mapRef.current.zoomTo(activePermit.location);
+      setZoomTarget(activePermit.location);
     }
     window.activePermit = activePermit;
   }, [activePermit]);
@@ -61,8 +62,6 @@ function Permits() {
     var url = window.URL.createObjectURL(d);
     window.location.href = url;
   }
-
-  const mapRef = useRef();
 
   return (
     <>
@@ -75,9 +74,9 @@ function Permits() {
             />
           </div>
           <Map
-            ref={mapRef}
             filterVars={filterVars}
             activePermit={activePermit}
+            zoomTarget={zoomTarget}
           />
         </div>
         <div id="main" className="container-fluid">
@@ -109,7 +108,6 @@ function Permits() {
               <PermitBox
                 key={p.node.id}
                 permit={p.node}
-                zoomTo={mapRef.current.zoomTo}
                 nextPermit={permits[i + 1]?.node}
                 setActivePermit={setActivePermit}
               />

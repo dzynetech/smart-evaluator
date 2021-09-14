@@ -30,7 +30,6 @@ function deg2rad(deg) {
 export function computeMarkers(zoom, lat, locations, activePermit) {
   // console.log(locations);
   //locations: {id,x,y}
-  console.log(activePermit);
   const maxDistance = metersPerPixel(zoom, lat) * 40;
   var doneIds = [];
   var markers = [];
