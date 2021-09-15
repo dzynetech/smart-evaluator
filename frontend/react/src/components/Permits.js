@@ -10,6 +10,7 @@ import Map from "./Map.js";
 import Nav from "./Nav";
 
 import PERMITS_QUERY from "../queries/PermitsQuery";
+import Legend from "./Legend";
 
 function Permits() {
   const [filterVars, setFilterVars] = useState({});
@@ -82,8 +83,13 @@ function Permits() {
         </div>
         <div id="main" className="container-fluid">
           <Nav active={"classify"} />
-          <h1>Construction sites</h1>
-          <h3>Permits: 2017 - 2019</h3>
+          <div className="title">
+            <div>
+              <h1>Construction sites</h1>
+              <h3>Permits: 2017 - 2019</h3>
+            </div>
+            <Legend />
+          </div>
           {data && (
             <p>
               Showing results {(page - 1) * permitsPerPage + 1} -
