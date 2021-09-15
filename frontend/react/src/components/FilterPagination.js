@@ -3,7 +3,23 @@ function FilterPagination(props) {
 
   const prevDisabled = props.page === 1;
   const nextDisabled = props.page === numPages || props.total === 0;
-
+  var pages = [...Array(numPages)];
+  if (numPages > 11) {
+    pages = [];
+    for (let i = 5; i > 0; i--) {
+      if (props.page - i > 0) {
+        pages.push(props.page - i);
+      }
+    }
+    pages.push(props.page);
+    for (let i = 1; i < 10; i++) {
+      if (props.page + i > numPages || pages.length > 10) {
+        break;
+      }
+      pages.push(props.page + i);
+    }
+  }
+  console.log(pages);
   return (
     <nav>
       <ul
@@ -21,19 +37,19 @@ function FilterPagination(props) {
             Previous
           </a>
         </li>
-        {[...Array(numPages)].map((x, i) => (
+        {pages.map((i) => (
           <li
-            className={"page-item " + (i + 1 === props.page ? "active" : "")}
+            className={"page-item " + (i === props.page ? "active" : "")}
             key={i}
           >
             <a
               className="page-link"
               href="#"
               onClick={() => {
-                props.setPage(i + 1);
+                props.setPage(i);
               }}
             >
-              {i + 1}
+              {i}
             </a>
           </li>
         ))}
