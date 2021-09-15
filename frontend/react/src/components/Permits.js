@@ -7,6 +7,7 @@ import PermitBox from "./PermitBox.js";
 import CurlModal from "./CurlModal";
 import FilterPagination from "./FilterPagination";
 import Map from "./Map.js";
+import Nav from "./Nav";
 
 import PERMITS_QUERY from "../queries/PermitsQuery";
 
@@ -80,6 +81,7 @@ function Permits() {
           />
         </div>
         <div id="main" className="container-fluid">
+          <Nav active={"classify"} />
           <h1>Construction sites</h1>
           <h3>Permits: 2017 - 2019</h3>
           {data && (

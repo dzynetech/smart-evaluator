@@ -71,3 +71,8 @@ a:hover {
 	border-style: dashed !important;
 	box-shadow: 5px 5px 5px;
 }
+
+#main > .navbar {
+	margin-top: -1rem;	
+	margin-left: -31px; 
+}
