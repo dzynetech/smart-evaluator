@@ -3,10 +3,13 @@ import { Pie } from "react-chartjs-2";
 import { altColorMap, borderColorMap } from "../utils/Colors";
 
 const TOTAL_QUERY = gql`
-  query TotalPermits($sourceId: Int) {
+  query TotalPermits($sourceId: Int, $minSqft: Float) {
     permits(
       condition: { sourceId: $sourceId }
-      filter: { imageUrl: { isNull: false } }
+      filter: {
+        imageUrl: { isNull: false }
+        sqft: { greaterThanOrEqualTo: $minSqft }
+      }
     ) {
       totalCount
     }
@@ -14,10 +17,17 @@ const TOTAL_QUERY = gql`
 `;
 
 const CLASSIFICATION_QUERY = gql`
-  query TotalPermits($sourceId: Int, $classification: Classification) {
+  query TotalPermits(
+    $sourceId: Int
+    $classification: Classification
+    $minSqft: Float
+  ) {
     permits(
       condition: { sourceId: $sourceId, classification: $classification }
-      filter: { imageUrl: { isNull: false } }
+      filter: {
+        imageUrl: { isNull: false }
+        sqft: { greaterThanOrEqualTo: $minSqft }
+      }
     ) {
       totalCount
     }
@@ -27,22 +37,42 @@ const CLASSIFICATION_QUERY = gql`
 function SourceStats(props) {
   const sourceId = props.source.id;
   const total = useQuery(TOTAL_QUERY, {
-    variables: { sourceId },
+    variables: { sourceId: sourceId, minSqft: props.minSqft },
   });
   const unclassified = useQuery(CLASSIFICATION_QUERY, {
-    variables: { sourceId: sourceId, classification: "UNCLASSIFIED" },
+    variables: {
+      sourceId: sourceId,
+      classification: "UNCLASSIFIED",
+      minSqft: props.minSqft,
+    },
   });
   const construction = useQuery(CLASSIFICATION_QUERY, {
-    variables: { sourceId: sourceId, classification: "CONSTRUCTION" },
+    variables: {
+      sourceId: sourceId,
+      classification: "CONSTRUCTION",
+      minSqft: props.minSqft,
+    },
   });
   const not_construction = useQuery(CLASSIFICATION_QUERY, {
-    variables: { sourceId: sourceId, classification: "NOT_CONSTRUCTION" },
+    variables: {
+      sourceId: sourceId,
+      classification: "NOT_CONSTRUCTION",
+      minSqft: props.minSqft,
+    },
   });
   const possible_construction = useQuery(CLASSIFICATION_QUERY, {
-    variables: { sourceId: sourceId, classification: "POSSIBLE_CONSTRUCTION" },
+    variables: {
+      sourceId: sourceId,
+      classification: "POSSIBLE_CONSTRUCTION",
+      minSqft: props.minSqft,
+    },
   });
   const duplicate = useQuery(CLASSIFICATION_QUERY, {
-    variables: { sourceId: sourceId, classification: "DUPLICATE" },
+    variables: {
+      sourceId: sourceId,
+      classification: "DUPLICATE",
+      minSqft: props.minSqft,
+    },
   });
 
   if (
@@ -98,6 +128,7 @@ function SourceStats(props) {
     ],
   };
 
+  console.log(total);
   return (
     <>
       <div className="statBox">

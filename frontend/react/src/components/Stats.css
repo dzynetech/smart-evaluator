@@ -23,3 +23,7 @@
 .stat-data{
 	margin-top: 4rem;
 }
+
+#stats-filter {
+	padding-left: 2rem;
+}
