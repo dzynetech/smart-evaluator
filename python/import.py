@@ -56,7 +56,7 @@ def main():
             for col in columns:
                 value = sanitize(row[config[col + "_col"]]) or None
                 if col == "zip":
-                    while len(value) > 5:
+                    while len(value) < 5:
                         value = "0" + value
                 data.append(value)
             columns.append("import_id")
