@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import useMap from "./dzyne_components/hooks/useMap";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PERMITS_QUERY from "../queries/PermitsQuery";
+import PermitBox from "./PermitBox";
 
 import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
@@ -16,6 +17,7 @@ function Map(props) {
   if (error) console.log(error);
 
   function updateMarkers() {
+    props.setZoomTarget(null);
     const zoom = map.getZoom();
     const lat = map.getCenter().lat;
     const markerLocations = computeMarkers(
@@ -37,6 +39,11 @@ function Map(props) {
         // permanent: true,
         direction: "right",
       });
+      if (m.ids.length === 1) {
+        marker.on("click", () => {
+          props.setPermitForModal(m.ids[0]);
+        });
+      }
       marker.addTo(map);
     }
   }
@@ -88,7 +95,11 @@ function Map(props) {
     }
   }, [data]);
 
-  return <div id="map"></div>;
+  return (
+    <>
+      <div id="map"></div>
+    </>
+  );
 }
 
 export default Map;

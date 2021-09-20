@@ -8,7 +8,7 @@ import CurlModal from "./CurlModal";
 import FilterPagination from "./FilterPagination";
 import Map from "./Map.js";
 import Nav from "./Nav";
-
+import PermitModal from "./PermitModal";
 import PERMITS_QUERY from "../queries/PermitsQuery";
 import Legend from "./Legend";
 
@@ -18,6 +18,7 @@ function Permits() {
   const [zoomTarget, setZoomTarget] = useState(null);
   const [activePermit, setActivePermit] = useState(null);
   const [prevActivePermit, setPrevActivePermit] = useState(null);
+  const [permitForModal, setPermitForModal] = useState(null);
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
@@ -76,13 +77,19 @@ function Permits() {
             />
           </div>
           <Map
+            setPermitForModal={setPermitForModal}
             filterVars={filterVars}
             activePermit={activePermit}
             zoomTarget={zoomTarget}
+            setZoomTarget={setZoomTarget}
           />
         </div>
         <div id="main" className="container-fluid">
           <Nav active={"classify"} />
+          <PermitModal
+            permitId={permitForModal}
+            setPermitId={setPermitForModal}
+          />
           <div className="title">
             <div>
               <h1>Construction sites</h1>

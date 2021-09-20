@@ -19,7 +19,6 @@ function FilterPagination(props) {
       pages.push(props.page + i);
     }
   }
-  console.log(pages);
   return (
     <nav>
       <ul
