@@ -14,16 +14,17 @@
 .permit-modal-content {
 	background-color: #fefefe;
 	margin: auto;
-	padding: 20px;
+	padding: 1rem;
 	border: 1px solid #888;
 	width: 80%;
   }
 
   .modal-close {
-	color: #aaa;
+	color: #888;
 	float: right;
-	font-size: 28px;
+	font-size: 2.5rem;
 	font-weight: bold;
+  margin-top: -1.5rem;
   }
   
 

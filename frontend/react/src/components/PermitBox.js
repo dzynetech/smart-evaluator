@@ -87,7 +87,9 @@ function PermitBox(props) {
             <br />
             <h3
               onClick={() => {
-                props.setActivePermit(props.permit);
+               if (props.setActivePermit) {
+                 props.setActivePermit(props.permit);
+               }
               }}
             >
               <i className="bi bi-geo-alt"></i>

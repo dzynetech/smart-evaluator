@@ -64,6 +64,7 @@ function PermitModal(props) {
         >
           &times;
         </span>
+        <br />
         <PermitBox permit={data.permit} />
       </div>
     </div>

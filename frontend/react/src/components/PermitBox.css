@@ -73,7 +73,11 @@ td  {
 	justify-content: space-between;
 }
 
+.permit-sidebar > h3 {
+	cursor: pointer;
+}
 
+/* legend stuff */
 .legend{
 	margin-top: 2rem;
 	border-radius: 2px;
@@ -82,7 +86,6 @@ td  {
 	border-color: rgba(0, 0, 0, 0.07);
 	padding: 0.25rem;
 }
-/* legend stuff */
 .rectangle {
 	display: inline-block;
 	width:20px;
@@ -91,6 +94,4 @@ td  {
 	margin-right: 1rem;
 	margin-left: .025rem;
 	margin-top: 4px;
-	
-
 }
