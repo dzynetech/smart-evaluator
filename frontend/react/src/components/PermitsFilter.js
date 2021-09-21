@@ -1,7 +1,6 @@
 import React, { useEffect, useState } from "react";
 import StateDropdown from "./StateDropdown";
-import { useQuery } from "@apollo/client";
-import SOURCES_QUERY from "../queries/SourcesQuery";
+import SourceDropdown from "./SourceDropdown";
 
 import "./PermitsFilter.css";
 
@@ -20,8 +19,6 @@ function PermitsFilter(props) {
   useEffect(() => {
     setFilter();
   }, [classification, order, state, source]);
-
-  const { loading, error, data } = useQuery(SOURCES_QUERY);
 
   function setFilter(e) {
     if (e) {
@@ -107,20 +104,7 @@ function PermitsFilter(props) {
           <label className="my-1 mr-2" htmlFor="source_filter">
             Source:
           </label>
-          <select
-            className="custom-select my-1 mr-sm-2"
-            id="source_filter"
-            value={source}
-            onChange={(e) => {
-              setSource(e.target.value);
-            }}
-          >
-            <option value="ALL">All</option>
-            {data &&
-              data.sources.nodes.map((source) => (
-                <option value={source.id}>{source.name}</option>
-              ))}
-          </select>
+          <SourceDropdown source={source} setSource={setSource} />
         </div>
         <div id="street-filter">
           <label className="my-1 mr-2" htmlFor="streetFilter">
