@@ -34,6 +34,7 @@ function Permits() {
     queryVars.numPerPage = permitsPerPage;
     queryVars.offset = permitsPerPage * (page - 1);
     getPermits({ variables: queryVars });
+    console.log(queryVars);
   }, [filterVars, page]);
 
   useEffect(() => {

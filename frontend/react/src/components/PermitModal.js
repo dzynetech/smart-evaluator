@@ -37,9 +37,8 @@ function PermitModal(props) {
     },
   });
 
-  console.log(props.permitId);
   if (!data) {
-    if (error) {
+    if (error && props.permitId != null) {
       console.log(error);
     }
     return <></>;

@@ -4,6 +4,7 @@ const PERMITS_QUERY = gql`
   query MyQuery(
     $order: [PermitsOrderBy!]
     $classification: ClassificationFilter
+    $sourceId: IntFilter
     $min_sqft: Float
     $min_cost: Float
     $city: String
@@ -24,7 +25,7 @@ const PERMITS_QUERY = gql`
           sqft: { greaterThanOrEqualTo: $min_sqft }
           cost: { greaterThanOrEqualTo: $min_cost }
           classification: $classification
-          # sourceId
+          sourceId: $sourceId
           city: { includesInsensitive: $city }
           street: { includesInsensitive: $street }
           state: { includesInsensitive: $state }

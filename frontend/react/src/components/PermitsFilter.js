@@ -11,12 +11,13 @@ function PermitsFilter(props) {
   const [minCost, setMinCost] = useState("");
   const [minSqft, setMinSqft] = useState("");
   const [classification, setClassification] = useState("ALL");
+  const [source, setSource] = useState("ALL");
   const [order, setOrder] = useState("SQFT_DESC");
   const [permitData, setPermitData] = useState("");
 
   useEffect(() => {
     setFilter();
-  }, [classification, order, state]);
+  }, [classification, order, state, source]);
 
   function setFilter(e) {
     if (e) {
@@ -28,10 +29,17 @@ function PermitsFilter(props) {
     } else {
       c = { equalTo: classification };
     }
+    var sid;
+    if (source === "ALL") {
+      sid = undefined;
+    } else {
+      sid = { equalTo: Number(source) };
+    }
 
     props.setFilterVars({
       order: order,
       classification: c,
+      sourceId: sid,
       min_sqft: Number(minSqft),
       min_cost: Number(minCost),
       street: street,
@@ -89,6 +97,24 @@ function PermitsFilter(props) {
             <option value="NOT_CONSTRUCTION">Not Construction</option>
             <option value="POSSIBLE_CONSTRUCTION">Maybe Construction</option>
             <option value="DUPLICATE">Duplicate</option>
+          </select>
+        </div>
+        <div id="source-filter">
+          <label className="my-1 mr-2" htmlFor="source_filter">
+            Source:
+          </label>
+          <select
+            className="custom-select my-1 mr-sm-2"
+            id="source_filter"
+            value={source}
+            onChange={(e) => {
+              setSource(e.target.value);
+            }}
+          >
+            <option value="ALL">All</option>
+            <option value="8">l</option>
+            <option value="9">s</option>
+            <option value="10">w</option>
           </select>
         </div>
         <div id="street-filter">
