@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StateDropdown from "./StateDropdown";
+import { useQuery } from "@apollo/client";
+import SOURCES_QUERY from "../queries/SourcesQuery";
 
 import "./PermitsFilter.css";
 
@@ -18,6 +20,8 @@ function PermitsFilter(props) {
   useEffect(() => {
     setFilter();
   }, [classification, order, state, source]);
+
+  const { loading, error, data } = useQuery(SOURCES_QUERY);
 
   function setFilter(e) {
     if (e) {
@@ -112,9 +116,10 @@ function PermitsFilter(props) {
             }}
           >
             <option value="ALL">All</option>
-            <option value="8">l</option>
-            <option value="9">s</option>
-            <option value="10">w</option>
+            {data &&
+              data.sources.nodes.map((source) => (
+                <option value={source.id}>{source.name}</option>
+              ))}
           </select>
         </div>
         <div id="street-filter">

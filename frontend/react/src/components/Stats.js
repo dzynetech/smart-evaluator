@@ -3,19 +3,8 @@ import React, { useState } from "react";
 
 import SourceStats from "./SourceStats.js";
 import StatsFilter from "./StatsFilter.js";
-
+import SOURCES_QUERY from "../queries/SourcesQuery.js";
 import "./Stats.css";
-const SOURCES_QUERY = gql`
-  query GetAllSources {
-    sources {
-      nodes {
-        description
-        id
-        name
-      }
-    }
-  }
-`;
 
 function Stats() {
   const [minSqft, setMinSqft] = useState(0);
