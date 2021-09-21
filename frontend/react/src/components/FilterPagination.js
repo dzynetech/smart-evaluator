@@ -3,7 +3,8 @@ function FilterPagination(props) {
 
   const prevDisabled = props.page === 1;
   const nextDisabled = props.page === numPages || props.total === 0;
-  var pages = [...Array(numPages)];
+  var pages = Array.from(Array(numPages + 1).keys()).slice(1);
+
   if (numPages > 11) {
     pages = [];
     for (let i = 5; i > 0; i--) {
