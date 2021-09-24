@@ -41,6 +41,7 @@ def main():
         return
 
     headers = []
+    excluded_rows = []
     csv_path = os.path.join(os.path.dirname(config_file),  config['filename'])
     with open(csv_path) as csvfile:
         reader = csv.reader(csvfile, delimiter=',')
@@ -74,6 +75,13 @@ def main():
                 data.append(street_number)
                 columns.append("street_number")
 
+            # exclude rows that are missing too much data to geolocate
+            required = ["street_number", "street", "city", "state"]
+            for col in required:
+                if col not in sql_columns:
+                   excluded_rows.append(row)
+                   continue
+
             first_value = ""
             if has_lat and has_long:
                 lat_idx = columns.index('latitude')
@@ -93,6 +101,15 @@ def main():
 
     connection.commit()
     print("Import Complete. id: " + import_id)
+    if len(excluded_rows) > 0:
+        filename = "excluded_" + import_id + ".csv"
+        csv_str = ""
+        print(len(excluded_rows), " rows were not imported. Saving these rows to ", filename)
+        for row in excluded_rows:
+            csv_str += row.join(",")
+            csv_str += "\n"
+        with open(filename, "w") as f:
+            f.write(csv_str)
     cursor.close()
     connection.close()
 
