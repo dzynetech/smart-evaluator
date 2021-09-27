@@ -10,7 +10,7 @@ import psycopg2
 def main():
     # read config
     config = {}
-    config_file = "config.json"
+    config_file = "permits/boston/config.json"
     if len(sys.argv) > 1:
         config_file = sys.argv[1]
     with open(config_file) as f:
@@ -56,7 +56,7 @@ def main():
             columns = sql_columns[:]
             for col in columns:
                 value = sanitize(row[config[col + "_col"]]) or None
-                if col == "zip":
+                if col == "zip" and value is not None:
                     while len(value) < 5:
                         value = "0" + value
                 data.append(value)
@@ -78,9 +78,10 @@ def main():
             # exclude rows that are missing too much data to geolocate
             required = ["street_number", "street", "city", "state"]
             for col in required:
-                if col not in sql_columns:
-                   excluded_rows.append(row)
-                   continue
+                if data[columns.index(col)] is None or len(data[columns.index(col)]) == 0:
+                    row.append(col)
+                    excluded_rows.append(row)
+                    break
 
             first_value = ""
             if has_lat and has_long:
@@ -101,17 +102,17 @@ def main():
 
     connection.commit()
     print("Import Complete. id: " + import_id)
-    if len(excluded_rows) > 0:
-        filename = "excluded_" + import_id + ".csv"
-        csv_str = ""
-        print(len(excluded_rows), " rows were not imported. Saving these rows to ", filename)
-        for row in excluded_rows:
-            csv_str += row.join(",")
-            csv_str += "\n"
-        with open(filename, "w") as f:
-            f.write(csv_str)
     cursor.close()
     connection.close()
+    if len(excluded_rows) > 0:
+        filename = "excluded_" + \
+            config['dataset_name'] + "_" + import_id + ".csv"
+        print(len(excluded_rows), " rows were not imported. Saving these rows to ", filename)
+        with open(filename, 'w', encoding='UTF8') as f:
+            writer = csv.writer(f)
+            writer.writerow(headers + ["reason for exclusion"])
+            for row in excluded_rows:
+                writer.writerow(row)
 
 
 def create_permit_json(headers, row):
