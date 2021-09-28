@@ -23,9 +23,9 @@ def main():
         del props['region_mod']
         geojson = json.dumps(feat['geometry'])
         permit_data = json.dumps(props)
-        sql = "INSERT INTO permits (bounds, permit_data,source_id,import_id) VALUES(ST_GeomFromGeoJSON(%s),%s,%s,%s);"
+        sql = "INSERT INTO permits (bounds, permit_data,source_id,import_id) VALUES (ST_GeomFromGeoJSON(%s),%s,%s,%s);"
         cursor.execute(sql, (geojson, permit_data, 42, 0))
-
+        # print(cursor.query)
     connection.commit()
     cursor.close()
     connection.close()
