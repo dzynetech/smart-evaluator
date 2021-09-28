@@ -65,6 +65,7 @@ function Map(props) {
     Object.assign(queryVars, props.filterVars);
     queryVars.numPerPage = 9999;
     queryVars.offset = 0;
+    queryVars.hasBounds = false;
     getPermits({ variables: queryVars });
   }, [props.filterVars]);
 
