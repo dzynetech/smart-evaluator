@@ -40,6 +40,7 @@ CREATE TABLE public.permits(
             REFERENCES sources(id)
 );
 SELECT AddGeometryColumn ('public','permits','location',4326,'POINT',2);
+SELECT AddGeometryColumn ('public','permits','bounds',4326,'MULTIPOLYGON',2);
 ALTER TABLE public.permits ADD COLUMN has_location boolean GENERATED ALWAYS AS (location is not NULL) STORED;
 -- automatic updated_at timestamp
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()

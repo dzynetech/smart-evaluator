@@ -1,0 +1,2 @@
+INSERT INTO sources(name) VALUES( 'Boundary' ) RETURNING id;
+SELECT AddGeometryColumn ('public','permits','bounds',4326,'MULTIPOLYGON',2);
