@@ -12,7 +12,7 @@ import PermitModal from "./PermitModal";
 import PERMITS_QUERY from "../queries/PermitsQuery";
 import Legend from "./Legend";
 
-function Permits() {
+function Permits(props) {
   const [filterVars, setFilterVars] = useState({});
   const [page, setPage] = useState(1);
   const [zoomTarget, setZoomTarget] = useState(null);
@@ -33,6 +33,7 @@ function Permits() {
     Object.assign(queryVars, filterVars);
     queryVars.numPerPage = permitsPerPage;
     queryVars.offset = permitsPerPage * (page - 1);
+    queryVars.hasBounds = Boolean(props?.hasBounds);
     getPermits({ variables: queryVars });
     console.log(queryVars);
   }, [filterVars, page]);
