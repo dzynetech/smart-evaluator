@@ -1,0 +1,1 @@
+comment on table smart.permits IS NULL
