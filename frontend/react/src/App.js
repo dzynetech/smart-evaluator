@@ -46,6 +46,11 @@ function App() {
               <Permits />
             </permitContext.Provider>
           </Route>
+          <Route path="/sites">
+            <permitContext.Provider value={{ readonly: false }}>
+              <Permits hasBounds={true} />
+            </permitContext.Provider>
+          </Route>
           <Route path="/">
             <permitContext.Provider value={{ readonly: true }}>
               <Permits />

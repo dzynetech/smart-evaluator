@@ -42,6 +42,7 @@ CREATE TABLE public.permits(
 SELECT AddGeometryColumn ('public','permits','location',4326,'POINT',2);
 SELECT AddGeometryColumn ('public','permits','bounds',4326,'MULTIPOLYGON',2);
 ALTER TABLE public.permits ADD COLUMN has_location boolean GENERATED ALWAYS AS (location is not NULL) STORED;
+ALTER TABLE public.permits ADD COLUMN has_bounds boolean GENERATED ALWAYS AS (bounds is not NULL) STORED;
 -- automatic updated_at timestamp
 CREATE OR REPLACE FUNCTION trigger_set_timestamp()
 RETURNS TRIGGER AS $$
