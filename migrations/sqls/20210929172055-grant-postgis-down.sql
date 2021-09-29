@@ -1,0 +1,1 @@
+revoke usage on schema public from smart_user;
