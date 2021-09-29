@@ -10,7 +10,7 @@ app.use(
   postgraphile(
     process.env.LOCAL_DATABASE_URL ||
       `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:5432/smart`,
-    "public",
+    "smart",
     {
       appendPlugins: [
         postgisPlugin.default,
