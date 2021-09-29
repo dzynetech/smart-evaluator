@@ -34,16 +34,6 @@ const PERMITS_QUERY = gql`
           zip: { includesInsensitive: $zip }
           permitData: { includesInsensitive: $permitData }
           hasLocation: { equalTo: true }
-          and: {
-            or: [
-              { permitData: { includes: "COMOTH" } }
-              { permitData: { includes: "COMRET" } }
-              { permitData: { includes: "Commercial" } }
-              { permitData: { includes: "New Construction" } }
-              { permitData: { includes: "NEWCON" } }
-              { permitData: { includes: "ERECT" } }
-            ]
-          }
         }
       }
     ) {
