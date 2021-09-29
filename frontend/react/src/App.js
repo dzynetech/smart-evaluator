@@ -1,12 +1,20 @@
 import "./App.css";
-import { ApolloClient, InMemoryCache, ApolloProvider } from "@apollo/client";
+import {
+  ApolloClient,
+  InMemoryCache,
+  ApolloProvider,
+  HttpLink,
+  createHttpLink,
+} from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
 import Stats from "./components/Stats.js";
 import Permits from "./components/Permits.js";
 import Nav from "./components/Nav";
+import Login from "./components/Login";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import { createContext } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
+import { graphql } from "graphql";
 
 var graphql_url = process.env.REACT_APP_GRAPHQL_URL;
 if (!graphql_url) {
@@ -17,20 +25,24 @@ export const permitContext = createContext(null);
 
 function App() {
   const [jwt, setJwt] = useLocalStorage("jwt", null);
+  const httpLink = createHttpLink({
+    uri: graphql_url,
+  });
 
   const authLink = setContext((_, { headers }) => {
-    return {
-      headers: {
-        ...headers,
-        authorization: jwt ? `Bearer ${jwt}` : "",
-      },
-    };
+    if (jwt) {
+      return {
+        headers: {
+          ...headers,
+          Authorization: `Bearer ${jwt}`,
+        },
+      };
+    }
   });
 
   const client = new ApolloClient({
-    uri: graphql_url,
+    link: authLink.concat(httpLink),
     cache: new InMemoryCache(),
-    link: authLink,
   });
 
   return (
@@ -50,6 +62,9 @@ function App() {
             <permitContext.Provider value={{ readonly: false }}>
               <Permits hasBounds={true} />
             </permitContext.Provider>
+          </Route>
+          <Route path="/login">
+            <Login setJwt={setJwt} />
           </Route>
           <Route path="/">
             <permitContext.Provider value={{ readonly: true }}>
