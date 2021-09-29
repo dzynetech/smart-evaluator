@@ -22,6 +22,9 @@ app.use(
       enhanceGraphiql: true,
       retryOnInitFail: true,
       enableCors: true,
+      pgDefaultRole: "smart_anonymous",
+      jwtPgTypeIdentifier: "smart.jwt",
+      jwtSecret: process.env.JWT_SECRET || "jwt_secret",
     }
   )
 );
