@@ -1,0 +1,16 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "smart",
+    "username": "postgres",
+    "password": "postgres"
+  },
+  "prod": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "smart",
+    "username": "postgres",
+    "password": "postgres"
+  }
+}
