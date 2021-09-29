@@ -1,6 +1,7 @@
 import "./Login.css";
 import React, { useEffect, useState } from "react";
 import { gql, useMutation } from "@apollo/client";
+import { useHistory } from "react-router-dom";
 
 const AUTH_MUT = gql`
   mutation MyMutation($password: String!, $username: String!) {
@@ -14,6 +15,7 @@ function Login(props) {
   const [password, setPassword] = useState("");
 
   const [getPermits, { loading, error, data }] = useMutation(AUTH_MUT);
+  const history = useHistory();
 
   function handleLogin(e) {
     if (e) {
@@ -30,6 +32,7 @@ function Login(props) {
   useEffect(() => {
     if (data?.authenticate?.jwt) {
       props.setJwt(data.authenticate.jwt);
+      history.push("/");
     }
   }, [data]);
 
