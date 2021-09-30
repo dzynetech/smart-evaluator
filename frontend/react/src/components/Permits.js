@@ -41,13 +41,6 @@ function Permits(props) {
   }, [filterVars, page]);
 
   useEffect(() => {
-    if (data) {
-      setPrevActivePermit(activePermit);
-      setActivePermit(data.permits.edges[0]?.node);
-    }
-  }, [data]);
-
-  useEffect(() => {
     const permitDiv = document.getElementById(activePermit?.id);
     document.getElementById(prevActivePermit?.id)?.classList.remove("selected");
     permitDiv?.classList.add("selected");
