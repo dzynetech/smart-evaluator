@@ -21,7 +21,7 @@ function PermitBox(props) {
           id={props.permit.id}
         >
           <div className="video">
-            <video autoPlay loop muted controls>
+            <video autoPlay loop muted controls width={512}>
               <source src={mp4_filename} type="video/mp4" />
               Your browser does not support the video tag.
             </video>
