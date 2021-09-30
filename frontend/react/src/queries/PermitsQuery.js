@@ -58,6 +58,7 @@ const PERMITS_QUERY = gql`
           classification
           issueDate
           notes
+          imageUrl
         }
       }
       totalCount

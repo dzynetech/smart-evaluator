@@ -8,7 +8,7 @@ import "./PermitBox.css";
 
 function PermitBox(props) {
   const image_dir = "/data/";
-  const mp4_filename = image_dir + props.permit.id + ".mp4";
+  const mp4_filename = image_dir + props.permit.imageUrl + ".mp4";
   const borderColor = borderColorMap[props.permit.classification];
   const backgroundColor = colorMap[props.permit.classification];
   const address =
