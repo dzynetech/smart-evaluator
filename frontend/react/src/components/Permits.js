@@ -95,7 +95,6 @@ function Permits(props) {
           <div className="title">
             <div>
               <h1>Construction sites</h1>
-              <h3>Permits: 2017 - 2019</h3>
             </div>
             <Legend />
           </div>
