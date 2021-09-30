@@ -14,6 +14,7 @@ import Legend from "./Legend";
 
 function Permits(props) {
   const [filterVars, setFilterVars] = useState({});
+  const [finalQueryVars, setFinalQueryVars] = useState({});
   const [page, setPage] = useState(1);
   const [zoomTarget, setZoomTarget] = useState(null);
   const [activePermit, setActivePermit] = useState(null);
@@ -36,6 +37,7 @@ function Permits(props) {
     queryVars.hasBounds = Boolean(props?.hasBounds);
     getPermits({ variables: queryVars });
     console.log(queryVars);
+    setFinalQueryVars(queryVars);
   }, [filterVars, page]);
 
   useEffect(() => {
@@ -95,6 +97,7 @@ function Permits(props) {
           <div className="title">
             <div>
               <h1>Construction sites</h1>
+              <h3>Permits: 2017 - 2019</h3>
             </div>
             <Legend />
           </div>
@@ -117,7 +120,7 @@ function Permits(props) {
           )}
           <CurlModal
             query={JSON.stringify(print(PERMITS_QUERY))}
-            variables={JSON.stringify(filterVars)}
+            variables={JSON.stringify(finalQueryVars)}
           />
           {data &&
             data.permits.edges.map((p, i, permits) => (
