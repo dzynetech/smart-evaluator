@@ -11,16 +11,6 @@ function PermitBox(props) {
   const mp4_filename = image_dir + props.permit.imageUrl + ".mp4";
   const borderColor = borderColorMap[props.permit.classification];
   const backgroundColor = colorMap[props.permit.classification];
-  const address =
-    props.permit.streetNumber +
-    " " +
-    props.permit.street +
-    ", " +
-    props.permit.city +
-    ", " +
-    props.permit.state +
-    " " +
-    props.permit.zip;
 
   return (
     <>
@@ -37,23 +27,31 @@ function PermitBox(props) {
             </video>
           </div>
           <div className="permit-title">
-            <b style={{ fontSize: "23px" }}>{address}</b>
+            <b style={{ fontSize: "23px" }}>{props.permit.name}</b>
           </div>
           <div className="permit-info">
             <table>
               <tbody>
-                <tr>
-                  <td>Cost: </td>
-                  <td>
-                    <b className="f18">${props.permit.cost.toLocaleString()}</b>
-                  </td>
-                </tr>
-                <tr>
-                  <td>Sqft: </td>
-                  <td>
-                    <b className="f18">{props.permit.sqft.toLocaleString()}</b>
-                  </td>
-                </tr>
+                {props.permit.cost > 0 && (
+                  <tr>
+                    <td>Cost: </td>
+                    <td>
+                      <b className="f18">
+                        ${props.permit.cost.toLocaleString()}
+                      </b>
+                    </td>
+                  </tr>
+                )}
+                {props.permit.sqft > 0 && (
+                  <tr>
+                    <td>Sqft: </td>
+                    <td>
+                      <b className="f18">
+                        {props.permit.sqft.toLocaleString()}
+                      </b>
+                    </td>
+                  </tr>
+                )}
                 <tr>
                   <td>Permit Date:&nbsp;&nbsp;&nbsp;</td>
                   <td>{props.permit.issueDate}</td>
@@ -87,9 +85,9 @@ function PermitBox(props) {
             <br />
             <h3
               onClick={() => {
-               if (props.setActivePermit) {
-                 props.setActivePermit(props.permit);
-               }
+                if (props.setActivePermit) {
+                  props.setActivePermit(props.permit);
+                }
               }}
             >
               <i className="bi bi-geo-alt"></i>

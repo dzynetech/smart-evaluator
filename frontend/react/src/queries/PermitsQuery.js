@@ -59,6 +59,7 @@ const PERMITS_QUERY = gql`
           issueDate
           notes
           imageUrl
+          name
         }
       }
       totalCount
