@@ -32,7 +32,7 @@ function App() {
               <Permits />
             </permitContext.Provider>
           </Route>
-          <Route path="/sites">
+          <Route path="/imerit_sites">
             <permitContext.Provider value={{ readonly: false }}>
               <Permits hasBounds={true} />
             </permitContext.Provider>

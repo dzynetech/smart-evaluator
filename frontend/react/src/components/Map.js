@@ -68,7 +68,7 @@ function Map(props) {
     Object.assign(queryVars, props.filterVars);
     queryVars.numPerPage = 9999;
     queryVars.offset = 0;
-    queryVars.hasBounds = router_location.pathname == "/sites";
+    queryVars.hasBounds = router_location.pathname == "/imerit_sites";
     getPermits({ variables: queryVars });
   }, [props.filterVars]);
 
