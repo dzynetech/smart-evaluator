@@ -3,7 +3,7 @@ import useMap from "./dzyne_components/hooks/useMap";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PERMITS_QUERY from "../queries/PermitsQuery";
 import PermitBox from "./PermitBox";
-
+import { useLocation } from "react-router";
 import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 
@@ -57,6 +57,9 @@ function Map(props) {
       duration: 0.6,
     });
   }
+
+  const router_location = useLocation();
+
   useEffect(() => {
     if (Object.keys(props.filterVars).length === 0) {
       return;
@@ -65,7 +68,7 @@ function Map(props) {
     Object.assign(queryVars, props.filterVars);
     queryVars.numPerPage = 9999;
     queryVars.offset = 0;
-    queryVars.hasBounds = false;
+    queryVars.hasBounds = router_location.pathname == "/imerit_sites";
     getPermits({ variables: queryVars });
   }, [props.filterVars]);
 

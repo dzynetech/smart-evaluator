@@ -61,7 +61,7 @@ function App() {
               <Permits jwt={jwt} setJwt={setJwt} />
             </permitContext.Provider>
           </Route>
-          <Route path="/sites">
+          <Route path="/imerit_sites">
             <RequireLogin jwt={jwt} />
             <permitContext.Provider value={{ readonly: false }}>
               <Permits jwt={jwt} setJwt={setJwt} hasBounds={true} />

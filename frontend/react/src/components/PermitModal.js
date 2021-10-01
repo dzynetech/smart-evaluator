@@ -26,6 +26,8 @@ const PERMIT_QUERY = gql`
       classification
       issueDate
       notes
+      imageUrl
+      name
     }
   }
 `;

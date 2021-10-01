@@ -1,4 +1,5 @@
 #!/bin/bash
+set -ex
 
 docker-compose -f production.yml build 
 ./stop.sh

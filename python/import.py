@@ -59,6 +59,10 @@ def main():
                 if col == "zip" and value is not None:
                     while len(value) < 5:
                         value = "0" + value
+                if col == "sqft" and value is None:
+                    value = 0
+                if col == "cost" and value is None:
+                    value = 0
                 data.append(value)
             columns.append("import_id")
             data.append(import_id)
@@ -82,6 +86,10 @@ def main():
                     row.append(col)
                     excluded_rows.append(row)
                     break
+
+            # add name column
+            columns.append("name")
+            data.append(name_row(columns, data))
 
             first_value = ""
             if has_lat and has_long:
@@ -135,6 +143,21 @@ def sanitize(value: str):
     except:
         pass
     return value
+
+
+def name_row(columns, data):
+    street = data[columns.index('street')]
+    street_no = data[columns.index('street_number')]
+    city = data[columns.index('city')]
+    state = data[columns.index('state')]
+    zip = data[columns.index('zip')]
+
+    if (street_no == "" or street == "" or street_no is None or street is None):
+        return f"{city}, {state} {zip}"
+
+    return f"{street_no} {street}, {city}, {state} {zip}"
+
+
 
 if __name__ == "__main__":
     main()

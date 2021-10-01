@@ -31,6 +31,7 @@ def main():
     while True:
         try:
             updated_permit = geocode_permit(geocode_client)
+            connection.commit()
             if (updated_permit == False):
                 # all permits have lat/lon, don't check for at least a minute
                 time.sleep(60)
