@@ -87,6 +87,10 @@ def main():
                     excluded_rows.append(row)
                     break
 
+            # add name column
+            columns.append("name")
+            data.append(name_row(columns, data))
+
             first_value = ""
             if has_lat and has_long:
                 lat_idx = columns.index('latitude')
@@ -139,6 +143,21 @@ def sanitize(value: str):
     except:
         pass
     return value
+
+
+def name_row(columns, data):
+    street = data[columns.index('street')]
+    street_no = data[columns.index('street_number')]
+    city = data[columns.index('city')]
+    state = data[columns.index('state')]
+    zip = data[columns.index('zip')]
+
+    if (street_no == "" or street == "" or street_no is None or street is None):
+        return f"{city}, {state} {zip}"
+
+    return f"{street_no} {street}, {city}, {state} {zip}"
+
+
 
 if __name__ == "__main__":
     main()
