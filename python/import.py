@@ -59,6 +59,10 @@ def main():
                 if col == "zip" and value is not None:
                     while len(value) < 5:
                         value = "0" + value
+                if col == "sqft" and value is None:
+                    value = 0
+                if col == "cost" and value is None:
+                    value = 0
                 data.append(value)
             columns.append("import_id")
             data.append(import_id)
