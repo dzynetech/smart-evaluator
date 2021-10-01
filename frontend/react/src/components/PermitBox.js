@@ -86,7 +86,7 @@ function PermitBox(props) {
             <h3
               onClick={() => {
                 if (props.setActivePermit) {
-                  props.setActivePermit(props.permit);
+                  props.setActivePermit({ ...props.permit, time: Date.now() });
                 }
               }}
             >
