@@ -1,4 +1,4 @@
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import React, { useState, useEffect } from "react";
 import { print } from "graphql/language/printer";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
@@ -10,6 +10,7 @@ import Map from "./Map.js";
 import Nav from "./Nav";
 import PermitModal from "./PermitModal";
 import PERMITS_QUERY from "../queries/PermitsQuery";
+import USER_QUERY from "../queries/UserQuery";
 import Legend from "./Legend";
 
 function Permits(props) {
@@ -23,6 +24,7 @@ function Permits(props) {
   const [getPermits, { loading, error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
+
   if (error) console.log(error);
   const permitsPerPage = 20;
 
