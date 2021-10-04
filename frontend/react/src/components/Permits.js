@@ -83,58 +83,60 @@ function Permits(props) {
             setZoomTarget={setZoomTarget}
           />
         </div>
-        <div id="main" className="container-fluid">
+        <div id="main">
           <Nav active={"classify"} jwt={props.jwt} setJwt={props.setJwt} />
-          <PermitModal
-            permitId={permitForModal}
-            setPermitId={setPermitForModal}
-          />
-          <div className="title">
-            <div>
-              <h1>Construction sites</h1>
+          <div className="container-fluid">
+            <PermitModal
+              permitId={permitForModal}
+              setPermitId={setPermitForModal}
+            />
+            <div className="title">
+              <div>
+                <h1>Construction sites</h1>
+              </div>
+              <Legend />
             </div>
-            <Legend />
-          </div>
-          {data && (
-            <p>
-              Showing results {(page - 1) * permitsPerPage + 1} -
-              {" " +
-                Math.min(page * permitsPerPage, data.permits.totalCount) +
-                " "}
-              of {data.permits.totalCount}
-            </p>
-          )}
-          {data && (
-            <FilterPagination
-              page={page}
-              setPage={setPage}
-              total={data.permits.totalCount}
-              permitsPerPage={permitsPerPage}
-            />
-          )}
-          <CurlModal
-            query={JSON.stringify(print(PERMITS_QUERY))}
-            variables={JSON.stringify(finalQueryVars)}
-            jwt={props.jwt}
-          />
-          {data &&
-            data.permits.edges.map((p, i, permits) => (
-              <PermitBox
-                key={p.node.id}
-                permit={p.node}
-                nextPermit={permits[i + 1]?.node}
-                setActivePermit={setActivePermit}
+            {data && (
+              <p>
+                Showing results {(page - 1) * permitsPerPage + 1} -
+                {" " +
+                  Math.min(page * permitsPerPage, data.permits.totalCount) +
+                  " "}
+                of {data.permits.totalCount}
+              </p>
+            )}
+            {data && (
+              <FilterPagination
+                page={page}
+                setPage={setPage}
+                total={data.permits.totalCount}
+                permitsPerPage={permitsPerPage}
               />
-            ))}
-          {data && (
-            <FilterPagination
-              page={page}
-              setPage={setPage}
-              total={data.permits.totalCount}
-              permitsPerPage={permitsPerPage}
-              center={true}
+            )}
+            <CurlModal
+              query={JSON.stringify(print(PERMITS_QUERY))}
+              variables={JSON.stringify(finalQueryVars)}
+              jwt={props.jwt}
             />
-          )}
+            {data &&
+              data.permits.edges.map((p, i, permits) => (
+                <PermitBox
+                  key={p.node.id}
+                  permit={p.node}
+                  nextPermit={permits[i + 1]?.node}
+                  setActivePermit={setActivePermit}
+                />
+              ))}
+            {data && (
+              <FilterPagination
+                page={page}
+                setPage={setPage}
+                total={data.permits.totalCount}
+                permitsPerPage={permitsPerPage}
+                center={true}
+              />
+            )}
+          </div>
         </div>
       </div>
       <script src="https://code.jquery.com/jquery-3.3.1.min.js"></script>

@@ -74,9 +74,8 @@ a:hover {
 
 #main > .navbar {
 	margin-top: -1rem;	
-	margin-left: -31px; 
+	margin-left: -1rem; 
 }
-
 
 /*curl modal*/
 @media (min-width: 768px) {
