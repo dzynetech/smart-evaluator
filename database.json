@@ -6,11 +6,12 @@
     "username": "postgres",
     "password": "postgres"
   },
-  "prod": {
+  "staging": {
     "driver": "pg",
     "host": "localhost",
     "database": "smart",
-    "username": "postgres",
-    "password": "postgres"
+    "username": "V53OQSV0FN28XBVI",
+    "password": "7KRTS6KYYMM2FLIQ",
+    "port": 5433
   }
 }
