@@ -115,6 +115,7 @@ function Permits(props) {
           <CurlModal
             query={JSON.stringify(print(PERMITS_QUERY))}
             variables={JSON.stringify(finalQueryVars)}
+            jwt={props.jwt}
           />
           {data &&
             data.permits.edges.map((p, i, permits) => (

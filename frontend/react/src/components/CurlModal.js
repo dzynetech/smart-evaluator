@@ -31,9 +31,9 @@ function CurlModal(props) {
             </div>
             <div className="modal-body">
               <code>
-                curl -g --user username:password \<br />
-                -X POST \<br />
+                curl -g -X POST \<br />
                 -H "Content-Type: application/json" \<br />
+                -H "Authorization: Bearer {props.jwt}" \<br />
                 -d '&#123;"query": {props.query}, "variables": {props.variables}
                 ,"operationName":"MyQuery"&#125;' \<br />
                 http://smart.dzynetech.com:4401/graphql
