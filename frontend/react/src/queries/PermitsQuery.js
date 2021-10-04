@@ -32,18 +32,8 @@ const PERMITS_QUERY = gql`
           street: { includesInsensitive: $street }
           state: { includesInsensitive: $state }
           zip: { includesInsensitive: $zip }
-          permitData: { includesInsensitive: $permitData }
+          permitDataBackup: { includesInsensitive: $permitData }
           hasLocation: { equalTo: true }
-          and: {
-            or: [
-              { permitData: { includes: "COMOTH" } }
-              { permitData: { includes: "COMRET" } }
-              { permitData: { includes: "Commercial" } }
-              { permitData: { includes: "New Construction" } }
-              { permitData: { includes: "NEWCON" } }
-              { permitData: { includes: "ERECT" } }
-            ]
-          }
         }
       }
     ) {
@@ -68,6 +58,8 @@ const PERMITS_QUERY = gql`
           classification
           issueDate
           notes
+          imageUrl
+          name
         }
       }
       totalCount

@@ -31,6 +31,7 @@ def main():
     while True:
         try:
             updated_permit = geocode_permit(geocode_client)
+            connection.commit()
             if (updated_permit == False):
                 # all permits have lat/lon, don't check for at least a minute
                 time.sleep(60)
@@ -43,7 +44,7 @@ def geocode_permit(geocode_client):
     global connection
     cursor = connection.cursor()
     # create source in db
-    sql = 'SELECT id, street_number, street, city, state FROM permits where location is NULL AND location_accuracy is NULL AND street IS NOT NULL and city IS NOT NULL limit 1'
+    sql = 'SELECT id, street_number, street, city, state FROM smart.permits where location is NULL AND location_accuracy is NULL AND street IS NOT NULL and city IS NOT NULL limit 1'
     cursor.execute(sql)
     permit_info = cursor.fetchone()
     if (permit_info is None):
@@ -58,7 +59,7 @@ def geocode_permit(geocode_client):
     if len(response['results']) == 0:
         # no results, set loc accuracy to zero so we can skip and goto next addr
         print("No location returned from geocodio API")
-        sql = "UPDATE public.permits SET location_accuracy=%s, geocode_data=%s where id=%s"
+        sql = "UPDATE smart.permits SET location_accuracy=%s, geocode_data=%s where id=%s"
         cursor.execute(sql, (0, json.dumps(response), id))
         return True
 
@@ -80,13 +81,13 @@ def geocode_permit(geocode_client):
         return
 
     # update database
-    sql = f"UPDATE public.permits SET location=ST_GeomFromText('POINT({lng} {lat})')"
+    sql = f"UPDATE smart.permits SET location=ST_GeomFromText('POINT({lng} {lat})')"
     sql += ", formatted_address=%s, location_accuracy=%s, geocode_data=%s where id=%s"
 
     cursor.execute(sql, (formatted_addr, acc, json.dumps(response), id))
 
     # also geocode any duplicates
-    sql = f"UPDATE public.permits SET location=ST_GeomFromText('POINT({lng} {lat})')"
+    sql = f"UPDATE smart.permits SET location=ST_GeomFromText('POINT({lng} {lat})')"
     sql += ", formatted_address=%s, location_accuracy=%s, geocode_data=%s where "
     sql += "street_number=%s AND street=%s AND city=%s AND state=%s"
 

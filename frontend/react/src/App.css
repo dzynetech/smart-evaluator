@@ -77,3 +77,11 @@ a:hover {
 	margin-left: -31px; 
 }
 
+
+/*curl modal*/
+@media (min-width: 768px) {
+	.modal-dialog {
+	  width: 45%;
+	 max-width:1200px;
+	}
+  }
