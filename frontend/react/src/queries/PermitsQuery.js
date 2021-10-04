@@ -14,7 +14,6 @@ const PERMITS_QUERY = gql`
     $permitData: String
     $numPerPage: Int
     $offset: Int
-    $hasBounds: Boolean
   ) {
     permits(
       first: $numPerPage
@@ -22,7 +21,6 @@ const PERMITS_QUERY = gql`
       orderBy: $order
       filter: {
         and: {
-          hasBounds: { equalTo: $hasBounds }
           imageUrl: { isNull: false }
           sqft: { greaterThanOrEqualTo: $min_sqft }
           cost: { greaterThanOrEqualTo: $min_cost }

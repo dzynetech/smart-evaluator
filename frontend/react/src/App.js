@@ -22,8 +22,6 @@ if (!graphql_url) {
   graphql_url = "http://" + window.location.host + "/graphql";
 }
 
-export const permitContext = createContext(null);
-
 function App() {
   const [jwt, setJwt] = useLocalStorage("jwt", null);
   const httpLink = createHttpLink({
@@ -50,32 +48,18 @@ function App() {
     <ApolloProvider client={client}>
       <Router>
         <Switch>
+          <Route path="/login">
+            <Nav active={"login"} jwt={jwt} setJwt={setJwt} />
+            <Login setJwt={setJwt} />
+          </Route>
           <Route path="/stats">
             <RequireLogin jwt={jwt} />
             <Nav active={"stats"} jwt={jwt} setJwt={setJwt} />
             <Stats />
           </Route>
-          <Route path="/annotate">
-            <RequireLogin jwt={jwt} />
-            <permitContext.Provider value={{ readonly: false }}>
-              <Permits jwt={jwt} setJwt={setJwt} />
-            </permitContext.Provider>
-          </Route>
-          <Route path="/imerit_sites">
-            <RequireLogin jwt={jwt} />
-            <permitContext.Provider value={{ readonly: false }}>
-              <Permits jwt={jwt} setJwt={setJwt} hasBounds={true} />
-            </permitContext.Provider>
-          </Route>
-          <Route path="/login">
-            <Nav active={"login"} jwt={jwt} setJwt={setJwt} />
-            <Login setJwt={setJwt} />
-          </Route>
           <Route path="/">
             <RequireLogin jwt={jwt} />
-            <permitContext.Provider value={{ readonly: true }}>
-              <Permits jwt={jwt} setJwt={setJwt} />
-            </permitContext.Provider>
+            <Permits jwt={jwt} setJwt={setJwt} />
           </Route>
         </Switch>
       </Router>
