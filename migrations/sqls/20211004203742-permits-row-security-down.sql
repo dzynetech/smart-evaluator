@@ -1,0 +1,1 @@
+DROP POLICY select_permit ON smart.permits;
