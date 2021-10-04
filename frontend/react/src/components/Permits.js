@@ -36,7 +36,6 @@ function Permits(props) {
     Object.assign(queryVars, filterVars);
     queryVars.numPerPage = permitsPerPage;
     queryVars.offset = permitsPerPage * (page - 1);
-    queryVars.hasBounds = Boolean(props?.hasBounds);
     getPermits({ variables: queryVars });
     console.log(queryVars);
     setFinalQueryVars(queryVars);
