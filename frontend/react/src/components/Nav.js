@@ -10,6 +10,7 @@ function Nav(props) {
         SMART Site Evaluator
       </a>
       <div className="collapse navbar-collapse" id="navbarNav">
+        {/* left menu  */}
         <ul className="navbar-nav">
           <li
             className={
@@ -27,17 +28,9 @@ function Nav(props) {
               Stats
             </a>
           </li>
-          {!props.jwt && (
-            <li
-              className={
-                "nav-item " + (props.active === "login" ? "active" : "")
-              }
-            >
-              <a className="nav-link" href="/login">
-                Login
-              </a>
-            </li>
-          )}
+        </ul>
+        {/* right menu  */}
+        <ul className="navbar-nav">
           {props.jwt && (
             <li className="nav-item">
               <a
@@ -49,6 +42,17 @@ function Nav(props) {
                 }}
               >
                 Log Out
+              </a>
+            </li>
+          )}
+          {!props.jwt && (
+            <li
+              className={
+                "nav-item " + (props.active === "login" ? "active" : "")
+              }
+            >
+              <a className="nav-link" href="/login">
+                Login
               </a>
             </li>
           )}
