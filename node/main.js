@@ -28,6 +28,5 @@ app.use(
     }
   )
 );
-app.use(express.static("frontend"));
 
 app.listen(process.env.PORT || 3000);
