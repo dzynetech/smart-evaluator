@@ -6,6 +6,7 @@ import PermitBox from "./PermitBox";
 import { useLocation } from "react-router";
 import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
+import { createMapLayers } from "../utils/MapLayers";
 
 window.locs = [];
 
@@ -50,6 +51,7 @@ function Map(props) {
 
   const map = useMap("map", {}, {}, (map) => {
     map.on("zoomend", updateMarkers);
+    createMapLayers(map);
   });
 
   if (props.zoomTarget) {
