@@ -6,3 +6,4 @@ backup/
 frontend/react/build/
 frontend/nginx/htpasswd
 frontend/nginx/logs/
+goaccess/index.html
