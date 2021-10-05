@@ -13,15 +13,16 @@ const AUTH_MUT = gql`
 function Login(props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
+  const [loginError, setLoginError] = useState(null);
 
-  const [getPermits, { loading, error, data }] = useMutation(AUTH_MUT);
+  const [authenticate, { loading, error, data }] = useMutation(AUTH_MUT);
   const history = useHistory();
 
   function handleLogin(e) {
     if (e) {
       e.preventDefault();
     }
-    getPermits({
+    authenticate({
       variables: {
         username: username,
         password: password,
@@ -33,6 +34,10 @@ function Login(props) {
     if (data?.authenticate?.jwt) {
       props.setJwt(data.authenticate.jwt);
       history.push("/");
+      return;
+    }
+    if (data) {
+      setLoginError("Invalid username and or password");
     }
   }, [data]);
 
@@ -63,6 +68,7 @@ function Login(props) {
           <button className="btn btn-lg btn-primary btn-block" type="submit">
             Sign in
           </button>
+          {loginError && <p className="login-error">{loginError}</p>}
         </form>
       </div>
     </>
