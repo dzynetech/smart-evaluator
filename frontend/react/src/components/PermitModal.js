@@ -32,7 +32,7 @@ const PERMIT_QUERY = gql`
   }
 `;
 function PermitModal(props) {
-  const { loading, error, data } = useQuery(PERMIT_QUERY, {
+  const { error, data } = useQuery(PERMIT_QUERY, {
     fetchPolicy: "no-cache",
     variables: {
       id: props.permitId,

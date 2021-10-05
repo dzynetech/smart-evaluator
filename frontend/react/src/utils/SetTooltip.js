@@ -1,4 +1,4 @@
-import { gql, useQuery, useLazyQuery } from "@apollo/client";
+import { gql } from "@apollo/client";
 
 const PERMIT_NAME_QUERY = gql`
   query PermitName($id: Int!) {

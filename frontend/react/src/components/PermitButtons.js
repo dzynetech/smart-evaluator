@@ -20,7 +20,7 @@ const CLASSIFY_PERMIT_MUT = gql`
 
 function PermitButtons(props) {
   const [classifyPermit] = useMutation(CLASSIFY_PERMIT_MUT);
-  const { loading, error, data: user_data } = useQuery(USER_QUERY);
+  const { data: user_data } = useQuery(USER_QUERY);
 
   async function classify(classification) {
     if (props.setActivePermit) {

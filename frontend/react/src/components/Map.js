@@ -11,7 +11,7 @@ import { setTooltip } from "../utils/SetTooltip";
 window.locs = [];
 
 function Map(props) {
-  const [getPermits, { data }] = useLazyQuery(PERMITS_QUERY, {
+  const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
 

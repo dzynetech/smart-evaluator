@@ -12,7 +12,7 @@ const STATES_QUERY = gql`
 `;
 
 function StateDropdown(props) {
-  const { loading, error, data } = useQuery(STATES_QUERY);
+  const { data } = useQuery(STATES_QUERY);
   const [states, setStates] = useState([]);
 
   useEffect(() => {

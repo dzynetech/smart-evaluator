@@ -14,11 +14,8 @@ const ACCOUNT_QUERY = gql`
 
 function Nav(props) {
   const history = useHistory();
-  const { loading, error, data: user_data } = useQuery(USER_QUERY);
-  const [
-    getUsername,
-    { loading: username_loading, error: username_error, data: username_data },
-  ] = useLazyQuery(ACCOUNT_QUERY);
+  const { data: user_data } = useQuery(USER_QUERY);
+  const [getUsername, { data: username_data }] = useLazyQuery(ACCOUNT_QUERY);
 
   useEffect(() => {
     if (user_data?.getUserId) {

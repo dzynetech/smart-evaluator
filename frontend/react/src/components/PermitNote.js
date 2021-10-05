@@ -15,13 +15,9 @@ function PermitNote(props) {
     }
   `;
   const [note, setNote] = useState(props.permit.notes || "");
-  const [updateNote, { data, loading, error }] = useMutation(UPDATE_NOTE);
+  const [updateNote, { error }] = useMutation(UPDATE_NOTE);
   const [firstRender, setFirstRender] = useState(true);
-  const {
-    loading: user_loading,
-    error: user_error,
-    data: user_data,
-  } = useQuery(USER_QUERY);
+  const { data: user_data } = useQuery(USER_QUERY);
 
   useEffect(() => {
     if (firstRender) {

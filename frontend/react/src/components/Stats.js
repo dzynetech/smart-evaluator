@@ -9,7 +9,7 @@ import "./Stats.css";
 function Stats() {
   const [minSqft, setMinSqft] = useState(0);
 
-  const { loading, error, data } = useQuery(SOURCES_QUERY);
+  const { data } = useQuery(SOURCES_QUERY);
 
   function setFilter(e, sqft) {
     e.preventDefault();

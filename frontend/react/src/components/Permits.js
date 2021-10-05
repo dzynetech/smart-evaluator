@@ -21,7 +21,7 @@ function Permits(props) {
   const [activePermit, setActivePermit] = useState(null);
   const [prevActivePermit, setPrevActivePermit] = useState(null);
   const [permitForModal, setPermitForModal] = useState(null);
-  const [getPermits, { data }] = useLazyQuery(PERMITS_QUERY, {
+  const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
 
