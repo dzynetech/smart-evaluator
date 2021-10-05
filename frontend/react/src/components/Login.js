@@ -15,7 +15,7 @@ function Login(props) {
   const [password, setPassword] = useState("");
   const [loginError, setLoginError] = useState(null);
 
-  const [authenticate, { loading, error, data }] = useMutation(AUTH_MUT);
+  const [authenticate, { data }] = useMutation(AUTH_MUT);
   const history = useHistory();
 
   function handleLogin(e) {

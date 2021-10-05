@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import SOURCES_QUERY from "../queries/SourcesQuery";
 
 function SourceDropdown(props) {
-  const { loading, error, data } = useQuery(SOURCES_QUERY, {
+  const { data } = useQuery(SOURCES_QUERY, {
     fetchPolicy: "cache-first",
   });
   return (
