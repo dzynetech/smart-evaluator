@@ -28,8 +28,8 @@ def main():
             # just wait for postgres to be ready
             time.sleep(10)
 
+    print("Starting geocode routine")
     while True:
-        print("Starting geocode routine")
         try:
             updated_permit = geocode_permit(geocode_client)
             connection.commit()
