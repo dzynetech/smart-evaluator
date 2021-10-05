@@ -4,10 +4,10 @@ import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PERMITS_QUERY from "../queries/PermitsQuery";
 import PermitBox from "./PermitBox";
 import { useLocation } from "react-router";
-import { useLazyQuery } from "@apollo/client";
+import { useApolloClient, useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
-
+import { setTooltip } from "../utils/SetTooltip";
 window.locs = [];
 
 function Map(props) {
@@ -15,6 +15,7 @@ function Map(props) {
     fetchPolicy: "no-cache",
   });
 
+  const apolloClient = useApolloClient();
   if (error) console.log(error);
 
   function updateMarkers() {
@@ -36,11 +37,8 @@ function Map(props) {
     }
     for (let m of markerLocations) {
       const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2, m.active);
-      marker.bindTooltip(JSON.stringify(m.ids), {
-        // permanent: true,
-        direction: "right",
-      });
       if (m.ids.length === 1) {
+        setTimeout(() => setTooltip(marker, m.ids[0], apolloClient), 0);
         marker.on("click", () => {
           props.setPermitForModal(m.ids[0]);
         });

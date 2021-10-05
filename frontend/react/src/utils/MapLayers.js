@@ -34,7 +34,7 @@ const normal = Leaflet.tileLayer(
 
 const baseLayers = {
   Normal: normal,
-  Sat: googleSat,
+  Satelite: googleSat,
   Hybrid: googleHybrid,
   Terrain: googleTerrain,
 };

@@ -17,7 +17,9 @@ function SourceDropdown(props) {
       <option value="ALL">All</option>
       {data &&
         data.sources.nodes.map((source) => (
-          <option value={source.id}>{source.name}</option>
+          <option key={source.id} value={source.id}>
+            {source.name}
+          </option>
         ))}
     </select>
   );

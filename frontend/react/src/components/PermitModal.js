@@ -58,7 +58,7 @@ function PermitModal(props) {
     >
       <div className="permit-modal-content">
         <span
-          class="modal-close"
+          className="modal-close"
           onClick={() => {
             props.setPermitId(null);
           }}
