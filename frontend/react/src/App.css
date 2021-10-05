@@ -45,6 +45,7 @@ a:hover {
 
 .filter {
 	padding: 2rem;
+	padding-bottom: 0px;
 }
 
 #map {

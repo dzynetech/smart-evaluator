@@ -1,4 +1,4 @@
-alter table smart.users_sources set schema smart;
+alter table "smart_private".users_sources set schema smart;
 drop policy select_source on smart.sources;
 drop policy select_permit on smart.permits;
 drop function smart."can_view_permit";

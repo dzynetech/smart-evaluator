@@ -188,31 +188,29 @@ function PermitsFilter(props) {
         </div>
         <div id="apply-btn">
           <input type="submit" className="btn btn-primary mb-2" value="Apply" />
-          <button
-            type="button"
-            className="btn btn-link"
-            onClick={openModal}
-            data-toggle="tooltip"
-            data-placement="top"
-            title="view cURL instructions"
-          >
-            <h4>
-              <i className="bi bi-info-circle"></i>
-            </h4>
-          </button>
-          <button
-            onClick={props.getJsonFile}
-            className="btn btn-link"
-            data-toggle="tooltip"
-            data-placement="top"
-            title="view raw JSON"
-          >
-            <h4>
-              <i className="bi bi-file-earmark-code"></i>
-            </h4>
-          </button>
         </div>
       </form>
+      <button
+        type="button"
+        className="btn btn-link"
+        onClick={openModal}
+        data-toggle="tooltip"
+        data-placement="top"
+        title="view cURL instructions"
+      >
+        <i className="bi bi-info-circle"></i>
+        cURL instructions
+      </button>
+      <button
+        onClick={props.getJsonFile}
+        className="btn btn-link"
+        data-toggle="tooltip"
+        data-placement="top"
+        title="view raw JSON"
+      >
+        <i className="bi bi-file-earmark-code"></i>
+        View raw JSON
+      </button>
     </>
   );
 }
