@@ -5,3 +5,4 @@ node/frontend/data/
 backup/
 frontend/react/build/
 frontend/nginx/htpasswd
+frontend/nginx/logs/
