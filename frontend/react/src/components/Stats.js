@@ -10,8 +10,6 @@ function Stats() {
   const [minSqft, setMinSqft] = useState(0);
 
   const { loading, error, data } = useQuery(SOURCES_QUERY);
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
 
   function setFilter(e, sqft) {
     e.preventDefault();
@@ -23,9 +21,10 @@ function Stats() {
       <StatsFilter setFilter={setFilter} />
 
       <div className="stats-container">
-        {data.sources.nodes.map((n) => (
-          <SourceStats source={n} minSqft={minSqft} />
-        ))}
+        {data &&
+          data.sources.nodes.map((n) => (
+            <SourceStats source={n} minSqft={minSqft} />
+          ))}
       </div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     </>
