@@ -29,6 +29,7 @@ def main():
             time.sleep(10)
 
     while True:
+        print("Starting geocode routine")
         try:
             updated_permit = geocode_permit(geocode_client)
             connection.commit()
@@ -48,7 +49,6 @@ def geocode_permit(geocode_client):
     cursor.execute(sql)
     permit_info = cursor.fetchone()
     if (permit_info is None):
-        print("no permits need geocoding")
         return False
     id = permit_info[0]
     address = " ".join(permit_info[1:])
