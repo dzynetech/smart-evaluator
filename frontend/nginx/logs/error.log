@@ -1,0 +1,84 @@
+2021/10/05 13:38:44 [notice] 1#1: using the "epoll" event method
+2021/10/05 13:38:44 [notice] 1#1: nginx/1.21.1
+2021/10/05 13:38:44 [notice] 1#1: built by gcc 8.3.0 (Debian 8.3.0-6) 
+2021/10/05 13:38:44 [notice] 1#1: OS: Linux 5.4.0-77-generic
+2021/10/05 13:38:44 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2021/10/05 13:38:44 [notice] 1#1: start worker processes
+2021/10/05 13:38:44 [notice] 1#1: start worker process 30
+2021/10/05 13:38:44 [notice] 1#1: start worker process 31
+2021/10/05 13:38:44 [notice] 1#1: start worker process 32
+2021/10/05 13:38:44 [notice] 1#1: start worker process 33
+2021/10/05 13:39:24 [warn] 31#31: *8 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/1/00/0000000001 while reading upstream, client: 216.185.30.79, server: frontend, request: "POST /graphql HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/"
+2021/10/05 13:39:26 [warn] 31#31: *2 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/2/00/0000000002 while reading upstream, client: 216.185.30.79, server: frontend, request: "POST /graphql HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/"
+2021/10/05 13:54:05 [warn] 31#31: *19 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/3/00/0000000003 while reading upstream, client: 216.185.30.79, server: frontend, request: "POST /graphql HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/"
+2021/10/05 13:54:07 [warn] 31#31: *14 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/4/00/0000000004 while reading upstream, client: 216.185.30.79, server: frontend, request: "POST /graphql HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/"
+2021/10/05 13:54:11 [warn] 30#30: *24 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/5/00/0000000005 while reading upstream, client: 216.185.30.79, server: frontend, request: "POST /graphql HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/old"
+2021/10/05 13:54:44 [warn] 30#30: *24 an upstream response is buffered to a temporary file /var/cache/nginx/proxy_temp/6/00/0000000006 while reading upstream, client: 216.185.30.79, server: frontend, request: "GET /graphiql HTTP/1.1", upstream: "http://172.23.0.3:3000/graphiql", host: "smart.dzynetech.com:5000"
+2021/10/05 13:55:44 [error] 32#32: *21 upstream timed out (110: Connection timed out) while reading upstream, client: 216.185.30.79, server: frontend, request: "GET /graphql/stream HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql/stream", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/graphiql"
+2021/10/05 13:56:47 [error] 31#31: *17 upstream timed out (110: Connection timed out) while reading upstream, client: 216.185.30.79, server: frontend, request: "GET /graphql/stream HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql/stream", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/graphiql"
+2021/10/05 13:57:51 [error] 30#30: *24 upstream timed out (110: Connection timed out) while reading upstream, client: 216.185.30.79, server: frontend, request: "GET /graphql/stream HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql/stream", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/graphiql"
+2021/10/05 13:58:54 [error] 31#31: *38 upstream timed out (110: Connection timed out) while reading upstream, client: 216.185.30.79, server: frontend, request: "GET /graphql/stream HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql/stream", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/graphiql"
+2021/10/05 13:59:57 [error] 31#31: *41 upstream timed out (110: Connection timed out) while reading upstream, client: 216.185.30.79, server: frontend, request: "GET /graphql/stream HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql/stream", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/graphiql"
+2021/10/05 14:01:00 [error] 31#31: *44 upstream timed out (110: Connection timed out) while reading upstream, client: 216.185.30.79, server: frontend, request: "GET /graphql/stream HTTP/1.1", upstream: "http://172.23.0.3:3000/graphql/stream", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/graphiql"
+2021/10/05 14:01:51 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2021/10/05 14:01:51 [notice] 30#30: gracefully shutting down
+2021/10/05 14:01:51 [notice] 32#32: gracefully shutting down
+2021/10/05 14:01:51 [notice] 33#33: gracefully shutting down
+2021/10/05 14:01:51 [notice] 30#30: exiting
+2021/10/05 14:01:51 [notice] 32#32: exiting
+2021/10/05 14:01:51 [notice] 33#33: exiting
+2021/10/05 14:01:51 [notice] 33#33: exit
+2021/10/05 14:01:51 [notice] 30#30: exit
+2021/10/05 14:01:51 [notice] 32#32: exit
+2021/10/05 14:01:51 [notice] 31#31: gracefully shutting down
+2021/10/05 14:01:51 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2021/10/05 14:01:51 [notice] 1#1: worker process 32 exited with code 0
+2021/10/05 14:01:51 [notice] 1#1: worker process 33 exited with code 0
+2021/10/05 14:01:51 [notice] 1#1: signal 29 (SIGIO) received
+2021/10/05 14:01:51 [notice] 1#1: signal 17 (SIGCHLD) received from 30
+2021/10/05 14:01:51 [notice] 1#1: worker process 30 exited with code 0
+2021/10/05 14:01:51 [notice] 1#1: signal 29 (SIGIO) received
+2021/10/05 14:02:11 [notice] 1#1: using the "epoll" event method
+2021/10/05 14:02:11 [notice] 1#1: nginx/1.21.1
+2021/10/05 14:02:11 [notice] 1#1: built by gcc 8.3.0 (Debian 8.3.0-6) 
+2021/10/05 14:02:11 [notice] 1#1: OS: Linux 5.4.0-77-generic
+2021/10/05 14:02:11 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2021/10/05 14:02:11 [notice] 1#1: start worker processes
+2021/10/05 14:02:11 [notice] 1#1: start worker process 30
+2021/10/05 14:02:11 [notice] 1#1: start worker process 31
+2021/10/05 14:02:11 [notice] 1#1: start worker process 32
+2021/10/05 14:02:11 [notice] 1#1: start worker process 33
+2021/10/05 14:02:11 [error] 31#31: *1 connect() failed (111: Connection refused) while connecting to upstream, client: 216.185.30.79, server: frontend, request: "GET /graphql/stream HTTP/1.1", upstream: "http://172.24.0.3:3000/graphql/stream", host: "smart.dzynetech.com:5000", referrer: "http://smart.dzynetech.com:5000/graphiql"
+2021/10/05 14:02:12 [notice] 1#1: signal 3 (SIGQUIT) received, shutting down
+2021/10/05 14:02:12 [notice] 30#30: gracefully shutting down
+2021/10/05 14:02:12 [notice] 32#32: gracefully shutting down
+2021/10/05 14:02:12 [notice] 30#30: exiting
+2021/10/05 14:02:12 [notice] 32#32: exiting
+2021/10/05 14:02:12 [notice] 30#30: exit
+2021/10/05 14:02:12 [notice] 32#32: exit
+2021/10/05 14:02:12 [notice] 31#31: gracefully shutting down
+2021/10/05 14:02:12 [notice] 33#33: gracefully shutting down
+2021/10/05 14:02:12 [notice] 33#33: exiting
+2021/10/05 14:02:12 [notice] 33#33: exit
+2021/10/05 14:02:12 [notice] 1#1: signal 17 (SIGCHLD) received from 33
+2021/10/05 14:02:12 [notice] 1#1: worker process 33 exited with code 0
+2021/10/05 14:02:12 [notice] 1#1: signal 29 (SIGIO) received
+2021/10/05 14:02:12 [notice] 1#1: signal 17 (SIGCHLD) received from 32
+2021/10/05 14:02:12 [notice] 1#1: worker process 32 exited with code 0
+2021/10/05 14:02:12 [notice] 1#1: signal 29 (SIGIO) received
+2021/10/05 14:02:12 [notice] 1#1: signal 17 (SIGCHLD) received from 30
+2021/10/05 14:02:12 [notice] 1#1: worker process 30 exited with code 0
+2021/10/05 14:02:12 [notice] 1#1: signal 29 (SIGIO) received
+2021/10/05 14:02:39 [notice] 1#1: using the "epoll" event method
+2021/10/05 14:02:39 [notice] 1#1: nginx/1.21.1
+2021/10/05 14:02:39 [notice] 1#1: built by gcc 8.3.0 (Debian 8.3.0-6) 
+2021/10/05 14:02:39 [notice] 1#1: OS: Linux 5.4.0-77-generic
+2021/10/05 14:02:39 [notice] 1#1: getrlimit(RLIMIT_NOFILE): 1048576:1048576
+2021/10/05 14:02:39 [notice] 1#1: start worker processes
+2021/10/05 14:02:39 [notice] 1#1: start worker process 31
+2021/10/05 14:02:39 [notice] 1#1: start worker process 32
+2021/10/05 14:02:39 [notice] 1#1: start worker process 33
+2021/10/05 14:02:39 [notice] 1#1: start worker process 34
+2021/10/05 14:02:43 [error] 32#32: *1 rewrite or internal redirection cycle while internally redirecting to "/analytics", client: 216.185.30.79, server: frontend, request: "GET /analytics HTTP/1.1", host: "smart.dzynetech.com:5000"
+2021/10/05 14:04:21 [error] 32#32: *3 rewrite or internal redirection cycle while internally redirecting to "/analytics", client: 216.185.30.79, server: frontend, request: "GET /analytics HTTP/1.1", host: "smart.dzynetech.com:5000"
+2021/10/05 14:04:22 [error] 31#31: *4 rewrite or internal redirection cycle while internally redirecting to "/analytics", client: 216.185.30.79, server: frontend, request: "GET /analytics HTTP/1.1", host: "smart.dzynetech.com:5000"
