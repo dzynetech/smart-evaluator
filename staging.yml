@@ -37,6 +37,8 @@ services:
       - node 
     volumes:
       - ./data:/usr/share/nginx/html/data
+      - ./goaccess:/usr/share/nginx/html/analytics
+      - ./frontend/nginx/logs:/var/log/nginx
 
   # pgbackups:
   #   container_name: postgres_backup

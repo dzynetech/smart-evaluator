@@ -13,6 +13,7 @@ RUN npm run build
 
 
 FROM nginx
+RUN rm /var/log/nginx/access.log
 
 COPY ./nginx/nginx.conf /etc/nginx/conf.d/default.conf
 COPY ./nginx/htpasswd /etc/nginx/.htpasswd
