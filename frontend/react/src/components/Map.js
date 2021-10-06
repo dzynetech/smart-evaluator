@@ -53,7 +53,7 @@ function Map(props) {
   });
 
   if (props.zoomTarget) {
-    map.flyTo([props.zoomTarget.y, props.zoomTarget.x], 17, {
+    map.flyTo([props.zoomTarget.y, props.zoomTarget.x], 16, {
       duration: 0.6,
     });
   }
