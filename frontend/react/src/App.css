@@ -91,3 +91,12 @@ a:hover {
 	 max-width:1200px;
 	}
   }
+
+
+#map-controls {
+	margin-bottom: 1rem;
+}
+
+#map-controls button {
+	pointer-events: auto;
+}

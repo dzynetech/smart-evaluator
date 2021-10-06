@@ -8,17 +8,35 @@ import { useApolloClient, useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
 import { setTooltip } from "../utils/SetTooltip";
+import "leaflet.heat";
+
 window.locs = [];
+window.showMarkers = true;
 
 function Map(props) {
   const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
+  const [showMarkers, setShowMarkers] = useState(true);
+  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [heatLayer, setHeatLayer] = useState(null);
 
   const apolloClient = useApolloClient();
   if (error) console.log(error);
 
+  function removeOldMarkers() {
+    for (let layer in map._layers) {
+      const l = map._layers[layer];
+      if (l instanceof Leaflet.Marker) {
+        map.removeLayer(l);
+      }
+    }
+  }
+
   function updateMarkers() {
+    if (!window.showMarkers) {
+      return;
+    }
     props.setZoomTarget(null);
     const zoom = map.getZoom();
     const lat = map.getCenter().lat;
@@ -28,13 +46,7 @@ function Map(props) {
       window.locs,
       window.activePermit
     );
-    //remove old markers
-    for (let layer in map._layers) {
-      const l = map._layers[layer];
-      if (l instanceof Leaflet.Marker) {
-        map.removeLayer(l);
-      }
-    }
+    removeOldMarkers();
     for (let m of markerLocations) {
       const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2, m.active);
       if (m.ids.length === 1) {
@@ -82,8 +94,50 @@ function Map(props) {
         });
       });
       window.locs = locs;
+
+      //setup heatmap
+      if (showHeatmap) {
+        var heatmap_data = [];
+        window.locs.forEach((l) => {
+          heatmap_data.push([l.y, l.x, 7]);
+        });
+        const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
+        heat.addTo(map);
+        setHeatLayer(heat);
+      }
     }
   }, [data]);
+
+  //enable disable heatmap
+  useEffect(() => {
+    if (showHeatmap && window.locs.length > 0) {
+      var heatmap_data = [];
+      window.locs.forEach((l) => {
+        heatmap_data.push([l.y, l.x, 7]);
+      });
+      const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
+      heat.addTo(map);
+      setHeatLayer(heat);
+    }
+    if (!showHeatmap && heatLayer) {
+      map.removeLayer(heatLayer);
+      setHeatLayer(null);
+    }
+  }, [showHeatmap]);
+
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    if (showMarkers) {
+      window.showMarkers = true;
+      updateMarkers();
+    }
+    if (!showMarkers) {
+      window.showMarkers = false;
+      removeOldMarkers();
+    }
+  }, [showMarkers]);
 
   useEffect(() => {
     if (data && map) {
@@ -100,7 +154,25 @@ function Map(props) {
 
   return (
     <>
-      <div id="map"></div>
+      <div id="map">
+        <div id="map-controls" className="leaflet-bottom leaflet-right">
+          <button
+            className="btn btn-sm btn-light"
+            onClick={() => setShowMarkers((x) => !x)}
+          >
+            markers
+          </button>
+          <button
+            className="btn btn-sm btn-light"
+            onClick={(e) => {
+              e.stopPropagation();
+              setShowHeatmap((x) => !x);
+            }}
+          >
+            heatmap
+          </button>
+        </div>
+      </div>
     </>
   );
 }
