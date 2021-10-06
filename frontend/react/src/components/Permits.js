@@ -113,7 +113,9 @@ function Permits(props) {
               />
             )}
             <CurlModal
-              query={JSON.stringify(print(PERMITS_QUERY))}
+              query={JSON.stringify(
+                print(PERMITS_QUERY).replace(/(\r\n|\n|\r)/gm, "")
+              )}
               variables={JSON.stringify(finalQueryVars)}
               jwt={props.jwt}
             />
