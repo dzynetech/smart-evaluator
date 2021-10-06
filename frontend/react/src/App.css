@@ -62,15 +62,15 @@ a:hover {
 	border-style: solid;
 	font-size: 16px;
 	font-weight: bold;
-	background: rgba(0, 57, 128, 0.2);
-	border-color: #3388FF;
-	color: #405c78
+	background: rgba(0, 57, 128, 0.8);
+	color: #dbdcdd;
+	border-color: #929292;
 }
 
 .activeMarker {
-	border-color: #062046;
+	color: #33e43c;
+	border-color: #dbdcdd;
 	border-style: dashed !important;
-	box-shadow: 5px 5px 5px;
 }
 
 #main > .navbar {
