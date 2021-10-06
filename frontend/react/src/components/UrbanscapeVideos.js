@@ -13,7 +13,7 @@ function UrbanscapeVideos(props) {
   return (
     <div className="video-container">
       {video_suffixes.map((suffix) => (
-        <div>
+        <div key={suffix}>
           <UrbanscapeVideo
             id={props.id}
             masterVideoRef={props.masterVideoRef}

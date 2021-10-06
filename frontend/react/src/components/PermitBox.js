@@ -114,7 +114,10 @@ function PermitBox(props) {
                   </div>
                 ))}
               </div>
-              <button onClick={() => setShowUrbanscape((x) => !x)}>
+              <button
+                className="btn btn-sm btn-light"
+                onClick={() => setShowUrbanscape((x) => !x)}
+              >
                 Videos
               </button>
             </div>
