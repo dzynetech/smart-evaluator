@@ -15,7 +15,6 @@ import Legend from "./Legend";
 
 function Permits(props) {
   const [filterVars, setFilterVars] = useState({});
-  const [finalQueryVars, setFinalQueryVars] = useState({});
   const [page, setPage] = useState(1);
   const [zoomTarget, setZoomTarget] = useState(null);
   const [activePermit, setActivePermit] = useState(null);
@@ -38,7 +37,6 @@ function Permits(props) {
     queryVars.offset = permitsPerPage * (page - 1);
     getPermits({ variables: queryVars });
     console.log(queryVars);
-    setFinalQueryVars(queryVars);
   }, [filterVars, page]);
 
   useEffect(() => {
@@ -116,7 +114,7 @@ function Permits(props) {
               query={JSON.stringify(
                 print(PERMITS_QUERY).replace(/(\r\n|\n|\r)/gm, "")
               )}
-              variables={JSON.stringify(finalQueryVars)}
+              variables={JSON.stringify(filterVars)}
               jwt={props.jwt}
             />
             {data &&
