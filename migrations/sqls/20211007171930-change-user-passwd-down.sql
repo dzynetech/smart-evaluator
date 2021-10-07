@@ -1,0 +1,1 @@
+DROP function smart_private.change_user_password(uid integer,password text);
