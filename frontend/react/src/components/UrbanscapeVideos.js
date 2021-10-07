@@ -55,6 +55,7 @@ function UrbanscapeVideo(props) {
       return;
     }
     if (isPlaying(props.masterVideoRef.current)) {
+			videoRef.current.currentTime = props.masterVideoRef.current.currentTime;
       videoRef.current.play();
     }
     const masterVid = props.masterVideoRef.current;
