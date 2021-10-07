@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import StateDropdown from "./StateDropdown";
 import SourceDropdown from "./SourceDropdown";
+import ViewRawJSON from "./ViewRawJSON";
 
 import "./PermitsFilter.css";
 
@@ -201,16 +202,7 @@ function PermitsFilter(props) {
         <i className="bi bi-info-circle"></i>
         cURL instructions
       </button>
-      <button
-        onClick={props.getJsonFile}
-        className="btn btn-link"
-        data-toggle="tooltip"
-        data-placement="top"
-        title="view raw JSON"
-      >
-        <i className="bi bi-file-earmark-code"></i>
-        View raw JSON
-      </button>
+      <ViewRawJSON filterVars={props.filterVars} />
     </>
   );
 }

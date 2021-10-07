@@ -55,13 +55,6 @@ function Permits(props) {
     window.activePermit = activePermit;
   }, [activePermit]);
 
-  function getJsonFile() {
-    var queryResponseJSON = JSON.stringify(data);
-    var d = new Blob([queryResponseJSON], { type: "text/plain" });
-    var url = window.URL.createObjectURL(d);
-    window.location.href = url;
-  }
-
   return (
     <>
       <div className="site">
@@ -69,7 +62,7 @@ function Permits(props) {
           <div className="filter">
             <PermitsFilter
               setFilterVars={setFilterVars}
-              getJsonFile={getJsonFile}
+              filterVars={filterVars}
             />
           </div>
           <Map
