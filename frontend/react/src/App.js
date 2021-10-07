@@ -36,17 +36,6 @@ function App() {
           Authorization: `Bearer ${jwt}`,
         },
       };
-    } else {
-      //remove old htaccess headers if present
-      console.log(headers);
-      if (headers && Object.hasOwnProperty('Authorization')) {
-        delete headers.Authorization;
-      }
-      return {
-        headers: {
-         ...headers 
-        }
-      };
     }
   });
 
