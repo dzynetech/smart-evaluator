@@ -32,7 +32,28 @@ function PermitBox(props) {
               </video>
             </div>
             <div className="permit-title">
-              <b style={{ fontSize: "23px" }}>{props.permit.name}</b>
+              <button
+                className="btn btn-sm btn-info"
+                style={{ marginTop: "-0.5rem" }}
+                onClick={() => {
+                  if (props.setActivePermit) {
+                    props.setActivePermit({
+                      ...props.permit,
+                      time: Date.now(),
+                    });
+                  }
+                }}
+              >
+                Select
+              </button>
+              <b
+                style={{
+                  fontSize: "23px",
+                  marginLeft: "1rem",
+                }}
+              >
+                {props.permit.name}
+              </b>
             </div>
             <div className="permit-info">
               <table>
