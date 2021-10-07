@@ -46,6 +46,7 @@ const PERMITS_QUERY = gql`
           streetNumber
           source {
             name
+            hasUrbanscapeVideos
           }
           location {
             x

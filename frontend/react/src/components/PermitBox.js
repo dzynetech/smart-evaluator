@@ -114,14 +114,17 @@ function PermitBox(props) {
                   </div>
                 ))}
               </div>
-              <h3 onClick={() => setShowUrbanscape((x) => !x)}>
-                {!showUrbanscape && (
-                  <i className="bi bi-arrow-down-square-fill"></i>
-                )}
-                {showUrbanscape && (
-                  <i className="bi bi-arrow-up-square-fill"></i>
-                )}
-              </h3>
+              {props.permit.source.hasUrbanscapeVideos && (
+                <h3 onClick={() => setShowUrbanscape((x) => !x)}>
+                  {!showUrbanscape && (
+                    <i className="bi bi-arrow-down-square-fill"></i>
+                  )}
+                  {showUrbanscape && (
+                    <i className="bi bi-arrow-up-square-fill"></i>
+                  )}
+                </h3>
+              )}
+              {!props.permit.source.hasUrbanscapeVideos && <br />}
             </div>
           </div>
           {showUrbanscape && (
