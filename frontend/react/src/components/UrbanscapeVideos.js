@@ -5,7 +5,7 @@ const video_suffixes = [
   "_Weighted_Depth",
   "_Depth_BLD",
   "_Overlay_BLD",
-  "_Mask_BLD",
+  "_Mask_BLD_BLUE",
 ];
 const prefix = "/data/urbanscape_videos/";
 
