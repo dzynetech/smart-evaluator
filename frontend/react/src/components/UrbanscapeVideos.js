@@ -42,6 +42,7 @@ function UrbanscapeVideo(props) {
   }
   function onPause() {
     videoRef.current.pause();
+    videoRef.current.currentTime = props.masterVideoRef.current.currentTime;
   }
   function onSeek() {
     if (videoRef.current) {
@@ -56,11 +57,13 @@ function UrbanscapeVideo(props) {
     if (isPlaying(props.masterVideoRef.current)) {
       videoRef.current.play();
     }
-    videoRef.current.currentTime = props.masterVideoRef.current.currentTime;
-    props.masterVideoRef.current.addEventListener("play", onPlay);
-    props.masterVideoRef.current.addEventListener("pause", onPause);
-    props.masterVideoRef.current.addEventListener("seeking", onSeek);
-    props.masterVideoRef.current.addEventListener("seeked", onSeek);
+    const masterVid = props.masterVideoRef.current;
+
+    videoRef.current.currentTime = masterVid.currentTime;
+    masterVid.addEventListener("play", onPlay);
+    masterVid.addEventListener("pause", onPause);
+    masterVid.addEventListener("seeking", onSeek);
+    masterVid.addEventListener("seeked", onSeek);
 
     return () => {
       // //release video memory
@@ -69,10 +72,10 @@ function UrbanscapeVideo(props) {
       // videoRef.current.load();
 
       // Remove event listeners
-      props.masterVideoRef.current.removeEventListener("play", onPlay);
-      props.masterVideoRef.current.removeEventListener("pause", onPause);
-      props.masterVideoRef.current.removeEventListener("seeking", onSeek);
-      props.masterVideoRef.current.removeEventListener("seeked", onSeek);
+      masterVid.removeEventListener("play", onPlay);
+      masterVid.removeEventListener("pause", onPause);
+      masterVid.removeEventListener("seeking", onSeek);
+      masterVid.removeEventListener("seeked", onSeek);
     };
   }, [videoRef]);
 
