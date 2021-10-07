@@ -19,6 +19,7 @@ function ViewRawJSON(props) {
       data-toggle="tooltip"
       data-placement="top"
       title="view raw JSON"
+      disabled={!data}
     >
       <i className="bi bi-file-earmark-code"></i>
       View raw JSON
