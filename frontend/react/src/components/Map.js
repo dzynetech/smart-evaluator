@@ -7,7 +7,6 @@ import { useLocation } from "react-router";
 import { useApolloClient, useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
-import { setTooltip } from "../utils/SetTooltip";
 import "leaflet.heat";
 
 window.locs = [];
@@ -50,7 +49,6 @@ function Map(props) {
     for (let m of markerLocations) {
       const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2, m.active);
       if (m.ids.length === 1) {
-        setTimeout(() => setTooltip(marker, m.ids[0], apolloClient), 0);
         marker.on("mouseover", (e) => {
           props.setPermitForModal({
             id: m.ids[0],
