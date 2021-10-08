@@ -46,14 +46,7 @@ function PermitBox(props) {
               >
                 Select
               </button>
-              <b
-                style={{
-                  fontSize: "23px",
-                  marginLeft: "1rem",
-                }}
-              >
-                {props.permit.name}
-              </b>
+              <b>{props.permit.name}</b>
             </div>
             <div className="permit-info">
               <table>
@@ -62,9 +55,7 @@ function PermitBox(props) {
                     <tr>
                       <td>Cost: </td>
                       <td>
-                        <b className="f18">
-                          ${props.permit.cost.toLocaleString()}
-                        </b>
+                        <b>${props.permit.cost.toLocaleString()}</b>
                       </td>
                     </tr>
                   )}
@@ -72,9 +63,7 @@ function PermitBox(props) {
                     <tr>
                       <td>Sqft: </td>
                       <td>
-                        <b className="f18">
-                          {props.permit.sqft.toLocaleString()}
-                        </b>
+                        <b>{props.permit.sqft.toLocaleString()}</b>
                       </td>
                     </tr>
                   )}

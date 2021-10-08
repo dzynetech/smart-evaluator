@@ -1,6 +1,9 @@
 :root {
   --sidebar-width: 25vw;
 }
+html {
+  font-size: 14px;
+}
 body {
   background-color: #ffffff;
 }

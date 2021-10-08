@@ -13,6 +13,8 @@ import PERMITS_QUERY from "../queries/PermitsQuery";
 import USER_QUERY from "../queries/UserQuery";
 import Legend from "./Legend";
 
+import "./Permits.css";
+
 function Permits(props) {
   const [filterVars, setFilterVars] = useState({});
   const [page, setPage] = useState(1);
