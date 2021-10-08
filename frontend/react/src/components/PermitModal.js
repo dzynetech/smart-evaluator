@@ -4,7 +4,7 @@ import { useQuery, gql } from "@apollo/client";
 
 import "./PermitModal.css";
 import { useEffect, useLayoutEffect, useState } from "react";
-
+import { borderColorMap } from "../utils/Colors.js";
 const PERMIT_QUERY = gql`
   query PermitById($id: Int!) {
     permit(id: $id) {
@@ -87,7 +87,13 @@ function PermitModal(props) {
         }}
       >
         <PermitBox permit={data.permit} />
-        <div className="arrow-down"></div>
+        <div
+          className="arrow-down"
+          style={{
+            borderTop:
+              "1.5rem solid " + borderColorMap[data.permit.classification],
+          }}
+        ></div>
       </div>
     </>
   );
