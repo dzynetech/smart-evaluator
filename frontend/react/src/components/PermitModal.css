@@ -9,5 +9,14 @@
 	padding-right: 1rem;
 	padding-left: 1rem;
 	width: 80%;
-  transform: translateY(-100%);
+  transform: translate(-2.5rem,-100%);
+}
+
+.arrow-down {
+  width: 0; 
+  height: 0; 
+  border-left: 1.5rem solid transparent;
+  border-right: 1.5rem solid transparent;
+  transform: translateY(-0.5rem);
+  border-top: 1.5rem solid rgba(0, 57, 128, 0.8);
 }
