@@ -15,6 +15,10 @@ a:link {
   color: 585ea3;
   text-decoration: none;
 }
+
+nav a:link {
+  font-size:small;
+}
 a {
   color: #5555ff;
 }
