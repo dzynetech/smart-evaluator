@@ -12,7 +12,7 @@ import PermitModal from "./PermitModal";
 import PERMITS_QUERY from "../queries/PermitsQuery";
 import USER_QUERY from "../queries/UserQuery";
 import Legend from "./Legend";
-
+import { MapContainer } from "react-leaflet";
 import "./Permits.css";
 
 function Permits(props) {
@@ -25,6 +25,9 @@ function Permits(props) {
   const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
+
+  const [mapZoom, setMapZoom] = useState(4);
+  const [mapCenter, setMapCenter] = useState([51.505, -0.091]);
 
   if (error) console.log(error);
   const permitsPerPage = 20;
@@ -67,13 +70,15 @@ function Permits(props) {
               filterVars={filterVars}
             />
           </div>
-          <Map
-            setPermitForModal={setPermitForModal}
-            filterVars={filterVars}
-            activePermit={activePermit}
-            zoomTarget={zoomTarget}
-            setZoomTarget={setZoomTarget}
-          />
+          <MapContainer id="map" center={mapCenter} zoom={mapZoom}>
+            <Map
+              setPermitForModal={setPermitForModal}
+              filterVars={filterVars}
+              activePermit={activePermit}
+              zoomTarget={zoomTarget}
+              setZoomTarget={setZoomTarget}
+            />
+          </MapContainer>
         </div>
         <div id="main">
           <Nav active={"classify"} jwt={props.jwt} setJwt={props.setJwt} />

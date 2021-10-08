@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from "react";
-import useMap from "./dzyne_components/hooks/useMap";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import PERMITS_QUERY from "../queries/PermitsQuery";
 import PermitBox from "./PermitBox";
@@ -8,6 +7,17 @@ import { useApolloClient, useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
 import "leaflet.heat";
+import {
+  MapContainer,
+  TileLayer,
+  CircleMarker,
+  Marker,
+  Popup,
+  useMap,
+  useMapEvent,
+} from "react-leaflet";
+
+import "leaflet/dist/leaflet.css";
 
 window.locs = [];
 window.showMarkers = true;
@@ -22,6 +32,11 @@ function Map(props) {
 
   const apolloClient = useApolloClient();
   if (error) console.log(error);
+
+  const map = useMapEvent("zoomend", updateMarkers);
+  useEffect(() => {
+    createMapLayers(map);
+  }, []);
 
   function removeOldMarkers() {
     for (let layer in map._layers) {
@@ -69,11 +84,6 @@ function Map(props) {
       marker.addTo(map);
     }
   }
-
-  const map = useMap("map", {}, {}, (map) => {
-    map.on("zoomend", updateMarkers);
-    createMapLayers(map);
-  });
 
   if (props.zoomTarget) {
     map.flyTo([props.zoomTarget.y, props.zoomTarget.x], 16, {
@@ -165,7 +175,13 @@ function Map(props) {
 
   return (
     <>
-      <div id="map">
+      <div>
+        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+        <CircleMarker center={[30, 20]}>
+          <Popup>
+            A pretty CSS3 popup. <br /> Easily customizable.
+          </Popup>
+        </CircleMarker>
         <div id="map-controls" className="leaflet-bottom leaflet-right">
           <button
             className="btn btn-sm btn-light"
