@@ -45,7 +45,9 @@ td  {
 	grid-area: title;
 	margin-top: .5rem;
 	font-size: large;
-	margin-left: 1rem;
+}
+.permit-title button {
+	margin-right: 1rem;
 }
 .permit-info {
 	grid-area: info;

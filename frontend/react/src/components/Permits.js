@@ -79,8 +79,8 @@ function Permits(props) {
           <Nav active={"classify"} jwt={props.jwt} setJwt={props.setJwt} />
           <div className="container-fluid">
             <PermitModal
-              permitId={permitForModal}
-              setPermitId={setPermitForModal}
+              popupData={permitForModal}
+              setPopupData={setPermitForModal}
             />
             <div className="title">
               <div>

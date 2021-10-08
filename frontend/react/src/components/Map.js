@@ -51,8 +51,21 @@ function Map(props) {
       const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2, m.active);
       if (m.ids.length === 1) {
         setTimeout(() => setTooltip(marker, m.ids[0], apolloClient), 0);
-        marker.on("click", () => {
-          props.setPermitForModal(m.ids[0]);
+        marker.on("mouseover", (e) => {
+          props.setPermitForModal({
+            id: m.ids[0],
+            x: e.containerPoint.y,
+            y: e.containerPoint.x,
+            overMarker: true,
+          });
+        });
+        marker.on("mouseout", (e) => {
+          props.setPermitForModal({
+            id: m.ids[0],
+            x: e.containerPoint.y,
+            y: e.containerPoint.x,
+            overMarker: false,
+          });
         });
       }
       marker.addTo(map);
