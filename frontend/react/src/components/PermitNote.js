@@ -17,7 +17,7 @@ function PermitNote(props) {
   const [note, setNote] = useState(props.permit.notes || "");
   const [updateNote, { error }] = useMutation(UPDATE_NOTE);
   const [firstRender, setFirstRender] = useState(true);
-  const { data: user_data } = useQuery(USER_QUERY);
+  const { data } = useQuery(USER_QUERY);
 
   useEffect(() => {
     if (firstRender) {
@@ -34,7 +34,7 @@ function PermitNote(props) {
 
   if (error) console.log(error);
 
-  if (!user_data) return "";
+  if (!data) return "";
   return (
     <div className="form-group">
       <textarea
@@ -43,7 +43,7 @@ function PermitNote(props) {
         rows="2"
         value={note}
         onChange={(e) => setNote(e.target.value)}
-        disabled={!user_data.isAnnotator}
+        disabled={!data.currentUser.annotator}
       ></textarea>
     </div>
   );

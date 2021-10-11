@@ -1,9 +1,12 @@
 import { gql } from "@apollo/client";
 
 const USER_QUERY = gql`
-  query UserPerms {
-    getUserId
-    isAnnotator
+  query CurrentUser {
+    currentUser {
+      id
+      username
+      annotator
+    }
   }
 `;
 

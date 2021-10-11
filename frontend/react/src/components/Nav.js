@@ -4,28 +4,9 @@ import { gql, useQuery, useLazyQuery } from "@apollo/client";
 import USER_QUERY from "../queries/UserQuery";
 import { useEffect } from "react";
 
-const ACCOUNT_QUERY = gql`
-  query UsernameQuery($id: Int!) {
-    user(id: $id) {
-      username
-    }
-  }
-`;
-
 function Nav(props) {
   const history = useHistory();
-  const { data: user_data } = useQuery(USER_QUERY);
-  const [getUsername, { data: username_data }] = useLazyQuery(ACCOUNT_QUERY);
-
-  useEffect(() => {
-    if (user_data?.getUserId) {
-      getUsername({
-        variables: {
-          id: user_data.getUserId,
-        },
-      });
-    }
-  }, [user_data]);
+  const { data } = useQuery(USER_QUERY);
 
   return (
     <nav className="navbar navbar-expand-lg navbar-light bg-light">
@@ -54,10 +35,10 @@ function Nav(props) {
         </ul>
         {/* right menu  */}
         <ul className="navbar-nav">
-          {props.jwt && username_data && (
+          {props.jwt && data && (
             <li className="nav-item">
               <a className="nav-link" href="#">
-                Signed in as {username_data.user.username}
+                Signed in as {data.currentUser.username}
               </a>
             </li>
           )}

@@ -10,7 +10,6 @@ import Map from "./Map.js";
 import Nav from "./Nav";
 import PermitModal from "./PermitModal";
 import PERMITS_QUERY from "../queries/PermitsQuery";
-import USER_QUERY from "../queries/UserQuery";
 import Legend from "./Legend";
 import { MapContainer } from "react-leaflet";
 import "./Permits.css";

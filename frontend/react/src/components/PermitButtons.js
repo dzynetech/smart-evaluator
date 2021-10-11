@@ -20,7 +20,7 @@ const CLASSIFY_PERMIT_MUT = gql`
 
 function PermitButtons(props) {
   const [classifyPermit] = useMutation(CLASSIFY_PERMIT_MUT);
-  const { data: user_data } = useQuery(USER_QUERY);
+  const { data } = useQuery(USER_QUERY);
 
   async function classify(classification) {
     if (props.setActivePermit) {
@@ -67,7 +67,7 @@ function PermitButtons(props) {
     document.getElementById(id).style.backgroundColor = colorMap.UNCLASSIFIED;
     classify("UNCLASSIFIED");
   }
-  if (!user_data) {
+  if (!data) {
     return <></>;
   }
   return (
@@ -75,7 +75,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={!user_data.isAnnotator}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setYes(props.permit.id);
         }}
@@ -85,7 +85,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={!user_data.isAnnotator}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setNo(props.permit.id);
         }}
@@ -95,7 +95,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={!user_data.isAnnotator}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setMaybe(props.permit.id);
         }}
@@ -105,7 +105,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={!user_data.isAnnotator}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setDuplicate(props.permit.id);
         }}
@@ -115,7 +115,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={!user_data.isAnnotator}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setUnclassified(props.permit.id);
         }}
