@@ -29,21 +29,24 @@ function Map(props) {
 
   const map = useMap();
 
+  useEffect(() => {
+    createMapLayers(map);
+  }, []);
+
   //keep reclustering on zoom from becoming stale
   useEffect(() => {
     map.off("zoomend").on("zoomend", updateMarkers);
     updateMarkers();
   }, [showMarkers, props.activePermit, locations]);
 
+  //zoom to active permit when set
   useEffect(() => {
-    createMapLayers(map);
-  }, []);
-
-  if (props.zoomTarget) {
-    map.flyTo([props.zoomTarget.y, props.zoomTarget.x], 16, {
-      duration: 0.6,
-    });
-  }
+    if (props.zoomTarget) {
+      map.flyTo([props.zoomTarget.y, props.zoomTarget.x], 16, {
+        duration: 0.6,
+      });
+    }
+  }, [props.zoomTarget]);
 
   //refetch permit data on filter change
   useEffect(() => {
