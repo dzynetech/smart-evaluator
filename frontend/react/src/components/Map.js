@@ -18,13 +18,12 @@ import {
 import "leaflet/dist/leaflet.css";
 import ALL_PERMITS_QUERY from "../queries/AllPermitsQuery";
 
-window.locs = [];
-
 function Map(props) {
   const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
   const [showMarkers, setShowMarkers] = useState(true);
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [heatLayer, setHeatLayer] = useState(null);
+  const [locations, setLocations] = useState([]);
 
   if (error) console.log(error);
 
@@ -32,8 +31,8 @@ function Map(props) {
 
   useEffect(() => {
     map.off("zoomend").on("zoomend", updateMarkers);
-    console.log("active:" + showMarkers);
-  }, [showMarkers, props.activePermit]);
+    updateMarkers();
+  }, [showMarkers, props.activePermit, locations]);
 
   useEffect(() => {
     createMapLayers(map);
@@ -58,7 +57,7 @@ function Map(props) {
     const markerLocations = computeMarkers(
       zoom,
       lat,
-      window.locs,
+      locations,
       props.activePermit
     );
     removeOldMarkers();
@@ -93,8 +92,6 @@ function Map(props) {
     });
   }
 
-  const router_location = useLocation();
-
   useEffect(() => {
     if (!props.filterVars) {
       return;
@@ -112,12 +109,12 @@ function Map(props) {
           y: p.node.location.y,
         });
       });
-      window.locs = locs;
+      setLocations(locs);
 
       //setup heatmap
       if (showHeatmap) {
         var heatmap_data = [];
-        window.locs.forEach((l) => {
+        locations.forEach((l) => {
           heatmap_data.push([l.y, l.x, 7]);
         });
         const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
@@ -129,9 +126,9 @@ function Map(props) {
 
   //enable disable heatmap
   useEffect(() => {
-    if (showHeatmap && window.locs.length > 0) {
+    if (showHeatmap && locations.length > 0) {
       var heatmap_data = [];
-      window.locs.forEach((l) => {
+      locations.forEach((l) => {
         heatmap_data.push([l.y, l.x, 7]);
       });
       const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
