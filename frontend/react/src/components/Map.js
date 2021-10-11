@@ -29,6 +29,7 @@ function Map(props) {
 
   const map = useMap();
 
+  //keep reclustering on zoom from becoming stale
   useEffect(() => {
     map.off("zoomend").on("zoomend", updateMarkers);
     updateMarkers();
@@ -37,6 +38,89 @@ function Map(props) {
   useEffect(() => {
     createMapLayers(map);
   }, []);
+
+  if (props.zoomTarget) {
+    map.flyTo([props.zoomTarget.y, props.zoomTarget.x], 16, {
+      duration: 0.6,
+    });
+  }
+
+  //refetch permit data on filter change
+  useEffect(() => {
+    if (!props.filterVars) {
+      return;
+    }
+    getPermits({ variables: props.filterVars });
+  }, [props.filterVars]);
+
+  useEffect(() => {
+    //get all locations
+    if (data) {
+      var locs = [];
+      data.permits.edges.forEach((p) => {
+        locs.push({
+          id: p.node.id,
+          x: p.node.location.x,
+          y: p.node.location.y,
+        });
+      });
+      setLocations(locs);
+
+      //setup heatmap
+      if (showHeatmap) {
+        var heatmap_data = [];
+        locations.forEach((l) => {
+          heatmap_data.push([l.y, l.x, 7]);
+        });
+        const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
+        heat.addTo(map);
+        setHeatLayer(heat);
+      }
+    }
+  }, [data]);
+
+  //enable disable heatmap
+  useEffect(() => {
+    if (showHeatmap && locations.length > 0) {
+      var heatmap_data = [];
+      locations.forEach((l) => {
+        heatmap_data.push([l.y, l.x, 7]);
+      });
+      const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
+      heat.addTo(map);
+      setHeatLayer(heat);
+    }
+    if (!showHeatmap && heatLayer) {
+      map.removeLayer(heatLayer);
+      setHeatLayer(null);
+    }
+  }, [showHeatmap]);
+
+  //enable disable markers
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    if (showMarkers) {
+      updateMarkers();
+    } else {
+      removeOldMarkers();
+    }
+  }, [showMarkers]);
+
+  //resize map to show all markers
+  useEffect(() => {
+    if (data && map) {
+      var bounds = data.permits.edges.map((p) => [
+        p.node.location.y,
+        p.node.location.x,
+      ]);
+      if (bounds.length > 0) {
+        map.fitBounds(bounds);
+      }
+      updateMarkers();
+    }
+  }, [data]);
 
   function removeOldMarkers() {
     for (let layer in map._layers) {
@@ -86,101 +170,19 @@ function Map(props) {
     }
   }
 
-  if (props.zoomTarget) {
-    map.flyTo([props.zoomTarget.y, props.zoomTarget.x], 16, {
-      duration: 0.6,
-    });
-  }
-
-  useEffect(() => {
-    if (!props.filterVars) {
-      return;
-    }
-    getPermits({ variables: props.filterVars });
-  }, [props.filterVars]);
-
-  useEffect(() => {
-    if (data) {
-      var locs = [];
-      data.permits.edges.forEach((p) => {
-        locs.push({
-          id: p.node.id,
-          x: p.node.location.x,
-          y: p.node.location.y,
-        });
-      });
-      setLocations(locs);
-
-      //setup heatmap
-      if (showHeatmap) {
-        var heatmap_data = [];
-        locations.forEach((l) => {
-          heatmap_data.push([l.y, l.x, 7]);
-        });
-        const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
-        heat.addTo(map);
-        setHeatLayer(heat);
-      }
-    }
-  }, [data]);
-
-  //enable disable heatmap
-  useEffect(() => {
-    if (showHeatmap && locations.length > 0) {
-      var heatmap_data = [];
-      locations.forEach((l) => {
-        heatmap_data.push([l.y, l.x, 7]);
-      });
-      const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
-      heat.addTo(map);
-      setHeatLayer(heat);
-    }
-    if (!showHeatmap && heatLayer) {
-      map.removeLayer(heatLayer);
-      setHeatLayer(null);
-    }
-  }, [showHeatmap]);
-
-  //enable disable markers
-  useEffect(() => {
-    if (!data) {
-      return;
-    }
-    if (showMarkers) {
-      updateMarkers();
-    }
-    if (!showMarkers) {
-      removeOldMarkers();
-    }
-  }, [showMarkers]);
-
-  //resize map to show all markers
-  useEffect(() => {
-    if (data && map) {
-      var bounds = data.permits.edges.map((p) => [
-        p.node.location.y,
-        p.node.location.x,
-      ]);
-      if (bounds.length > 0) {
-        map.fitBounds(bounds);
-      }
-      updateMarkers();
-    }
-  }, [data]);
-
   return (
     <>
       <div>
         <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
         <div id="map-controls" className="leaflet-bottom leaflet-right">
           <button
-            className="btn btn-sm btn-light"
+            className="btn btn-light"
             onClick={() => setShowMarkers((x) => !x)}
           >
             markers
           </button>
           <button
-            className="btn btn-sm btn-light"
+            className="btn btn-light"
             onClick={(e) => {
               setShowHeatmap((x) => !x);
             }}
