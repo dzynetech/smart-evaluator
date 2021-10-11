@@ -5,18 +5,13 @@ import SOURCE_STATS_QUERY from "../queries/SourceStatsQuery";
 
 function SourceStats(props) {
   const sourceId = props.source.id;
-  const {
-    data: statsData,
-    loading,
-    error,
-  } = useQuery(SOURCE_STATS_QUERY, {
+  const { data } = useQuery(SOURCE_STATS_QUERY, {
     variables: {
       sourceId: sourceId,
       minSqft: props.minSqft,
     },
   });
-  if (loading) return <p>Loading...</p>;
-  if (error) return <p>Error :(</p>;
+  if (!data) return <></>;
 
   const state = {
     labels: [
@@ -44,11 +39,11 @@ function SourceStats(props) {
           borderColorMap.DUPLICATE,
         ],
         data: [
-          statsData.unclassified.totalCount,
-          statsData.construction.totalCount,
-          statsData.not_construction.totalCount,
-          statsData.possible_construction.totalCount,
-          statsData.duplicate.totalCount,
+          data.unclassified.totalCount,
+          data.construction.totalCount,
+          data.not_construction.totalCount,
+          data.possible_construction.totalCount,
+          data.duplicate.totalCount,
         ],
       },
     ],
@@ -60,18 +55,18 @@ function SourceStats(props) {
         <h2 className="text-center">{props.source.name}</h2>
         <div className="row">
           <div className="col-4 stat-data">
-            <b>Permits:</b> {statsData.total.totalCount}
+            <b>Permits:</b> {data.total.totalCount}
             <br />
-            <b>Unclassified:</b> {statsData.unclassified.totalCount}
+            <b>Unclassified:</b> {data.unclassified.totalCount}
             <br />
-            <b>Construction:</b> {statsData.construction.totalCount}
+            <b>Construction:</b> {data.construction.totalCount}
             <br />
-            <b>Not Construction:</b> {statsData.not_construction.totalCount}
+            <b>Not Construction:</b> {data.not_construction.totalCount}
             <br />
             <b>Possible Construction:</b>
-            {statsData.possible_construction.totalCount}
+            {data.possible_construction.totalCount}
             <br />
-            <b>Duplicate:</b> {statsData.duplicate.totalCount}
+            <b>Duplicate:</b> {data.duplicate.totalCount}
             <br />
           </div>
           <div className="col-8">
