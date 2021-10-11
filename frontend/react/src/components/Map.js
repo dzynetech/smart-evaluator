@@ -31,7 +31,8 @@ function Map(props) {
   const map = useMap();
 
   useEffect(() => {
-    map.on("zoomend", updateMarkers);
+    map.off("zoomend").on("zoomend", updateMarkers);
+    console.log("active:" + showMarkers);
   }, [showMarkers, props.activePermit]);
 
   useEffect(() => {
