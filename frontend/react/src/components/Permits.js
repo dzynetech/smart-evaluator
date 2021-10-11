@@ -56,7 +56,6 @@ function Permits(props) {
     if (activePermit) {
       setZoomTarget(activePermit.location);
     }
-    window.activePermit = activePermit;
   }, [activePermit]);
 
   return (

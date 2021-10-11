@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from "react";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
 import { useLocation } from "react-router";
-import { useApolloClient, useLazyQuery } from "@apollo/client";
+import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
 import "leaflet.heat";
@@ -19,7 +19,6 @@ import "leaflet/dist/leaflet.css";
 import ALL_PERMITS_QUERY from "../queries/AllPermitsQuery";
 
 window.locs = [];
-window.showMarkers = true;
 
 function Map(props) {
   const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
@@ -27,10 +26,14 @@ function Map(props) {
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [heatLayer, setHeatLayer] = useState(null);
 
-  const apolloClient = useApolloClient();
   if (error) console.log(error);
 
-  const map = useMapEvent("zoomend", updateMarkers);
+  const map = useMap();
+
+  useEffect(() => {
+    map.on("zoomend", updateMarkers);
+  }, [showMarkers, props.activePermit]);
+
   useEffect(() => {
     createMapLayers(map);
   }, []);
@@ -45,7 +48,7 @@ function Map(props) {
   }
 
   function updateMarkers() {
-    if (!window.showMarkers) {
+    if (!showMarkers) {
       return;
     }
     props.setZoomTarget(null);
@@ -55,7 +58,7 @@ function Map(props) {
       zoom,
       lat,
       window.locs,
-      window.activePermit
+      props.activePermit
     );
     removeOldMarkers();
     props.setPermitForModal(null);
@@ -140,20 +143,20 @@ function Map(props) {
     }
   }, [showHeatmap]);
 
+  //enable disable markers
   useEffect(() => {
     if (!data) {
       return;
     }
     if (showMarkers) {
-      window.showMarkers = true;
       updateMarkers();
     }
     if (!showMarkers) {
-      window.showMarkers = false;
       removeOldMarkers();
     }
   }, [showMarkers]);
 
+  //resize map to show all markers
   useEffect(() => {
     if (data && map) {
       var bounds = data.permits.edges.map((p) => [
