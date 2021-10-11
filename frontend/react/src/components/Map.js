@@ -58,6 +58,7 @@ function Map(props) {
       window.activePermit
     );
     removeOldMarkers();
+    props.setPermitForModal(null);
     for (let m of markerLocations) {
       const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2, m.active);
       if (m.ids.length === 1) {
