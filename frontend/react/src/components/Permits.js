@@ -26,8 +26,8 @@ function Permits(props) {
     fetchPolicy: "no-cache",
   });
 
-  const [mapZoom, setMapZoom] = useState(4);
-  const [mapCenter, setMapCenter] = useState([51.505, -0.091]);
+  const [mapZoom, setMapZoom] = useState(3);
+  const [mapCenter, setMapCenter] = useState([36.5, -89]);
 
   if (error) console.log(error);
   const permitsPerPage = 20;

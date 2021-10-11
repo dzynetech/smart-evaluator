@@ -192,7 +192,6 @@ function Map(props) {
           <button
             className="btn btn-sm btn-light"
             onClick={(e) => {
-              e.stopPropagation();
               setShowHeatmap((x) => !x);
             }}
           >
