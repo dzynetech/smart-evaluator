@@ -36,7 +36,7 @@ function PermitModal(props) {
   const { error, data } = useQuery(PERMIT_QUERY, {
     // fetchPolicy: "no-cache",
     variables: {
-      id: props.popupData?.id,
+      id: props.id,
     },
   });
 
@@ -50,21 +50,21 @@ function PermitModal(props) {
   }, [yOffset]);
 
   useEffect(() => {
-    if (!isMouseOver && props.popupData && !props.popupData.overMarker) {
+    if (!isMouseOver && !props.overMarker) {
       const t = setTimeout(() => {
         props.setPopupData(null);
       }, 100);
       setTimer(t);
     }
-    if (isMouseOver || props.popupData?.overMarker) {
+    if (isMouseOver || props.overMarker) {
       if (timer) {
         clearTimeout(timer);
       }
     }
-  }, [isMouseOver, props.popupData]);
+  }, [isMouseOver, props.overMarker]);
 
   if (!data) {
-    if (error && props.popupData != null) {
+    if (error && props != null) {
       console.log(error);
     }
     return <></>;
@@ -76,8 +76,8 @@ function PermitModal(props) {
         className="permit-modal"
         id="permit-modal"
         style={{
-          top: props.popupData.x + yOffset,
-          left: props.popupData.y,
+          top: props.x + yOffset,
+          left: props.y,
         }}
         onMouseLeave={() => {
           setIsMouseOver(false);

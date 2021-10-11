@@ -202,7 +202,7 @@ function PermitsFilter(props) {
         <i className="bi bi-info-circle"></i>
         cURL instructions
       </button>
-      <ViewRawJSON filterVars={props.filterVars} />
+      {props.filterVars && <ViewRawJSON filterVars={props.filterVars} />}
     </>
   );
 }

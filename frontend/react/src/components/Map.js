@@ -1,7 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
-import PERMITS_QUERY from "../queries/PermitsQuery";
-import PermitBox from "./PermitBox";
 import { useLocation } from "react-router";
 import { useApolloClient, useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
@@ -18,14 +16,13 @@ import {
 } from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
+import ALL_PERMITS_QUERY from "../queries/AllPermitsQuery";
 
 window.locs = [];
 window.showMarkers = true;
 
 function Map(props) {
-  const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
-    fetchPolicy: "no-cache",
-  });
+  const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
   const [showMarkers, setShowMarkers] = useState(true);
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [heatLayer, setHeatLayer] = useState(null);
@@ -94,14 +91,10 @@ function Map(props) {
   const router_location = useLocation();
 
   useEffect(() => {
-    if (Object.keys(props.filterVars).length === 0) {
+    if (!props.filterVars) {
       return;
     }
-    var queryVars = {};
-    Object.assign(queryVars, props.filterVars);
-    queryVars.numPerPage = 9999;
-    queryVars.offset = 0;
-    getPermits({ variables: queryVars });
+    getPermits({ variables: props.filterVars });
   }, [props.filterVars]);
 
   useEffect(() => {

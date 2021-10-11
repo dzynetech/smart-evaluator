@@ -1,8 +1,8 @@
 import { useQuery } from "@apollo/client";
-import RAW_JSON_QUERY from "../queries/RawJSONQuery";
+import ALL_PERMITS_QUERY from "../queries/AllPermitsQuery";
 
 function ViewRawJSON(props) {
-  const { data } = useQuery(RAW_JSON_QUERY, {
+  const { data } = useQuery(ALL_PERMITS_QUERY, {
     variables: props.filterVars,
   });
 

@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 //permits query without pagination
-const RAW_JSON_QUERY = gql`
-  query MyQuery(
+const ALL_PERMITS_QUERY = gql`
+  query AllPermitsQuery(
     $order: [PermitsOrderBy!]
     $classification: ClassificationFilter
     $sourceId: IntFilter
@@ -62,4 +62,4 @@ const RAW_JSON_QUERY = gql`
     }
   }
 `;
-export default RAW_JSON_QUERY;
+export default ALL_PERMITS_QUERY;

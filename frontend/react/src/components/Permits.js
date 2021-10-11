@@ -16,12 +16,12 @@ import { MapContainer } from "react-leaflet";
 import "./Permits.css";
 
 function Permits(props) {
-  const [filterVars, setFilterVars] = useState({});
+  const [filterVars, setFilterVars] = useState(null);
   const [page, setPage] = useState(1);
   const [zoomTarget, setZoomTarget] = useState(null);
   const [activePermit, setActivePermit] = useState(null);
   const [prevActivePermit, setPrevActivePermit] = useState(null);
-  const [permitForModal, setPermitForModal] = useState(null);
+  const [popupData, setPopupData] = useState(null);
   const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
@@ -33,7 +33,7 @@ function Permits(props) {
   const permitsPerPage = 20;
 
   useEffect(() => {
-    if (Object.keys(filterVars).length === 0) {
+    if (!filterVars) {
       return;
     }
     var queryVars = {};
@@ -72,7 +72,7 @@ function Permits(props) {
           </div>
           <MapContainer id="map" center={mapCenter} zoom={mapZoom}>
             <Map
-              setPermitForModal={setPermitForModal}
+              setPermitForModal={setPopupData}
               filterVars={filterVars}
               activePermit={activePermit}
               zoomTarget={zoomTarget}
@@ -83,10 +83,9 @@ function Permits(props) {
         <div id="main">
           <Nav active={"classify"} jwt={props.jwt} setJwt={props.setJwt} />
           <div className="container-fluid">
-            <PermitModal
-              popupData={permitForModal}
-              setPopupData={setPermitForModal}
-            />
+            {popupData && (
+              <PermitModal {...popupData} setPopupData={setPopupData} />
+            )}
             <div className="title">
               <div>
                 <h1>Construction sites</h1>
