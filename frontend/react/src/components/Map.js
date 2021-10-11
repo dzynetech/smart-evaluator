@@ -177,11 +177,6 @@ function Map(props) {
     <>
       <div>
         <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
-        <CircleMarker center={[30, 20]}>
-          <Popup>
-            A pretty CSS3 popup. <br /> Easily customizable.
-          </Popup>
-        </CircleMarker>
         <div id="map-controls" className="leaflet-bottom leaflet-right">
           <button
             className="btn btn-sm btn-light"
