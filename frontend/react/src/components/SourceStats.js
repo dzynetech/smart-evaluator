@@ -1,96 +1,22 @@
 import { useQuery, gql } from "@apollo/client";
 import { Pie } from "react-chartjs-2";
 import { altColorMap, borderColorMap } from "../utils/Colors";
-
-const TOTAL_QUERY = gql`
-  query TotalPermits($sourceId: Int, $minSqft: Float) {
-    permits(
-      condition: { sourceId: $sourceId }
-      filter: {
-        imageUrl: { isNull: false }
-        sqft: { greaterThanOrEqualTo: $minSqft }
-      }
-    ) {
-      totalCount
-    }
-  }
-`;
-
-const CLASSIFICATION_QUERY = gql`
-  query TotalPermits(
-    $sourceId: Int
-    $classification: Classification
-    $minSqft: Float
-  ) {
-    permits(
-      condition: { sourceId: $sourceId, classification: $classification }
-      filter: {
-        imageUrl: { isNull: false }
-        sqft: { greaterThanOrEqualTo: $minSqft }
-      }
-    ) {
-      totalCount
-    }
-  }
-`;
+import SOURCE_STATS_QUERY from "../queries/SourceStatsQuery";
 
 function SourceStats(props) {
   const sourceId = props.source.id;
-  const total = useQuery(TOTAL_QUERY, {
-    variables: { sourceId: sourceId, minSqft: props.minSqft },
-  });
-  const unclassified = useQuery(CLASSIFICATION_QUERY, {
+  const {
+    data: statsData,
+    loading,
+    error,
+  } = useQuery(SOURCE_STATS_QUERY, {
     variables: {
       sourceId: sourceId,
-      classification: "UNCLASSIFIED",
       minSqft: props.minSqft,
     },
   });
-  const construction = useQuery(CLASSIFICATION_QUERY, {
-    variables: {
-      sourceId: sourceId,
-      classification: "CONSTRUCTION",
-      minSqft: props.minSqft,
-    },
-  });
-  const not_construction = useQuery(CLASSIFICATION_QUERY, {
-    variables: {
-      sourceId: sourceId,
-      classification: "NOT_CONSTRUCTION",
-      minSqft: props.minSqft,
-    },
-  });
-  const possible_construction = useQuery(CLASSIFICATION_QUERY, {
-    variables: {
-      sourceId: sourceId,
-      classification: "POSSIBLE_CONSTRUCTION",
-      minSqft: props.minSqft,
-    },
-  });
-  const duplicate = useQuery(CLASSIFICATION_QUERY, {
-    variables: {
-      sourceId: sourceId,
-      classification: "DUPLICATE",
-      minSqft: props.minSqft,
-    },
-  });
-
-  if (
-    total.loading ||
-    unclassified.loading ||
-    construction.loading ||
-    not_construction.loading ||
-    possible_construction.loading ||
-    duplicate.loading
-  )
-    return <p>Loading...</p>;
-  if (total.error) return <p>Error with Total</p>;
-  if (unclassified.error) return <p>Error with unclassified</p>;
-  if (construction.error) return <p>Error with consruction</p>;
-  if (not_construction.error) return <p>Error with not consruction</p>;
-  if (possible_construction.error)
-    return <p>Error with possible consruction</p>;
-  if (duplicate.error) return <p>Error with duplicate</p>;
+  if (loading) return <p>Loading...</p>;
+  if (error) return <p>Error :(</p>;
 
   const state = {
     labels: [
@@ -118,35 +44,34 @@ function SourceStats(props) {
           borderColorMap.DUPLICATE,
         ],
         data: [
-          unclassified.data.permits.totalCount,
-          construction.data.permits.totalCount,
-          not_construction.data.permits.totalCount,
-          possible_construction.data.permits.totalCount,
-          duplicate.data.permits.totalCount,
+          statsData.unclassified.totalCount,
+          statsData.construction.totalCount,
+          statsData.not_construction.totalCount,
+          statsData.possible_construction.totalCount,
+          statsData.duplicate.totalCount,
         ],
       },
     ],
   };
 
-  console.log(total);
   return (
     <>
       <div className="statBox">
         <h2 className="text-center">{props.source.name}</h2>
         <div className="row">
           <div className="col-4 stat-data">
-            <b>Permits:</b> {total.data.permits.totalCount}
+            <b>Permits:</b> {statsData.total.totalCount}
             <br />
-            <b>Unclassified:</b> {unclassified.data.permits.totalCount}
+            <b>Unclassified:</b> {statsData.unclassified.totalCount}
             <br />
-            <b>Construction:</b> {construction.data.permits.totalCount}
+            <b>Construction:</b> {statsData.construction.totalCount}
             <br />
-            <b>Not Construction:</b> {not_construction.data.permits.totalCount}
+            <b>Not Construction:</b> {statsData.not_construction.totalCount}
             <br />
             <b>Possible Construction:</b>
-            {possible_construction.data.permits.totalCount}
+            {statsData.possible_construction.totalCount}
             <br />
-            <b>Duplicate:</b> {duplicate.data.permits.totalCount}
+            <b>Duplicate:</b> {statsData.duplicate.totalCount}
             <br />
           </div>
           <div className="col-8">

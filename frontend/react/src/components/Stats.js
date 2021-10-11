@@ -23,7 +23,7 @@ function Stats() {
       <div className="stats-container">
         {data &&
           data.sources.nodes.map((n) => (
-            <SourceStats source={n} minSqft={minSqft} />
+            <SourceStats key={n.id} source={n} minSqft={minSqft} />
           ))}
       </div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
