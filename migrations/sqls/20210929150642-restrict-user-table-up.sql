@@ -1,1 +1,1 @@
-comment on table smart.user is '@omit create,update,delete'
+comment on table smart.user is '@omit read'
