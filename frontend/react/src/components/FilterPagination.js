@@ -21,15 +21,25 @@ function FilterPagination(props) {
       }
     }
 
+    // add first and last page and elipses if there is a skip
     if (pages[0] != 1) {
-      pages.unshift(-1);
+      if (pages[0] != 2) {
+        pages.unshift(-1);
+      }
       pages.unshift(1);
+    } else {
+      //add more pages on right if fewer on left
+      pages.push(pages.slice(-1)[0] + 1);
     }
     if (pages[pages.length - 1] != numPages) {
-      pages.push(-2);
+      if (pages[pages.length - 1] != numPages - 1) {
+        pages.push(-2);
+      }
       pages.push(numPages);
+    } else {
+      //add more pages on left if fewer on right
+      pages.unshift(pages[0] - 1);
     }
-    debugger;
   }
   return (
     <nav>
