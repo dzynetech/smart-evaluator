@@ -106,3 +106,7 @@ a:hover {
 #map-controls button {
   pointer-events: auto;
 }
+
+.non-interactive {
+  pointer-events: none;
+}

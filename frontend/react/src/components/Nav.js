@@ -37,7 +37,7 @@ function Nav(props) {
         <ul className="navbar-nav">
           {props.jwt && data && (
             <li className="nav-item">
-              <a className="nav-link" href="#">
+              <a className="nav-link non-interactive" href="#">
                 Signed in as {data.currentUser.username}
               </a>
             </li>
