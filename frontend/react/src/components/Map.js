@@ -171,6 +171,38 @@ function Map(props) {
       }
       marker.addTo(map);
     }
+
+    if (props.activePermit) {
+      var icon = Leaflet.divIcon({
+        html: '<h1><span class="bi bi-star-fill active-marker"></span></h1>',
+        className: "",
+        iconSize: [32, 42],
+      });
+      var marker = Leaflet.marker(
+        [props.activePermit.location.y, props.activePermit.location.x],
+        {
+          icon: icon,
+        }
+      );
+      marker.on("mouseover", (e) => {
+        props.setPermitForModal({
+          id: props.activePermit.id,
+          x: e.containerPoint.y,
+          y: e.containerPoint.x,
+          overMarker: true,
+        });
+      });
+      marker.on("mouseout", (e) => {
+        props.setPermitForModal({
+          id: props.activePermit.id,
+          x: e.containerPoint.y,
+          y: e.containerPoint.x,
+          overMarker: false,
+        });
+      });
+      marker.addTo(map);
+      marker.setZIndexOffset(99);
+    }
   }
 
   return (

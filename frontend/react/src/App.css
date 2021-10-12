@@ -110,3 +110,10 @@ a:hover {
 .non-interactive {
   pointer-events: none;
 }
+
+
+.active-marker {
+  font-size: 2rem;
+  color: #33e43c;
+  text-shadow: #000 1px 1px;
+}
