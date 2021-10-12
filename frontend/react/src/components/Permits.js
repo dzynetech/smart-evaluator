@@ -129,7 +129,7 @@ function Permits(props) {
                 setPage={setPage}
                 total={data.permits.totalCount}
                 permitsPerPage={permitsPerPage}
-                center={true}
+                center
               />
             )}
           </div>
