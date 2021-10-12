@@ -56,6 +56,9 @@ const ALL_PERMITS_QUERY = gql`
           notes
           imageUrl
           name
+          bounds {
+            geojson
+          }
         }
       }
       totalCount
