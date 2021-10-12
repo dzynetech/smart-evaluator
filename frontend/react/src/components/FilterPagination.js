@@ -6,19 +6,30 @@ function FilterPagination(props) {
   var pages = Array.from(Array(numPages + 1).keys()).slice(1);
 
   if (numPages > 11) {
-    pages = [];
-    for (let i = 5; i > 0; i--) {
-      if (props.page - i > 0) {
-        pages.push(props.page - i);
+    pages = [...Array(7).keys()].map((x) => x + (props.page - 3));
+    const p = [...pages];
+    for (var i = 0; i < 9; i++) {
+      if (p[i] < 1) {
+        pages.shift();
+        pages.push(pages.slice(-1)[0] + 1);
       }
     }
-    pages.push(props.page);
-    for (let i = 1; i < 10; i++) {
-      if (props.page + i > numPages || pages.length > 10) {
-        break;
+    for (var i = 0; i < 11; i++) {
+      if (p[i] > numPages) {
+        pages.pop();
+        pages.unshift(pages[0] - 1);
       }
-      pages.push(props.page + i);
     }
+
+    if (pages[0] != 1) {
+      pages.unshift(-1);
+      pages.unshift(1);
+    }
+    if (pages[pages.length - 1] != numPages) {
+      pages.push(-2);
+      pages.push(numPages);
+    }
+    debugger;
   }
   return (
     <nav>
@@ -39,18 +50,29 @@ function FilterPagination(props) {
         </li>
         {pages.map((i) => (
           <li
-            className={"page-item " + (i === props.page ? "active" : "")}
+            className={
+              "page-item " +
+              (i === props.page ? "active" : "") +
+              (i < 0 ? "disabled" : "")
+            }
             key={i}
           >
-            <a
-              className="page-link"
-              href="#"
-              onClick={() => {
-                props.setPage(i);
-              }}
-            >
-              {i}
-            </a>
+            {i > 0 && (
+              <a
+                className="page-link"
+                href="#"
+                onClick={() => {
+                  props.setPage(i);
+                }}
+              >
+                {i}
+              </a>
+            )}
+            {i < 0 && (
+              <a className="page-link" href="#">
+                ...
+              </a>
+            )}
           </li>
         ))}
         <li className={"page-item " + (nextDisabled ? "disabled" : "")}>
