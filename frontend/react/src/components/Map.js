@@ -16,6 +16,7 @@ function Map(props) {
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [heatLayer, setHeatLayer] = useState(null);
   const [locations, setLocations] = useState([]);
+  const zoomCallbackRef = useRef();
 
   if (error) console.log(error);
 
@@ -28,7 +29,11 @@ function Map(props) {
     if (!map) {
       return;
     }
-    map.off("zoomend", updateMarkers).on("zoomend", updateMarkers);
+    if (zoomCallbackRef.current) {
+      map.off("zoomend", zoomCallbackRef.current);
+    }
+    zoomCallbackRef.current = updateMarkers;
+    map.on("zoomend", zoomCallbackRef.current);
     updateMarkers();
   }, [map, showMarkers, props.activePermit, locations]);
 
