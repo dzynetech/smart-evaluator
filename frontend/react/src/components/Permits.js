@@ -68,15 +68,13 @@ function Permits(props) {
               filterVars={filterVars}
             />
           </div>
-          <MapContainer id="map" center={mapCenter} zoom={mapZoom}>
-            <Map
-              setPermitForModal={setPopupData}
-              filterVars={filterVars}
-              activePermit={activePermit}
-              zoomTarget={zoomTarget}
-              setZoomTarget={setZoomTarget}
-            />
-          </MapContainer>
+          <Map
+            setPermitForModal={setPopupData}
+            filterVars={filterVars}
+            activePermit={activePermit}
+            zoomTarget={zoomTarget}
+            setZoomTarget={setZoomTarget}
+          />
         </div>
         <div id="main">
           <Nav active={"classify"} jwt={props.jwt} setJwt={props.setJwt} />

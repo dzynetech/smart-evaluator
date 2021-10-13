@@ -4,16 +4,8 @@ import { useLocation } from "react-router";
 import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
+import useMap from "../components/dzyne_components/hooks/useMap";
 import "leaflet.heat";
-import {
-  MapContainer,
-  TileLayer,
-  CircleMarker,
-  Marker,
-  Popup,
-  useMap,
-  useMapEvent,
-} from "react-leaflet";
 
 import "leaflet/dist/leaflet.css";
 import ALL_PERMITS_QUERY from "../queries/AllPermitsQuery";
@@ -27,17 +19,35 @@ function Map(props) {
 
   if (error) console.log(error);
 
-  const map = useMap();
-
-  useEffect(() => {
+  const map = useMap("map", {}, {}, (map) => {
     createMapLayers(map);
-  }, []);
+  });
 
   //keep reclustering on zoom from becoming stale
   useEffect(() => {
-    map.off("zoomend").on("zoomend", updateMarkers);
+    if (!map) {
+      return;
+    }
+    map.off("zoomend", updateMarkers).on("zoomend", updateMarkers);
     updateMarkers();
-  }, [showMarkers, props.activePermit, locations]);
+  }, [map, showMarkers, props.activePermit, locations]);
+
+  useEffect(() => {
+    if (!data || !map) {
+      return;
+    }
+    data.permits.edges.forEach((p) => {
+      if (!p.node.bounds) {
+        return;
+      }
+      var geojsonFeature = {
+        type: "Feature",
+        geometry: JSON.parse(p.node.bounds.geojson),
+      };
+      const polygon = Leaflet.geoJSON(geojsonFeature);
+      polygon.addTo(map);
+    });
+  }, [data, map]);
 
   //zoom to active permit when set
   useEffect(() => {
@@ -57,6 +67,8 @@ function Map(props) {
   }, [props.filterVars]);
 
   useEffect(() => {
+    //draw boundaries
+
     //get all locations
     if (data) {
       var locs = [];
@@ -171,7 +183,6 @@ function Map(props) {
       }
       marker.addTo(map);
     }
-
     if (props.activePermit) {
       var icon = Leaflet.divIcon({
         html: '<h1><span class="bi bi-star-fill active-marker"></span></h1>',
@@ -207,8 +218,7 @@ function Map(props) {
 
   return (
     <>
-      <div>
-        <TileLayer url="https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png" />
+      <div id="map">
         <div id="map-controls" className="leaflet-bottom leaflet-right">
           <button
             className="btn btn-light"
