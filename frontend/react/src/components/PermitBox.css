@@ -12,6 +12,7 @@ td  {
 
 .permit-box {
 	margin: .25rem;
+	margin-bottom: .75rem;
 	border-collapse:separate;
 	border:solid black 5px;
 	border-radius:6px;
