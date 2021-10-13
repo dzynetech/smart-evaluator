@@ -17,6 +17,6 @@
   height: 0; 
   border-left: 1.5rem solid transparent;
   border-right: 1.5rem solid transparent;
-  transform: translateY(-0.5rem);
+  transform: translate(-0.1rem,-0.5rem);
   border-top: 1.5rem solid rgba(0, 57, 128, 0.8);
 }
