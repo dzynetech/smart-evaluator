@@ -86,7 +86,11 @@ function PermitModal(props) {
           setIsMouseOver(true);
         }}
       >
-        <PermitBox permit={data.permit} />
+        <PermitBox
+          permit={data.permit}
+          setActivePermit={props.setActivePermit}
+          isModal
+        />
         <div
           className="arrow-down"
           style={{

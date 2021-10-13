@@ -22,7 +22,7 @@ function PermitBox(props) {
         <div
           className="permit-box"
           style={{ borderColor: borderColor, backgroundColor: backgroundColor }}
-          id={props.permit.id}
+          id={props.isModal ? undefined : props.permit.id}
         >
           <div className="permit-grid">
             <div className="video">
