@@ -1,11 +1,11 @@
 import { useEffect, useRef } from "react";
 
 const video_suffixes = [
-  "_Depth_PNG",
-  "_Weighted_Depth",
   "_Depth_BLD",
-  "_Overlay_BLD",
+  "_Weighted_Depth",
+  "_Depth_PNG",
   "_Mask_BLD_BLUE",
+  "_Overlay_BLD",
 ];
 const prefix = "/data/urbanscape_videos/";
 
