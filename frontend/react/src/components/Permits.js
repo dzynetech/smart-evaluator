@@ -11,7 +11,6 @@ import Nav from "./Nav";
 import PermitModal from "./PermitModal";
 import PERMITS_QUERY from "../queries/PermitsQuery";
 import Legend from "./Legend";
-import { MapContainer } from "react-leaflet";
 import "./Permits.css";
 
 function Permits(props) {
