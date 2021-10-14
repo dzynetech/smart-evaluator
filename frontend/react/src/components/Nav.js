@@ -1,8 +1,6 @@
-import useLocalStorage from "../hooks/useLocalStorage";
 import { useHistory } from "react-router-dom";
-import { gql, useQuery, useLazyQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client";
 import USER_QUERY from "../queries/UserQuery";
-import { useEffect } from "react";
 
 function Nav(props) {
   const history = useHistory();

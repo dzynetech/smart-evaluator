@@ -14,7 +14,7 @@ function FilterPagination(props) {
         pages.push(pages.slice(-1)[0] + 1);
       }
     }
-    for (var i = 0; i < 11; i++) {
+    for (i = 0; i < 11; i++) {
       if (p[i] > numPages) {
         pages.pop();
         pages.unshift(pages[0] - 1);
@@ -22,8 +22,8 @@ function FilterPagination(props) {
     }
 
     // add first and last page and elipses if there is a skip
-    if (pages[0] != 1) {
-      if (pages[0] != 2) {
+    if (pages[0] !== 1) {
+      if (pages[0] !== 2) {
         pages.unshift(-1);
       }
       pages.unshift(1);
@@ -31,8 +31,8 @@ function FilterPagination(props) {
       //add more pages on right if fewer on left
       pages.push(pages.slice(-1)[0] + 1);
     }
-    if (pages[pages.length - 1] != numPages) {
-      if (pages[pages.length - 1] != numPages - 1) {
+    if (pages[pages.length - 1] !== numPages) {
+      if (pages[pages.length - 1] !== numPages - 1) {
         pages.push(-2);
       }
       pages.push(numPages);

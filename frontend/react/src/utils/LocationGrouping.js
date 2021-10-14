@@ -90,7 +90,7 @@ export function computeMarkers(zoom, lat, locations, activePermit) {
       ids: thisMarkerLocs.map((x) => x.id),
       active: active,
     };
-    if (active && marker.ids.length == 1) {
+    if (active && marker.ids.length === 1) {
       //dont render just active permit alone, star already does that
       continue;
     }

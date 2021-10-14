@@ -3,7 +3,6 @@ import {
   ApolloClient,
   InMemoryCache,
   ApolloProvider,
-  HttpLink,
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
@@ -13,9 +12,7 @@ import Nav from "./components/Nav";
 import Login from "./components/Login";
 import RequireLogin from "./components/RequireLogin";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
-import { createContext } from "react";
 import useLocalStorage from "./hooks/useLocalStorage";
-import { graphql } from "graphql";
 
 var graphql_url = process.env.REACT_APP_GRAPHQL_URL;
 if (!graphql_url) {

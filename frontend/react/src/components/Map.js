@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Leaflet, { circle, DivIcon, marker } from "leaflet";
-import { useLocation } from "react-router";
+import Leaflet from "leaflet";
 import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
@@ -72,8 +71,6 @@ function Map(props) {
   }, [props.filterVars]);
 
   useEffect(() => {
-    //draw boundaries
-
     //get all locations
     if (data) {
       var locs = [];
