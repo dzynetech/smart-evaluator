@@ -6,6 +6,7 @@ const USER_QUERY = gql`
       id
       username
       annotator
+      urbanscape
     }
   }
 `;

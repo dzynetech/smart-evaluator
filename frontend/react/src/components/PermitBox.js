@@ -3,6 +3,8 @@ import PermitData from "./PermitData";
 import PermitNote from "./PermitNote.js";
 import PermitButtons from "./PermitButtons.js";
 import { colorMap, borderColorMap } from "../utils/Colors.js";
+import { useQuery } from "@apollo/client";
+import USER_QUERY from "../queries/UserQuery";
 
 import "./PermitBox.css";
 import UrbanscapeVideos from "./UrbanscapeVideos";
@@ -10,6 +12,8 @@ import UrbanscapeVideos from "./UrbanscapeVideos";
 function PermitBox(props) {
   const [showUrbanscape, setShowUrbanscape] = useState(false);
   const videoRef = useRef(null);
+
+  const { data } = useQuery(USER_QUERY);
 
   const image_dir = "/data/";
   const mp4_filename = image_dir + props.permit.imageUrl + ".mp4";
@@ -124,17 +128,21 @@ function PermitBox(props) {
                   </div>
                 ))}
               </div>
-              {props.permit.source.hasUrbanscapeVideos && (
-                <h3 onClick={() => setShowUrbanscape((x) => !x)}>
-                  {!showUrbanscape && (
-                    <i className="bi bi-arrow-down-square-fill"></i>
-                  )}
-                  {showUrbanscape && (
-                    <i className="bi bi-arrow-up-square-fill"></i>
-                  )}
-                </h3>
-              )}
-              {!props.permit.source.hasUrbanscapeVideos && <br />}
+              {props.permit.source.hasUrbanscapeVideos &&
+                data &&
+                data.currentUser.urbanscape && (
+                  <h3 onClick={() => setShowUrbanscape((x) => !x)}>
+                    {!showUrbanscape && (
+                      <i className="bi bi-arrow-down-square-fill"></i>
+                    )}
+                    {showUrbanscape && (
+                      <i className="bi bi-arrow-up-square-fill"></i>
+                    )}
+                  </h3>
+                )}
+              {(!props.permit.source.hasUrbanscapeVideos ||
+                !data ||
+                !data.currentUser.urbanscape) && <br />}
             </div>
           </div>
           {showUrbanscape && (
