@@ -7,3 +7,4 @@ frontend/react/build/
 goaccess/nginx/htpasswd
 frontend/nginx/logs/
 goaccess/html/index.html
+database.json
