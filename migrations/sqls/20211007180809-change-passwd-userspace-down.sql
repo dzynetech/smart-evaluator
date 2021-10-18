@@ -1,0 +1,1 @@
+drop function smart.change_password(password text);

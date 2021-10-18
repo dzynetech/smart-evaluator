@@ -1,6 +1,8 @@
 import React, { useState, useEffect, useContext } from "react";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation, gql, useQuery } from "@apollo/client";
 import { permitContext } from "../App";
+import USER_QUERY from "../queries/UserQuery";
+
 function PermitNote(props) {
   const UPDATE_NOTE = gql`
     mutation UpdateNotes($note: String, $id: Int!) {
@@ -13,9 +15,10 @@ function PermitNote(props) {
     }
   `;
   const [note, setNote] = useState(props.permit.notes || "");
-  const [updateNote, { data, loading, error }] = useMutation(UPDATE_NOTE);
-  const { readonly } = useContext(permitContext);
+  const [updateNote, { error }] = useMutation(UPDATE_NOTE);
   const [firstRender, setFirstRender] = useState(true);
+  const { data } = useQuery(USER_QUERY);
+
   useEffect(() => {
     if (firstRender) {
       setFirstRender(false);
@@ -31,6 +34,7 @@ function PermitNote(props) {
 
   if (error) console.log(error);
 
+  if (!data) return "";
   return (
     <div className="form-group">
       <textarea
@@ -39,7 +43,7 @@ function PermitNote(props) {
         rows="2"
         value={note}
         onChange={(e) => setNote(e.target.value)}
-        disabled={readonly}
+        disabled={!data.currentUser.annotator}
       ></textarea>
     </div>
   );

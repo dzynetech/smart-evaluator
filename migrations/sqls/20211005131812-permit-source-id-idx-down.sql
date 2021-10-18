@@ -1,0 +1,1 @@
+drop index smart.idx_source_id_permits;

@@ -1,0 +1,1 @@
+alter table smart."sources" drop column has_urbanscape_videos;

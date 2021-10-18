@@ -2,6 +2,7 @@ const ignoredPermitData = [
   "Accuracy Score",
   "Accuracy Type",
   "Area",
+  "area",
   "Bldg Sqft",
   "City",
   "Contractor",

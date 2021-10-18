@@ -1,7 +1,8 @@
 import React, { useContext } from "react";
 import { permitContext } from "../App";
-import { useMutation, gql } from "@apollo/client";
+import { useMutation, gql, useQuery } from "@apollo/client";
 import { colorMap, borderColorMap } from "../utils/Colors";
+import USER_QUERY from "../queries/UserQuery";
 
 const CLASSIFY_PERMIT_MUT = gql`
   mutation classifyPermit($id: Int!, $classification: Classification) {
@@ -19,7 +20,7 @@ const CLASSIFY_PERMIT_MUT = gql`
 
 function PermitButtons(props) {
   const [classifyPermit] = useMutation(CLASSIFY_PERMIT_MUT);
-  const { readonly } = useContext(permitContext);
+  const { data } = useQuery(USER_QUERY);
 
   async function classify(classification) {
     if (props.setActivePermit) {
@@ -66,13 +67,15 @@ function PermitButtons(props) {
     document.getElementById(id).style.backgroundColor = colorMap.UNCLASSIFIED;
     classify("UNCLASSIFIED");
   }
-
+  if (!data) {
+    return <></>;
+  }
   return (
     <>
       <button
         type="button"
         className="btn btn-primary"
-        disabled={readonly}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setYes(props.permit.id);
         }}
@@ -82,7 +85,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={readonly}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setNo(props.permit.id);
         }}
@@ -92,7 +95,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={readonly}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setMaybe(props.permit.id);
         }}
@@ -102,7 +105,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={readonly}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setDuplicate(props.permit.id);
         }}
@@ -112,7 +115,7 @@ function PermitButtons(props) {
       <button
         type="button"
         className="btn btn-primary"
-        disabled={readonly}
+        disabled={!data.currentUser.annotator}
         onClick={() => {
           setUnclassified(props.permit.id);
         }}

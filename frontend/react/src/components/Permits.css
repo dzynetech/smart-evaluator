@@ -1,0 +1,24 @@
+/*legent stuff */
+
+.legend {
+	border-radius: 2px;
+	border-style: solid;
+	border-radius: 10px;
+	border-color: rgba(0, 0, 0, 0.07);
+	padding: 0.25rem;
+}
+
+.rectangle {
+	display: inline-block;
+	width:20px;
+	height:20px;
+	background:green;
+	margin-right: 1rem;
+	margin-left: .025rem;
+	margin-top: 4px;
+}
+
+.title {
+	display:flex;
+	justify-content: space-between;
+}

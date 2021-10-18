@@ -1,0 +1,1 @@
+ALTER TABLE smart_private."users_sources" ADD CONSTRAINT unique_rows UNIQUE (user_id,source_id);

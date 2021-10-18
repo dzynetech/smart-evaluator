@@ -1,0 +1,1 @@
+ALTER TABLE smart_private."users_sources" drop CONSTRAINT unique_rows;

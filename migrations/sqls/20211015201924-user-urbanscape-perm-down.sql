@@ -1,0 +1,1 @@
+alter table smart."user" drop column urbanscape ;

@@ -1,0 +1,1 @@
+drop function smart.authenticate(text,text);

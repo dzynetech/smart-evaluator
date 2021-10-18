@@ -4,4 +4,6 @@ secrets
 node/frontend/data/
 backup/
 frontend/react/build/
-frontend/nginx/htpasswd
+goaccess/nginx/htpasswd
+frontend/nginx/logs/
+goaccess/html/index.html

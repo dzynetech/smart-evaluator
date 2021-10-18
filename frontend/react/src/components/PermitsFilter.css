@@ -11,7 +11,7 @@
 	"m m m m m m m i i i i i"
 	"s s s s s c c c c y y y"
 	"z z z w w w w f f f f f"
-	"p p p p p p p o o o o o";
+	"p p p p p p p p p o o o";
 }
 #classification-filter {
 	grid-area :m;
@@ -46,7 +46,12 @@
 	margin-left: .5rem;
 }
 
-#apply-btn > button {
-	padding-left: .3rem;
-	padding-right: .3rem;
+#apply-btn > input {
+	padding-left: 1rem;
+	padding-right: 1rem;
+	margin-top: .3rem;
+}
+
+i {
+	margin-right: 0.25rem;
 }

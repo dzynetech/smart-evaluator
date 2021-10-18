@@ -1,0 +1,1 @@
+drop table smart.users_sources;

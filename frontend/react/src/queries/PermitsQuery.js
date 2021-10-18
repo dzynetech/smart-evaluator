@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 
 const PERMITS_QUERY = gql`
-  query MyQuery(
+  query PermitsQuery(
     $order: [PermitsOrderBy!]
     $classification: ClassificationFilter
     $sourceId: IntFilter
@@ -14,7 +14,6 @@ const PERMITS_QUERY = gql`
     $permitData: String
     $numPerPage: Int
     $offset: Int
-    $hasBounds: Boolean
   ) {
     permits(
       first: $numPerPage
@@ -22,7 +21,6 @@ const PERMITS_QUERY = gql`
       orderBy: $order
       filter: {
         and: {
-          hasBounds: { equalTo: $hasBounds }
           imageUrl: { isNull: false }
           sqft: { greaterThanOrEqualTo: $min_sqft }
           cost: { greaterThanOrEqualTo: $min_cost }
@@ -48,6 +46,7 @@ const PERMITS_QUERY = gql`
           streetNumber
           source {
             name
+            hasUrbanscapeVideos
           }
           location {
             x
@@ -60,6 +59,9 @@ const PERMITS_QUERY = gql`
           notes
           imageUrl
           name
+          bounds {
+            geojson
+          }
         }
       }
       totalCount

@@ -1,0 +1,1 @@
+comment on table smart.user is '@omit read'

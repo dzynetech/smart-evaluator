@@ -1,0 +1,17 @@
+{
+  "dev": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "smart",
+    "username": "postgres",
+    "password": "postgres"
+  },
+  "staging": {
+    "driver": "pg",
+    "host": "localhost",
+    "database": "smart",
+    "username": "V53OQSV0FN28XBVI",
+    "password": "7KRTS6KYYMM2FLIQ",
+    "port": 5433
+  }
+}

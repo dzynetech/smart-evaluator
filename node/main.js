@@ -10,7 +10,7 @@ app.use(
   postgraphile(
     process.env.LOCAL_DATABASE_URL ||
       `postgres://${process.env.DB_USER}:${process.env.DB_PASSWORD}@${process.env.DB_HOST}:5432/smart`,
-    "public",
+    "smart",
     {
       appendPlugins: [
         postgisPlugin.default,
@@ -22,9 +22,11 @@ app.use(
       enhanceGraphiql: true,
       retryOnInitFail: true,
       enableCors: true,
+      pgDefaultRole: "smart_anonymous",
+      jwtPgTypeIdentifier: "smart.jwt",
+      jwtSecret: process.env.JWT_SECRET || "jwt_secret",
     }
   )
 );
-app.use(express.static("frontend"));
 
 app.listen(process.env.PORT || 3000);

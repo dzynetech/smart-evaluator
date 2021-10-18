@@ -25,7 +25,7 @@ def main():
         host=os.getenv("DB_HOST") or "127.0.0.1", port="5432", database="smart")
     cursor = connection.cursor()
     # create source in db
-    sql = f"INSERT INTO sources(name) VALUES('{config['dataset_name']}') RETURNING id"
+    sql = f"INSERT INTO smart.sources(name) VALUES('{config['dataset_name']}') RETURNING id"
     cursor.execute(sql)
     source_id = cursor.fetchone()[0]
 
@@ -104,7 +104,8 @@ def main():
                 columns.insert(0,  'location')
                 first_value = f"ST_GeomFromText('POINT({long} {lat})'),"
 
-            sql = f"INSERT INTO permits {tuple(columns)}".replace("'",  "")
+            sql = f"INSERT INTO smart.permits {tuple(columns)}".replace(
+                "'",  "")
             sql += " VALUES (" + first_value + "%s," * (len(data)-1) + "%s);"
             cursor.execute(sql, tuple(data))
 

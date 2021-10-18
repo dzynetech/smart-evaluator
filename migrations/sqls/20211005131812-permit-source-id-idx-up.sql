@@ -1,0 +1,1 @@
+create index idx_source_id_permits on smart.permits(source_id);

@@ -1,0 +1,1 @@
+alter table smart.users_sources drop column id;
