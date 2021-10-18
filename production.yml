@@ -5,7 +5,7 @@ services:
     env_file:
       - secrets
     ports: 
-      - '4082:5432' 
+      - '4182:5432' 
     #expose: 
     #  - '5432' 
     volumes:
@@ -32,7 +32,7 @@ services:
     build: 
       context: ./frontend
     ports:
-      - "4080:80"
+      - "4180:80"
     depends_on:
       - node 
     volumes:
@@ -48,7 +48,7 @@ services:
     links:
       - postgres:postgres
     ports:
-      - '4086:8081
+      - '4186:8081
     depends_on:
       - postgres 
     env_file:
@@ -65,7 +65,7 @@ services:
   goaccess:
     image: nginx
     ports:
-      - "4081:80"
+      - "4181:80"
     volumes:
       - ./goaccess/html:/usr/share/nginx/html
       - ./goaccess/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
