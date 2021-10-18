@@ -48,7 +48,7 @@ services:
     links:
       - postgres:postgres
     ports:
-      - '4186:8081
+      - '4186:8081'
     depends_on:
       - postgres 
     env_file:
