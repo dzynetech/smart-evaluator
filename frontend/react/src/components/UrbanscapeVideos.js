@@ -81,7 +81,7 @@ function UrbanscapeVideo(props) {
   }, [videoRef]);
 
   return (
-    <video ref={videoRef} width="540" loop muted controls>
+    <video ref={videoRef} width="440" loop muted controls>
       <source
         src={prefix + props.id + props.suffix + ".mp4"}
         type="video/mp4"
