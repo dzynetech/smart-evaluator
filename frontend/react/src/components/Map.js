@@ -48,7 +48,9 @@ function Map(props) {
         type: "Feature",
         geometry: JSON.parse(p.node.bounds.geojson),
       };
-      const polygon = Leaflet.geoJSON(geojsonFeature);
+      const polygon = Leaflet.geoJSON(geojsonFeature, {
+        style: { fill: false },
+      });
       polygon.addTo(map);
     });
   }, [data, map]);
