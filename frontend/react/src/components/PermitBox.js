@@ -1,4 +1,4 @@
-import React, { useState, useRef } from "react";
+import React, { useState, useRef, useEffect } from "react";
 import PermitData from "./PermitData";
 import PermitNote from "./PermitNote.js";
 import PermitButtons from "./PermitButtons.js";
@@ -10,6 +10,7 @@ import "./PermitBox.css";
 import UrbanscapeVideos from "./UrbanscapeVideos";
 
 function PermitBox(props) {
+  //is the urbanscape dropdown visible
   const [showUrbanscape, setShowUrbanscape] = useState(false);
   const videoRef = useRef(null);
 
@@ -19,6 +20,15 @@ function PermitBox(props) {
   const mp4_filename = image_dir + props.permit.imageUrl + ".mp4";
   const borderColor = borderColorMap[props.permit.classification];
   const backgroundColor = colorMap[props.permit.classification];
+
+  function isUrbanscapeVisible() {
+    //true if this permit should have an urbanscape dropdown button
+    return (
+      props.permit.source.hasUrbanscapeVideos &&
+      data &&
+      data.currentUser.urbanscape
+    );
+  }
 
   return (
     <>
@@ -128,21 +138,17 @@ function PermitBox(props) {
                   </div>
                 ))}
               </div>
-              {props.permit.source.hasUrbanscapeVideos &&
-                data &&
-                data.currentUser.urbanscape && (
-                  <h3 onClick={() => setShowUrbanscape((x) => !x)}>
-                    {!showUrbanscape && (
-                      <i className="bi bi-arrow-down-square-fill"></i>
-                    )}
-                    {showUrbanscape && (
-                      <i className="bi bi-arrow-up-square-fill"></i>
-                    )}
-                  </h3>
-                )}
-              {(!props.permit.source.hasUrbanscapeVideos ||
-                !data ||
-                !data.currentUser.urbanscape) && <br />}
+              {isUrbanscapeVisible() && (
+                <h3 onClick={() => setShowUrbanscape((x) => !x)}>
+                  {!showUrbanscape && (
+                    <i className="bi bi-arrow-down-square-fill"></i>
+                  )}
+                  {showUrbanscape && (
+                    <i className="bi bi-arrow-up-square-fill"></i>
+                  )}
+                </h3>
+              )}
+              {!isUrbanscapeVisible() && <br />}
             </div>
           </div>
           {showUrbanscape && (
