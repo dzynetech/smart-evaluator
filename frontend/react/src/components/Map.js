@@ -4,7 +4,7 @@ import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
 import useMap from "../components/dzyne_components/hooks/useMap";
-import "leaflet.heat";
+import "../HeatLayer";
 
 import "leaflet/dist/leaflet.css";
 import ALL_PERMITS_QUERY from "../queries/AllPermitsQuery";
