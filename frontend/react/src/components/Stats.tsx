@@ -5,13 +5,14 @@ import SourceStats from "./SourceStats.js";
 import StatsFilter from "./StatsFilter.js";
 import SOURCES_QUERY from "../queries/SourcesQuery.js";
 import "./Stats.css";
+import { Permit } from "../generated/graphql";
 
 function Stats() {
   const [minSqft, setMinSqft] = useState(0);
 
   const { data } = useQuery(SOURCES_QUERY);
 
-  function setFilter(e, sqft) {
+  function setFilter(e : React.FormEvent<HTMLFormElement>, sqft : Number) {
     e.preventDefault();
     setMinSqft(Number(sqft));
   }
@@ -22,8 +23,8 @@ function Stats() {
 
       <div className="stats-container">
         {data &&
-          data.sources.nodes.map((n) => (
-            <SourceStats key={n.id} source={n} minSqft={minSqft} />
+          data.sources.nodes.map((permit: Permit) => (
+            <SourceStats key={permit.id} source={permit} minSqft={minSqft} />
           ))}
       </div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
