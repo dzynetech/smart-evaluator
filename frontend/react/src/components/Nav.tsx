@@ -4,7 +4,7 @@ import USER_QUERY from "../queries/UserQuery";
 
 interface Props {
   active : string,
-  jwt: string,
+  jwt: string | null,
   setJwt: (jwt: string | null)=>void
 }
 

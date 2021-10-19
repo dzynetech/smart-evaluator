@@ -1,5 +1,10 @@
 import { useHistory } from "react-router-dom";
-function RequireLogin(props) {
+
+interface Props {
+  jwt : string | null
+}
+
+function RequireLogin(props : Props) {
   const history = useHistory();
   if (!props.jwt) {
     history.push("/login");

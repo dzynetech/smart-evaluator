@@ -20,7 +20,7 @@ if (!graphql_url) {
 }
 
 function App() {
-  const [jwt, setJwt] = useLocalStorage("jwt", null);
+  const [jwt, setJwt] = useLocalStorage<string>("jwt", null);
   const httpLink = createHttpLink({
     uri: graphql_url,
   });
