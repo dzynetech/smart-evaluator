@@ -1,11 +1,11 @@
 import { useQuery, gql } from "@apollo/client";
 import React, { useState } from "react";
 
-import SourceStats from "./SourceStats.js";
-import StatsFilter from "./StatsFilter.js";
-import SOURCES_QUERY from "../queries/SourcesQuery.js";
+import SourceStats from "./SourceStats";
+import StatsFilter from "./StatsFilter";
+import SOURCES_QUERY from "../queries/SourcesQuery";
 import "./Stats.css";
-import { Permit } from "../generated/graphql";
+import { Source } from "../generated/graphql";
 
 function Stats() {
   const [minSqft, setMinSqft] = useState(0);
@@ -23,8 +23,8 @@ function Stats() {
 
       <div className="stats-container">
         {data &&
-          data.sources.nodes.map((permit: Permit) => (
-            <SourceStats key={permit.id} source={permit} minSqft={minSqft} />
+          data.sources.nodes.map((source: Source) => (
+            <SourceStats key={source.id} source={source} minSqft={minSqft} />
           ))}
       </div>
       <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>

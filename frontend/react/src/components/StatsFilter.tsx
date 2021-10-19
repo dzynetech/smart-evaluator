@@ -1,13 +1,17 @@
 import React, { useState } from "react";
 
-function StatsFilter(props) {
+interface Props {
+  setFilter: (e: React.FormEvent<HTMLFormElement>, sqft: Number) => void;
+}
+
+function StatsFilter(props: Props) {
   const [minSqft, setMinSqft] = useState("");
   return (
     <form
       id="stats-filter"
       className="form-inline"
       onSubmit={(e) => {
-        props.setFilter(e, minSqft);
+        props.setFilter(e, Number(minSqft));
       }}
     >
       <div id="form-group">
