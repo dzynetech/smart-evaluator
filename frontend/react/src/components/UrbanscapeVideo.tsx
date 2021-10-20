@@ -1,34 +1,16 @@
-import { useEffect, useRef } from "react";
+import { useRef, useEffect } from "react";
 
-const video_suffixes = [
-  "_Depth_BLD",
-  "_Weighted_Depth",
-  "_Depth_PNG",
-  "_Mask_BLD_BLUE",
-  "_Overlay_BLD",
-];
 const prefix = "/data/urbanscape_videos/";
-
-function UrbanscapeVideos(props) {
-  return (
-    <div className="video-container">
-      {video_suffixes.map((suffix) => (
-        <div key={suffix}>
-          <UrbanscapeVideo
-            id={props.id}
-            masterVideoRef={props.masterVideoRef}
-            suffix={suffix}
-          />
-        </div>
-      ))}
-    </div>
-  );
+interface Props {
+  id: number;
+  masterVideoRef: React.MutableRefObject<null | HTMLVideoElement>;
+  suffix: string;
 }
 
-function UrbanscapeVideo(props) {
-  const videoRef = useRef(null);
+function UrbanscapeVideo(props: Props) {
+  const videoRef = useRef<HTMLVideoElement>(null);
 
-  function isPlaying(vid) {
+  function isPlaying(vid: HTMLVideoElement) {
     return !!(
       vid.currentTime > 0 &&
       !vid.paused &&
@@ -38,14 +20,20 @@ function UrbanscapeVideo(props) {
   }
 
   function onPlay() {
-    videoRef.current.play();
+    if (videoRef.current) {
+      videoRef.current.play();
+    }
   }
   function onPause() {
-    videoRef.current.pause();
-    videoRef.current.currentTime = props.masterVideoRef.current.currentTime;
+    if (videoRef.current) {
+      videoRef.current.pause();
+      if (props.masterVideoRef.current) {
+        videoRef.current.currentTime = props.masterVideoRef.current.currentTime;
+      }
+    }
   }
   function onSeek() {
-    if (videoRef.current) {
+    if (videoRef.current && props.masterVideoRef.current) {
       videoRef.current.currentTime = props.masterVideoRef.current.currentTime;
     }
   }
@@ -55,7 +43,7 @@ function UrbanscapeVideo(props) {
       return;
     }
     if (isPlaying(props.masterVideoRef.current)) {
-			videoRef.current.currentTime = props.masterVideoRef.current.currentTime;
+      videoRef.current.currentTime = props.masterVideoRef.current.currentTime;
       videoRef.current.play();
     }
     const masterVid = props.masterVideoRef.current;
@@ -90,4 +78,4 @@ function UrbanscapeVideo(props) {
   );
 }
 
-export default UrbanscapeVideos;
+export default UrbanscapeVideo;
