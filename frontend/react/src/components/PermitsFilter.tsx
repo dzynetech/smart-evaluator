@@ -4,11 +4,11 @@ import SourceDropdown from "./SourceDropdown";
 import ViewRawJSON from "./ViewRawJSON";
 
 import "./PermitsFilter.css";
+import { Filter, FilterVars } from "../interfaces/FilterVars";
 
 interface Props {
-  setFilterVars: React.Dispatch<any>;
+  setFilterVars: (filterVars: FilterVars | null) => void;
   filterVars: any;
-  // setFilter: (filter: any) => void;
 }
 
 function PermitsFilter(props: Props) {
@@ -31,9 +31,6 @@ function PermitsFilter(props: Props) {
   function setFilter(e: React.FormEvent<HTMLFormElement> | null) {
     if (e) {
       e.preventDefault();
-    }
-    interface Filter {
-      equalTo: string | number;
     }
     var c: Filter | undefined;
     if (classification === "ALL") {

@@ -14,6 +14,7 @@ import Legend from "./Legend";
 import "./Permits.css";
 import { GeometryPoint, Permit, PermitsEdge } from "../generated/graphql";
 import UpdatablePermit from "../interfaces/UpdatablePermit";
+import { FilterVars, QueryVars } from "../interfaces/FilterVars";
 
 interface Props {
   jwt: string | null;
@@ -21,7 +22,7 @@ interface Props {
 }
 
 function Permits(props: Props) {
-  const [filterVars, setFilterVars] = useState<any>(null);
+  const [filterVars, setFilterVars] = useState<FilterVars | null>(null);
   const [page, setPage] = useState(1);
   const [zoomTarget, setZoomTarget] = useState<GeometryPoint | undefined>(
     undefined
@@ -42,10 +43,21 @@ function Permits(props: Props) {
     if (!filterVars) {
       return;
     }
-    var queryVars: any = {};
-    Object.assign(queryVars, filterVars);
-    queryVars.numPerPage = permitsPerPage;
-    queryVars.offset = permitsPerPage * (page - 1);
+    var queryVars: QueryVars = {
+      order: filterVars.order,
+      classification: filterVars.classification,
+      sourceId: filterVars.sourceId,
+      min_sqft: filterVars.min_sqft,
+      min_cost: filterVars.min_cost,
+      street: filterVars.street,
+      city: filterVars.city,
+      state: filterVars.state,
+      zip: filterVars.zip,
+      permitData: filterVars.permitData,
+      note: filterVars.note,
+      numPerPage: permitsPerPage,
+      offset: permitsPerPage * (page - 1),
+    };
     getPermits({ variables: queryVars });
     console.log(queryVars);
   }, [filterVars, page]);
