@@ -1,6 +1,6 @@
 import React from "react";
-import { Permit } from "../generated/graphql.js";
-import ignoredPermitData from "../utils/IgnoredPermitData.js";
+import { Permit } from "../generated/graphql";
+import ignoredPermitData from "../utils/IgnoredPermitData";
 
 interface Props {
   permit: Permit;

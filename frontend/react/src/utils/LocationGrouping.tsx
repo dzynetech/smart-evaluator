@@ -1,6 +1,21 @@
-import Leaflet from "leaflet";
+import Leaflet, { LatLngExpression, Marker } from "leaflet";
+import { Permit } from "../generated/graphql";
 
-function metersPerPixel(zoom, lat) {
+interface Location {
+  id: number;
+  x: number;
+  y: number;
+}
+
+interface MarkerObj {
+  x: number;
+  y: number;
+  ids: number[];
+  r: number;
+  active: boolean;
+}
+
+function metersPerPixel(zoom: number, lat: number) {
   return (
     (40075016.686 * Math.abs(Math.cos((lat * Math.PI) / 180))) /
     Math.pow(2, zoom + 8)
@@ -8,7 +23,12 @@ function metersPerPixel(zoom, lat) {
 }
 
 //meters
-function haversineDistance(lat1, lon1, lat2, lon2) {
+function haversineDistance(
+  lat1: number,
+  lon1: number,
+  lat2: number,
+  lon2: number
+) {
   var R = 6371; // Radius of the earth in km
   var dLat = deg2rad(lat2 - lat1);
   var dLon = deg2rad(lon2 - lon1);
@@ -23,15 +43,18 @@ function haversineDistance(lat1, lon1, lat2, lon2) {
   return d * 1000;
 }
 
-function deg2rad(deg) {
+function deg2rad(deg: number) {
   return deg * (Math.PI / 180);
 }
 
-export function computeMarkers(zoom, lat, locations, activePermit) {
-  // console.log(locations);
-  //locations: {id,x,y}
+export function computeMarkers(
+  zoom: number,
+  lat: number,
+  locations: Location[],
+  activePermit: Permit
+): MarkerObj[] {
   const maxDistance = metersPerPixel(zoom, lat) * 40;
-  var doneIds = [];
+  var doneIds: number[] = [];
   var markers = [];
   for (let location of locations) {
     if (doneIds.includes(location.id)) {
@@ -83,7 +106,7 @@ export function computeMarkers(zoom, lat, locations, activePermit) {
     );
     const dist = haversineDistance(minY, minX, maxY, maxX);
     const diameter = (1 / metersPerPixel(zoom, lat)) * dist;
-    let marker = {
+    let marker: MarkerObj = {
       x: avgX,
       y: avgY,
       r: Math.max(diameter / 2, 12),
@@ -100,7 +123,13 @@ export function computeMarkers(zoom, lat, locations, activePermit) {
   //return  array of: {x: y: r: ids:[]}
 }
 
-export function circleWithText(latLng, txt, radius, borderWidth, active) {
+export function circleWithText(
+  latLng: LatLngExpression,
+  txt: string,
+  radius: number,
+  borderWidth: number,
+  active: boolean
+) {
   const extraClass = active ? "activeMarker" : "";
   var size = radius * 2;
   var style =
