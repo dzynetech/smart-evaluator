@@ -1,5 +1,6 @@
 import { useQuery, gql } from "@apollo/client";
-import { useState, useEffect } from "react";
+import React, { useState, useEffect } from "react";
+import { Permit } from "../generated/graphql";
 
 const STATES_QUERY = gql`
   query AllStates {
@@ -10,18 +11,23 @@ const STATES_QUERY = gql`
     }
   }
 `;
+interface Props {
+  state: string;
+  setState: React.Dispatch<React.SetStateAction<string>>;
+}
 
-function StateDropdown(props) {
+function StateDropdown(props: Props) {
   const { data } = useQuery(STATES_QUERY);
-  const [states, setStates] = useState([]);
+  const [states, setStates] = useState<string[]>([]);
 
   useEffect(() => {
     if (data) {
-      var states = [];
-      var x = [...new Set(data.permits.nodes)];
+      var states: string[] = [];
+      var permits: Permit[] = data.permits.nodes;
+      var x = [...new Set(permits)];
       x.forEach((obj) => {
         if (obj) {
-          states.push(obj.state);
+          states.push(obj.state!);
         }
       });
       states.sort();

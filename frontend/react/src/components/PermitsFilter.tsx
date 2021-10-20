@@ -32,13 +32,16 @@ function PermitsFilter(props: Props) {
     if (e) {
       e.preventDefault();
     }
-    var c;
+    interface Filter {
+      equalTo: string | number;
+    }
+    var c: Filter | undefined;
     if (classification === "ALL") {
       c = undefined;
     } else {
       c = { equalTo: classification };
     }
-    var sid;
+    var sid: Filter | undefined;
     if (source === "ALL") {
       sid = undefined;
     } else {

@@ -1,15 +1,23 @@
 import React, { useState, useRef, useEffect } from "react";
 import PermitData from "./PermitData";
-import PermitNote from "./PermitNote.js";
-import PermitButtons from "./PermitButtons.js";
-import { colorMap, borderColorMap } from "../utils/Colors.js";
+import PermitNote from "./PermitNote";
+import PermitButtons from "./PermitButtons";
+import { colorMap, borderColorMap } from "../utils/Colors";
 import { useQuery } from "@apollo/client";
 import USER_QUERY from "../queries/UserQuery";
 
 import "./PermitBox.css";
 import UrbanscapeVideos from "./UrbanscapeVideos";
+import { Permit } from "../generated/graphql";
+import UpdatablePermit from "../interfaces/UpdatablePermit";
 
-function PermitBox(props) {
+interface Props {
+  permit: Permit;
+  setActivePermit: React.Dispatch<React.SetStateAction<UpdatablePermit | null>>;
+  nextPermit?: Permit | null;
+  isModal?: boolean;
+}
+function PermitBox(props: Props) {
   //is the urbanscape dropdown visible
   const [showUrbanscape, setShowUrbanscape] = useState(false);
   const videoRef = useRef(null);
@@ -24,7 +32,7 @@ function PermitBox(props) {
   function isUrbanscapeVisible() {
     //true if this permit should have an urbanscape dropdown button
     return (
-      props.permit.source.hasUrbanscapeVideos &&
+      props.permit.source?.hasUrbanscapeVideos &&
       data &&
       data.currentUser.urbanscape
     );
@@ -36,7 +44,7 @@ function PermitBox(props) {
         <div
           className="permit-box"
           style={{ borderColor: borderColor, backgroundColor: backgroundColor }}
-          id={props.isModal ? undefined : props.permit.id}
+          id={props.isModal ? undefined : String(props.permit.id)}
         >
           <div className="permit-grid">
             <div className="video">
@@ -88,7 +96,7 @@ function PermitBox(props) {
                   <tr>
                     <td>Lat/Long:</td>
                     <td>
-                      ({props.permit.location.y},{props.permit.location.x})
+                      ({props.permit.location?.y},{props.permit.location?.x})
                     </td>
                   </tr>
                 </tbody>

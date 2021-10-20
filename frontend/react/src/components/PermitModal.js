@@ -1,4 +1,4 @@
-import PermitBox from "./PermitBox.js";
+import PermitBox from "./PermitBox";
 
 import { useQuery, gql } from "@apollo/client";
 

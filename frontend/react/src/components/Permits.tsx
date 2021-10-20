@@ -13,6 +13,7 @@ import PERMITS_QUERY from "../queries/PermitsQuery";
 import Legend from "./Legend";
 import "./Permits.css";
 import { GeometryPoint, Permit, PermitsEdge } from "../generated/graphql";
+import UpdatablePermit from "../interfaces/UpdatablePermit";
 
 interface Props {
   jwt: string | null;
@@ -25,7 +26,9 @@ function Permits(props: Props) {
   const [zoomTarget, setZoomTarget] = useState<GeometryPoint | undefined>(
     undefined
   );
-  const [activePermit, setActivePermit] = useState<Permit | null>(null);
+  const [activePermit, setActivePermit] = useState<UpdatablePermit | null>(
+    null
+  );
   const [prevActivePermit, setPrevActivePermit] = useState<Permit | null>(null);
   const [popupData, setPopupData] = useState(null);
   const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
@@ -123,14 +126,15 @@ function Permits(props: Props) {
             />
             {data &&
               data.permits.edges.map(
-                (p: PermitsEdge, i: number, permits: PermitsEdge[]) => (
-                  <PermitBox
-                    key={p.node?.id}
-                    permit={p.node}
-                    nextPermit={permits[i + 1]?.node}
-                    setActivePermit={setActivePermit}
-                  />
-                )
+                (p: PermitsEdge, i: number, permits: PermitsEdge[]) =>
+                  p.node && (
+                    <PermitBox
+                      key={p.node?.id}
+                      permit={p.node}
+                      nextPermit={permits[i + 1]?.node}
+                      setActivePermit={setActivePermit}
+                    />
+                  )
               )}
             {data && (
               <FilterPagination

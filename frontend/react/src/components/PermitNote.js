@@ -34,7 +34,7 @@ function PermitNote(props) {
 
   if (error) console.log(error);
 
-  if (!data) return "";
+  if (!data) return <></>;
   return (
     <div className="form-group">
       <textarea
