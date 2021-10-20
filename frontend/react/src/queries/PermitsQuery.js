@@ -12,6 +12,7 @@ const PERMITS_QUERY = gql`
     $state: String
     $zip: String
     $permitData: String
+    $note: String
     $numPerPage: Int
     $offset: Int
   ) {
@@ -31,6 +32,7 @@ const PERMITS_QUERY = gql`
           state: { includesInsensitive: $state }
           zip: { includesInsensitive: $zip }
           permitDataBackup: { includesInsensitive: $permitData }
+          notes: { includesInsensitive: $note }
           hasLocation: { equalTo: true }
         }
       }
