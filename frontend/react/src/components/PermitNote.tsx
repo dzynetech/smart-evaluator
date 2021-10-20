@@ -1,9 +1,12 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useMutation, gql, useQuery } from "@apollo/client";
-import { permitContext } from "../App";
 import USER_QUERY from "../queries/UserQuery";
+import { Permit } from "../generated/graphql";
 
-function PermitNote(props) {
+interface Props {
+  permit: Permit;
+}
+function PermitNote(props: Props) {
   const UPDATE_NOTE = gql`
     mutation UpdateNotes($note: String, $id: Int!) {
       updatePermit(input: { patch: { notes: $note }, id: $id }) {
@@ -40,7 +43,7 @@ function PermitNote(props) {
       <textarea
         className="form-control"
         id={"notes-" + props.permit.id}
-        rows="2"
+        rows={2}
         value={note}
         onChange={(e) => setNote(e.target.value)}
         disabled={!data.currentUser.annotator}

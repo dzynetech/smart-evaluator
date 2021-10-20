@@ -1,7 +1,7 @@
 import { Permit } from "../generated/graphql";
 
 interface UpdatablePermit extends Permit {
-  time: number;
+  time?: number;
 }
 
 export default UpdatablePermit;
