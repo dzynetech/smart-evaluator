@@ -16,6 +16,7 @@ function PermitsFilter(props) {
   const [source, setSource] = useState("ALL");
   const [order, setOrder] = useState("SQFT_DESC");
   const [permitData, setPermitData] = useState("");
+  const [note, setNote] = useState("");
 
   useEffect(() => {
     setFilter();
@@ -49,6 +50,7 @@ function PermitsFilter(props) {
       state: state,
       zip: zip,
       permitData: permitData,
+      note: note,
     });
   }
 
@@ -185,6 +187,18 @@ function PermitsFilter(props) {
             type="text"
             className="form-control my-1 mr-2"
             id="permitDataFilter"
+          ></input>
+        </div>
+        <div id="notes-filter">
+          <label className="my-1 mr-2" htmlFor="noteFilter">
+            Notes Contain:
+          </label>
+          <input
+            value={note}
+            onChange={(e) => setNote(e.target.value)}
+            type="text"
+            className="form-control my-1 mr-2"
+            id="noteFilter"
           ></input>
         </div>
         <div id="apply-btn">
