@@ -1,8 +1,20 @@
-function CurlModal(props) {
+interface Props {
+  query: string;
+  variables: string;
+  jwt: string | null;
+}
+
+function CurlModal(props: Props) {
   function closeModal() {
-    document.getElementById("backdrop").style.display = "none";
-    document.getElementById("curlModal").style.display = "none";
-    document.getElementById("curlModal").classList.remove("show");
+    const backdrop = document.getElementById("backdrop");
+    if (backdrop) {
+      backdrop.style.display = "none";
+    }
+    const modal = document.getElementById("curlModal");
+    if (modal) {
+      modal.style.display = "none";
+      modal.classList.remove("show");
+    }
   }
 
   var modal = document.getElementById("curlModal");
@@ -12,7 +24,7 @@ function CurlModal(props) {
     }
   };
 
-  function modifyQuery(query) {
+  function modifyQuery(query: string): string {
     query = query.replace(", $numPerPage: Int, $offset: Int", "");
     query = query.replace("first: $numPerPage", "");
     query = query.replace("offset: $offset", "");
@@ -21,7 +33,7 @@ function CurlModal(props) {
 
   return (
     <>
-      <div className="modal fade" id="curlModal" tabIndex="-1">
+      <div className="modal fade" id="curlModal" tabIndex={-1}>
         <div className="modal-dialog">
           <div className="modal-content">
             <div className="modal-header">

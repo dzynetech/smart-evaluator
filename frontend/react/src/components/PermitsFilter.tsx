@@ -8,7 +8,7 @@ import { Filter, FilterVars } from "../interfaces/FilterVars";
 
 interface Props {
   setFilterVars: (filterVars: FilterVars | null) => void;
-  filterVars: any;
+  filterVars: FilterVars | null;
 }
 
 function PermitsFilter(props: Props) {

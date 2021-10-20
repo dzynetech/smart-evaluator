@@ -1,8 +1,13 @@
 import React from "react";
+import { Permit } from "../generated/graphql.js";
 import ignoredPermitData from "../utils/IgnoredPermitData.js";
 
-function PermitDataTable(props) {
-  function CleanPermitData(json_data) {
+interface Props {
+  permit: Permit;
+}
+
+function PermitDataTable(props: Props) {
+  function CleanPermitData(json_data: string) {
     var data = JSON.parse(json_data);
     ignoredPermitData.forEach((x) => {
       delete data[x];

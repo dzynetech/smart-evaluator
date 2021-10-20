@@ -1,13 +1,20 @@
-export const colorMap = {
+export interface ColorMap {
+  UNCLASSIFIED: string;
+  CONSTRUCTION: string;
+  NOT_CONSTRUCTION: string;
+  POSSIBLE_CONSTRUCTION: string;
+  DUPLICATE: string;
+}
+
+export const colorMap: ColorMap = {
   UNCLASSIFIED: "#FFFFFF",
   CONSTRUCTION: "#CCFFCC",
   NOT_CONSTRUCTION: "#FFCCCC",
   POSSIBLE_CONSTRUCTION: "#FFFF99",
   DUPLICATE: "#ffdb99",
-  HIGHLIGHT: "#EEEEEE",
 };
 
-export const borderColorMap = {
+export const borderColorMap: ColorMap = {
   UNCLASSIFIED: "#EEE",
   CONSTRUCTION: " #00CC00",
   NOT_CONSTRUCTION: "#FF0000",
@@ -15,7 +22,7 @@ export const borderColorMap = {
   DUPLICATE: "#FFA500",
 };
 
-export const altColorMap = {
+export const altColorMap: ColorMap = {
   UNCLASSIFIED: "#777",
   CONSTRUCTION: " #006600",
   NOT_CONSTRUCTION: "#d60000",

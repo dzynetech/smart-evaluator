@@ -112,11 +112,7 @@ function PermitBox(props: Props) {
               <PermitNote permit={props.permit} />
             </div>
             <div className="permit-data">
-              <PermitData
-                permit={props.permit}
-                border={borderColor}
-                backgroundColor={backgroundColor}
-              />
+              <PermitData permit={props.permit} />
             </div>
             <div className="permit-sidebar text-center">
               <h3
