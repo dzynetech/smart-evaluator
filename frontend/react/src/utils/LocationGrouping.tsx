@@ -51,7 +51,7 @@ export function computeMarkers(
   zoom: number,
   lat: number,
   locations: Location[],
-  activePermit: Permit
+  activePermit: Permit | null
 ): MarkerObj[] {
   const maxDistance = metersPerPixel(zoom, lat) * 40;
   var doneIds: number[] = [];

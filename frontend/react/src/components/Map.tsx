@@ -1,21 +1,41 @@
 import React, { useState, useEffect, useRef } from "react";
-import Leaflet from "leaflet";
+import Leaflet, { LeafletMouseEvent } from "leaflet";
 import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
-import useMap from "../components/dzyne_components/hooks/useMap";
+import useMap from "./dzyne_components/hooks/useMap";
 import "../HeatLayer";
 
 import "leaflet/dist/leaflet.css";
 import ALL_PERMITS_QUERY from "../queries/AllPermitsQuery";
+import UpdatablePermit from "../interfaces/UpdatablePermit";
+import PopupData from "../interfaces/PopupData";
+import { FilterVars } from "../interfaces/FilterVars";
+import { GeometryPoint, PermitsEdge } from "../generated/graphql";
+import { MultiPolygon } from "geojson";
+import removeOldMarkers from "../utils/removeMarkers";
 
-function Map(props) {
+interface Props {
+  setPermitForModal: (popupData: PopupData | null) => void;
+  filterVars: FilterVars | null;
+  activePermit: UpdatablePermit | null;
+  zoomTarget: GeometryPoint | undefined;
+  setZoomTarget: (zoomTarget: GeometryPoint | undefined) => void;
+}
+
+interface Location {
+  id: number;
+  x: number;
+  y: number;
+}
+
+function Map(props: Props) {
   const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
   const [showMarkers, setShowMarkers] = useState(true);
   const [showHeatmap, setShowHeatmap] = useState(false);
   const [heatLayer, setHeatLayer] = useState(null);
-  const [locations, setLocations] = useState([]);
-  const zoomCallbackRef = useRef();
+  const [locations, setLocations] = useState<Location[]>([]);
+  const zoomCallbackRef = useRef<() => void>();
 
   if (error) console.log(error);
 
@@ -40,13 +60,13 @@ function Map(props) {
     if (!data || !map) {
       return;
     }
-    data.permits.edges.forEach((p) => {
-      if (!p.node.bounds) {
+    data.permits.edges.forEach((p: PermitsEdge) => {
+      if (!p.node?.bounds) {
         return;
       }
-      var geojsonFeature = {
-        type: "Feature",
-        geometry: JSON.parse(p.node.bounds.geojson),
+      var geojsonFeature: MultiPolygon = {
+        type: "MultiPolygon",
+        coordinates: JSON.parse(p.node.bounds.geojson).coordinates,
       };
       const polygon = Leaflet.geoJSON(geojsonFeature, {
         style: { fill: false },
@@ -75,19 +95,21 @@ function Map(props) {
   useEffect(() => {
     //get all locations
     if (data) {
-      var locs = [];
-      data.permits.edges.forEach((p) => {
-        locs.push({
-          id: p.node.id,
-          x: p.node.location.x,
-          y: p.node.location.y,
-        });
+      var locs: Location[] = [];
+      data.permits.edges.forEach((p: PermitsEdge) => {
+        if (p.node && p.node.location) {
+          locs.push({
+            id: p.node.id,
+            x: p.node.location.x,
+            y: p.node.location.y,
+          });
+        }
       });
       setLocations(locs);
 
       //setup heatmap
       if (showHeatmap) {
-        var heatmap_data = [];
+        var heatmap_data: any = [];
         locations.forEach((l) => {
           heatmap_data.push([l.y, l.x, 7]);
         });
@@ -101,7 +123,7 @@ function Map(props) {
   //enable disable heatmap
   useEffect(() => {
     if (showHeatmap && locations.length > 0) {
-      var heatmap_data = [];
+      var heatmap_data: any = [];
       locations.forEach((l) => {
         heatmap_data.push([l.y, l.x, 7]);
       });
@@ -123,16 +145,16 @@ function Map(props) {
     if (showMarkers) {
       updateMarkers();
     } else {
-      removeOldMarkers();
+      removeOldMarkers(map);
     }
   }, [showMarkers]);
 
   //resize map to show all markers
   useEffect(() => {
     if (data && map) {
-      var bounds = data.permits.edges.map((p) => [
-        p.node.location.y,
-        p.node.location.x,
+      var bounds = data.permits.edges.map((p: PermitsEdge) => [
+        p.node?.location?.y,
+        p.node?.location?.x,
       ]);
       if (bounds.length > 0) {
         map.fitBounds(bounds);
@@ -141,20 +163,11 @@ function Map(props) {
     }
   }, [data]);
 
-  function removeOldMarkers() {
-    for (let layer in map._layers) {
-      const l = map._layers[layer];
-      if (l instanceof Leaflet.Marker) {
-        map.removeLayer(l);
-      }
-    }
-  }
-
   function updateMarkers() {
     if (!showMarkers) {
       return;
     }
-    props.setZoomTarget(null);
+    props.setZoomTarget(undefined);
     const zoom = map.getZoom();
     const lat = map.getCenter().lat;
     const markerLocations = computeMarkers(
@@ -163,12 +176,18 @@ function Map(props) {
       locations,
       props.activePermit
     );
-    removeOldMarkers();
+    removeOldMarkers(map);
     props.setPermitForModal(null);
     for (let m of markerLocations) {
-      const marker = circleWithText([m.y, m.x], m.ids.length, m.r, 2, m.active);
+      const marker = circleWithText(
+        [m.y, m.x],
+        String(m.ids.length),
+        m.r,
+        2,
+        m.active
+      );
       if (m.ids.length === 1) {
-        marker.on("mouseover", (e) => {
+        marker.on("mouseover", (e: Leaflet.LeafletMouseEvent) => {
           props.setPermitForModal({
             id: m.ids[0],
             x: e.containerPoint.y,
@@ -176,7 +195,7 @@ function Map(props) {
             overMarker: true,
           });
         });
-        marker.on("mouseout", (e) => {
+        marker.on("mouseout", (e: Leaflet.LeafletMouseEvent) => {
           props.setPermitForModal({
             id: m.ids[0],
             x: e.containerPoint.y,
@@ -187,7 +206,7 @@ function Map(props) {
       }
       marker.addTo(map);
     }
-    if (props.activePermit) {
+    if (props.activePermit && props.activePermit.location) {
       var icon = Leaflet.divIcon({
         html: '<h1><span class="bi bi-star-fill active-marker"></span></h1>',
         className: "",
@@ -199,21 +218,25 @@ function Map(props) {
           icon: icon,
         }
       );
-      marker.on("mouseover", (e) => {
-        props.setPermitForModal({
-          id: props.activePermit.id,
-          x: e.containerPoint.y,
-          y: e.containerPoint.x,
-          overMarker: true,
-        });
+      marker.on("mouseover", (e: LeafletMouseEvent) => {
+        if (props.activePermit) {
+          props.setPermitForModal({
+            id: props.activePermit.id,
+            x: e.containerPoint.y,
+            y: e.containerPoint.x,
+            overMarker: true,
+          });
+        }
       });
-      marker.on("mouseout", (e) => {
-        props.setPermitForModal({
-          id: props.activePermit.id,
-          x: e.containerPoint.y,
-          y: e.containerPoint.x,
-          overMarker: false,
-        });
+      marker.on("mouseout", (e: LeafletMouseEvent) => {
+        if (props.activePermit) {
+          props.setPermitForModal({
+            id: props.activePermit.id,
+            x: e.containerPoint.y,
+            y: e.containerPoint.x,
+            overMarker: false,
+          });
+        }
       });
       marker.addTo(map);
       marker.setZIndexOffset(99);

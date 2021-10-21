@@ -15,6 +15,7 @@ import "./Permits.css";
 import { GeometryPoint, Permit, PermitsEdge } from "../generated/graphql";
 import UpdatablePermit from "../interfaces/UpdatablePermit";
 import { FilterVars, QueryVars } from "../interfaces/FilterVars";
+import PopupData from "../interfaces/PopupData";
 
 interface Props {
   jwt: string | null;
@@ -31,7 +32,7 @@ function Permits(props: Props) {
     null
   );
   const [prevActivePermit, setPrevActivePermit] = useState<Permit | null>(null);
-  const [popupData, setPopupData] = useState(null);
+  const [popupData, setPopupData] = useState<PopupData | null>(null);
   const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
