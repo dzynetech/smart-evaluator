@@ -1,4 +1,4 @@
-import Leaflet, { circle, DivIcon, marker } from "leaflet";
+import Leaflet from "leaflet";
 
 const googleStreets = Leaflet.tileLayer(
   "http://{s}.google.com/vt/lyrs=m&x={x}&y={y}&z={z}",
@@ -32,13 +32,13 @@ const normal = Leaflet.tileLayer(
   "https://{s}.basemaps.cartocdn.com/rastertiles/voyager/{z}/{x}/{y}{r}.png"
 );
 
-const baseLayers = {
+const baseLayers: Leaflet.Control.LayersObject = {
   Normal: normal,
   Satelite: googleSat,
   Hybrid: googleHybrid,
   Terrain: googleTerrain,
 };
 
-export function createMapLayers(map) {
+export function createMapLayers(map: Leaflet.Map) {
   Leaflet.control.layers(baseLayers).addTo(map);
 }

@@ -2,30 +2,40 @@ import { useLazyQuery, useQuery } from "@apollo/client";
 import React, { useState, useEffect } from "react";
 import { print } from "graphql/language/printer";
 import Leaflet, { circle, DivIcon, marker } from "leaflet";
-import PermitsFilter from "./PermitsFilter.js";
-import PermitBox from "./PermitBox.js";
+import PermitsFilter from "./PermitsFilter";
+import PermitBox from "./PermitBox";
 import CurlModal from "./CurlModal";
 import FilterPagination from "./FilterPagination";
-import Map from "./Map.js";
+import Map from "./Map";
 import Nav from "./Nav";
 import PermitModal from "./PermitModal";
 import PERMITS_QUERY from "../queries/PermitsQuery";
 import Legend from "./Legend";
 import "./Permits.css";
+import { GeometryPoint, Permit, PermitsEdge } from "../generated/graphql";
+import UpdatablePermit from "../interfaces/UpdatablePermit";
+import { FilterVars, QueryVars } from "../interfaces/FilterVars";
+import PopupData from "../interfaces/PopupData";
 
-function Permits(props) {
-  const [filterVars, setFilterVars] = useState(null);
+interface Props {
+  jwt: string | null;
+  setJwt: (jwt: string | null) => void;
+}
+
+function Permits(props: Props) {
+  const [filterVars, setFilterVars] = useState<FilterVars | null>(null);
   const [page, setPage] = useState(1);
-  const [zoomTarget, setZoomTarget] = useState(null);
-  const [activePermit, setActivePermit] = useState(null);
-  const [prevActivePermit, setPrevActivePermit] = useState(null);
-  const [popupData, setPopupData] = useState(null);
+  const [zoomTarget, setZoomTarget] = useState<GeometryPoint | undefined>(
+    undefined
+  );
+  const [activePermit, setActivePermit] = useState<UpdatablePermit | null>(
+    null
+  );
+  const [prevActivePermit, setPrevActivePermit] = useState<Permit | null>(null);
+  const [popupData, setPopupData] = useState<PopupData | null>(null);
   const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
     fetchPolicy: "no-cache",
   });
-
-  const [mapZoom, setMapZoom] = useState(3);
-  const [mapCenter, setMapCenter] = useState([36.5, -89]);
 
   if (error) console.log(error);
   const permitsPerPage = 20;
@@ -34,17 +44,29 @@ function Permits(props) {
     if (!filterVars) {
       return;
     }
-    var queryVars = {};
-    Object.assign(queryVars, filterVars);
-    queryVars.numPerPage = permitsPerPage;
-    queryVars.offset = permitsPerPage * (page - 1);
+    var queryVars: QueryVars = {
+      order: filterVars.order,
+      classification: filterVars.classification,
+      sourceId: filterVars.sourceId,
+      min_sqft: filterVars.min_sqft,
+      min_cost: filterVars.min_cost,
+      street: filterVars.street,
+      city: filterVars.city,
+      state: filterVars.state,
+      zip: filterVars.zip,
+      permitData: filterVars.permitData,
+      note: filterVars.note,
+      numPerPage: permitsPerPage,
+      offset: permitsPerPage * (page - 1),
+    };
     getPermits({ variables: queryVars });
     console.log(queryVars);
   }, [filterVars, page]);
 
   useEffect(() => {
-    const permitDiv = document.getElementById(activePermit?.id);
-    document.getElementById(prevActivePermit?.id)?.classList.remove("selected");
+    const permitDiv = document.getElementById(String(activePermit?.id));
+    const prevPermitDiv = document.getElementById(String(prevActivePermit?.id));
+    prevPermitDiv?.classList.remove("selected");
     permitDiv?.classList.add("selected");
     permitDiv?.scrollIntoView({
       behavior: "smooth",
@@ -52,7 +74,7 @@ function Permits(props) {
       inline: "center",
     });
     setPrevActivePermit(activePermit);
-    if (activePermit) {
+    if (activePermit?.location) {
       setZoomTarget(activePermit.location);
     }
   }, [activePermit]);
@@ -116,14 +138,17 @@ function Permits(props) {
               jwt={props.jwt}
             />
             {data &&
-              data.permits.edges.map((p, i, permits) => (
-                <PermitBox
-                  key={p.node.id}
-                  permit={p.node}
-                  nextPermit={permits[i + 1]?.node}
-                  setActivePermit={setActivePermit}
-                />
-              ))}
+              data.permits.edges.map(
+                (p: PermitsEdge, i: number, permits: PermitsEdge[]) =>
+                  p.node && (
+                    <PermitBox
+                      key={p.node?.id}
+                      permit={p.node}
+                      nextPermit={permits[i + 1]?.node}
+                      setActivePermit={setActivePermit}
+                    />
+                  )
+              )}
             {data && (
               <FilterPagination
                 page={page}

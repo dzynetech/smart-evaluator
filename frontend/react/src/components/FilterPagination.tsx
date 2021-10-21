@@ -1,4 +1,14 @@
-function FilterPagination(props) {
+import React, { SetStateAction } from "react";
+
+interface Props {
+  page: number;
+  setPage: React.Dispatch<SetStateAction<number>>;
+  total: number;
+  permitsPerPage: number;
+  center?: boolean;
+}
+
+function FilterPagination(props: Props) {
   const numPages = Math.ceil(props.total / props.permitsPerPage);
 
   const prevDisabled = props.page === 1;
@@ -53,7 +63,7 @@ function FilterPagination(props) {
             className="page-link"
             onClick={() => props.setPage((p) => p - 1)}
             href="#"
-            tabIndex="-1"
+            tabIndex={-1}
           >
             Previous
           </a>

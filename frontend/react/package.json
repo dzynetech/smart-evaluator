@@ -8,7 +8,7 @@
     "@testing-library/react": "^11.2.7",
     "@testing-library/user-event": "^12.8.3",
     "chart.js": "^3.5.1",
-    "graphql": "^15.5.1",
+    "graphql": "^15.6.1",
     "leaflet": "^1.7.1",
     "react": "^17.0.2",
     "react-chartjs-2": "^3.0.4",
@@ -16,13 +16,15 @@
     "react-router-dom": "^5.2.1",
     "react-scripts": "4.0.3",
     "simpleheat": "^0.4.0",
+    "typescript": "^4.4.4",
     "web-vitals": "^1.1.2"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "generate": "graphql-codegen"
   },
   "eslintConfig": {
     "extends": [
@@ -34,5 +36,15 @@
     ">0.2%",
     "not dead",
     "not op_mini all"
-  ]
+  ],
+  "devDependencies": {
+    "@graphql-codegen/cli": "^2.2.1",
+    "@graphql-codegen/typescript": "^2.2.4",
+    "@types/jest": "^27.0.2",
+    "@types/leaflet": "^1.7.5",
+    "@types/node": "^16.11.1",
+    "@types/react": "^17.0.30",
+    "@types/react-dom": "^17.0.9",
+    "@types/react-router-dom": "^5.3.1"
+  }
 }

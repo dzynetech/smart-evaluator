@@ -1,8 +1,9 @@
 import React, { useContext } from "react";
-import { permitContext } from "../App";
 import { useMutation, gql, useQuery } from "@apollo/client";
 import { colorMap, borderColorMap } from "../utils/Colors";
 import USER_QUERY from "../queries/UserQuery";
+import { Permit } from "../generated/graphql";
+import UpdatablePermit from "../interfaces/UpdatablePermit";
 
 const CLASSIFY_PERMIT_MUT = gql`
   mutation classifyPermit($id: Int!, $classification: Classification) {
@@ -18,12 +19,17 @@ const CLASSIFY_PERMIT_MUT = gql`
   }
 `;
 
-function PermitButtons(props) {
+interface Props {
+  permit: Permit;
+  setActivePermit: React.Dispatch<React.SetStateAction<UpdatablePermit | null>>;
+  nextPermit?: Permit | null;
+}
+function PermitButtons(props: Props) {
   const [classifyPermit] = useMutation(CLASSIFY_PERMIT_MUT);
   const { data } = useQuery(USER_QUERY);
 
-  async function classify(classification) {
-    if (props.setActivePermit) {
+  async function classify(classification: string) {
+    if (props.setActivePermit && props.nextPermit) {
       props.setActivePermit(props.nextPermit);
     }
     classifyPermit({
@@ -34,37 +40,48 @@ function PermitButtons(props) {
     });
   }
 
-  function setYes(id) {
-    document.getElementById(id).style.borderColor = borderColorMap.CONSTRUCTION;
-    document.getElementById(id).style.backgroundColor = colorMap.CONSTRUCTION;
+  function setYes(id: number) {
+    const element = document.getElementById(String(id));
+    if (element) {
+      element.style.borderColor = borderColorMap.CONSTRUCTION;
+      element.style.backgroundColor = colorMap.CONSTRUCTION;
+    }
     classify("CONSTRUCTION");
   }
 
-  function setNo(id) {
-    document.getElementById(id).style.borderColor =
-      borderColorMap.NOT_CONSTRUCTION;
-    document.getElementById(id).style.backgroundColor =
-      colorMap.NOT_CONSTRUCTION;
+  function setNo(id: number) {
+    const element = document.getElementById(String(id));
+    if (element) {
+      element.style.borderColor = borderColorMap.NOT_CONSTRUCTION;
+      element.style.backgroundColor = colorMap.NOT_CONSTRUCTION;
+    }
     classify("NOT_CONSTRUCTION");
   }
 
-  function setMaybe(id) {
-    document.getElementById(id).style.borderColor =
-      borderColorMap.POSSIBLE_CONSTRUCTION;
-    document.getElementById(id).style.backgroundColor =
-      colorMap.POSSIBLE_CONSTRUCTION;
+  function setMaybe(id: number) {
+    const element = document.getElementById(String(id));
+    if (element) {
+      element.style.borderColor = borderColorMap.POSSIBLE_CONSTRUCTION;
+      element.style.backgroundColor = colorMap.POSSIBLE_CONSTRUCTION;
+    }
     classify("POSSIBLE_CONSTRUCTION");
   }
 
-  function setDuplicate(id) {
-    document.getElementById(id).style.borderColor = borderColorMap.DUPLICATE;
-    document.getElementById(id).style.backgroundColor = colorMap.DUPLICATE;
+  function setDuplicate(id: number) {
+    const element = document.getElementById(String(id));
+    if (element) {
+      element.style.borderColor = borderColorMap.DUPLICATE;
+      element.style.backgroundColor = colorMap.DUPLICATE;
+    }
     classify("DUPLICATE");
   }
 
-  function setUnclassified(id) {
-    document.getElementById(id).style.borderColor = borderColorMap.UNCLASSIFIED;
-    document.getElementById(id).style.backgroundColor = colorMap.UNCLASSIFIED;
+  function setUnclassified(id: number) {
+    const element = document.getElementById(String(id));
+    if (element) {
+      element.style.borderColor = borderColorMap.UNCLASSIFIED;
+      element.style.backgroundColor = colorMap.UNCLASSIFIED;
+    }
     classify("UNCLASSIFIED");
   }
   if (!data) {

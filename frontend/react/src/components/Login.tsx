@@ -10,15 +10,19 @@ const AUTH_MUT = gql`
     }
   }
 `;
-function Login(props) {
+interface Props {
+  setJwt : (jwt : string | null) => void
+}
+
+function Login(props : Props) {
   const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
-  const [loginError, setLoginError] = useState(null);
+  const [loginError, setLoginError] = useState<string|null>(null);
 
   const [authenticate, { data }] = useMutation(AUTH_MUT);
   const history = useHistory();
 
-  function handleLogin(e) {
+  function handleLogin(e : React.FormEvent<HTMLFormElement>) {
     if (e) {
       e.preventDefault();
     }

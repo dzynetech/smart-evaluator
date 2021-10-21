@@ -4,8 +4,14 @@ import SourceDropdown from "./SourceDropdown";
 import ViewRawJSON from "./ViewRawJSON";
 
 import "./PermitsFilter.css";
+import { Filter, FilterVars } from "../interfaces/FilterVars";
 
-function PermitsFilter(props) {
+interface Props {
+  setFilterVars: (filterVars: FilterVars | null) => void;
+  filterVars: FilterVars | null;
+}
+
+function PermitsFilter(props: Props) {
   const [street, setStreet] = useState("");
   const [city, setCity] = useState("");
   const [state, setState] = useState("");
@@ -19,20 +25,20 @@ function PermitsFilter(props) {
   const [note, setNote] = useState("");
 
   useEffect(() => {
-    setFilter();
+    setFilter(null);
   }, [classification, order, state, source]);
 
-  function setFilter(e) {
+  function setFilter(e: React.FormEvent<HTMLFormElement> | null) {
     if (e) {
       e.preventDefault();
     }
-    var c;
+    var c: Filter | undefined;
     if (classification === "ALL") {
       c = undefined;
     } else {
       c = { equalTo: classification };
     }
-    var sid;
+    var sid: Filter | undefined;
     if (source === "ALL") {
       sid = undefined;
     } else {
@@ -55,9 +61,15 @@ function PermitsFilter(props) {
   }
 
   function openModal() {
-    document.getElementById("backdrop").style.display = "block";
-    document.getElementById("curlModal").style.display = "block";
-    document.getElementById("curlModal").classList.add("show");
+    const backdrop = document.getElementById("backdrop");
+    if (backdrop) {
+      backdrop.style.display = "block";
+    }
+    const curlModal = document.getElementById("curlModal");
+    if (curlModal) {
+      curlModal.style.display = "block";
+      curlModal.classList.add("show");
+    }
   }
 
   return (

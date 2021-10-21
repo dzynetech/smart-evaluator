@@ -2,7 +2,13 @@ import { useHistory } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import USER_QUERY from "../queries/UserQuery";
 
-function Nav(props) {
+interface Props {
+  active : string,
+  jwt: string | null,
+  setJwt: (jwt: string | null)=>void
+}
+
+function Nav(props: Props) {
   const history = useHistory();
   const { data } = useQuery(USER_QUERY);
 

@@ -1,0 +1,1 @@
+Generate using `npm run generate` while GraphQL is running 

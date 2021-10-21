@@ -6,8 +6,8 @@ import {
   createHttpLink,
 } from "@apollo/client";
 import { setContext } from "@apollo/client/link/context";
-import Stats from "./components/Stats.js";
-import Permits from "./components/Permits.js";
+import Stats from "./components/Stats"
+import Permits from "./components/Permits";
 import Nav from "./components/Nav";
 import Login from "./components/Login";
 import RequireLogin from "./components/RequireLogin";
@@ -20,7 +20,7 @@ if (!graphql_url) {
 }
 
 function App() {
-  const [jwt, setJwt] = useLocalStorage("jwt", null);
+  const [jwt, setJwt] = useLocalStorage<string>("jwt", null);
   const httpLink = createHttpLink({
     uri: graphql_url,
   });

@@ -1,10 +1,13 @@
-import PermitBox from "./PermitBox.js";
+import PermitBox from "./PermitBox";
 
 import { useQuery, gql } from "@apollo/client";
 
 import "./PermitModal.css";
 import { useEffect, useLayoutEffect, useState } from "react";
-import { borderColorMap } from "../utils/Colors.js";
+import { borderColorMap } from "../utils/Colors";
+import PopupData from "../interfaces/PopupData";
+import UpdatablePermit from "../interfaces/UpdatablePermit";
+import { Permit } from "../generated/graphql";
 const PERMIT_QUERY = gql`
   query PermitById($id: Int!) {
     permit(id: $id) {
@@ -32,7 +35,13 @@ const PERMIT_QUERY = gql`
     }
   }
 `;
-function PermitModal(props) {
+
+interface Props extends PopupData {
+  setPopupData: (popupData: PopupData | null) => void;
+  setActivePermit: React.Dispatch<React.SetStateAction<UpdatablePermit | null>>;
+}
+
+function PermitModal(props: Props) {
   const { error, data } = useQuery(PERMIT_QUERY, {
     // fetchPolicy: "no-cache",
     variables: {
@@ -42,11 +51,13 @@ function PermitModal(props) {
 
   const [yOffset, setYOffset] = useState(0);
   const [isMouseOver, setIsMouseOver] = useState(false);
-  const [timer, setTimer] = useState(null);
+  const [timer, setTimer] = useState<NodeJS.Timeout | null>(null);
 
   useLayoutEffect(() => {
     const map = document.getElementById("map");
-    setYOffset(map.getBoundingClientRect().y);
+    if (map) {
+      setYOffset(map.getBoundingClientRect().y);
+    }
   }, [yOffset]);
 
   useEffect(() => {
@@ -69,6 +80,8 @@ function PermitModal(props) {
     }
     return <></>;
   }
+
+  const permit: Permit = data.permit;
 
   return (
     <>
@@ -94,8 +107,7 @@ function PermitModal(props) {
         <div
           className="arrow-down"
           style={{
-            borderTop:
-              "1.5rem solid " + borderColorMap[data.permit.classification],
+            borderTop: "1.5rem solid " + borderColorMap[permit.classification],
           }}
         ></div>
       </div>

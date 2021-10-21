@@ -2,8 +2,14 @@ import { useQuery, gql } from "@apollo/client";
 import { Pie } from "react-chartjs-2";
 import { altColorMap, borderColorMap } from "../utils/Colors";
 import SOURCE_STATS_QUERY from "../queries/SourceStatsQuery";
+import { Source } from "../generated/graphql";
 
-function SourceStats(props) {
+interface Props {
+  source: Source,
+  minSqft: Number, 
+}
+
+function SourceStats(props : Props) {
   const sourceId = props.source.id;
   const { data } = useQuery(SOURCE_STATS_QUERY, {
     variables: {
