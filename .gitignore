@@ -8,3 +8,4 @@ goaccess/nginx/htpasswd
 frontend/nginx/logs/
 goaccess/html/index.html
 database.json
+data

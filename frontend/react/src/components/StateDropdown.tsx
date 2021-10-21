@@ -4,7 +4,7 @@ import { Permit } from "../generated/graphql";
 
 const STATES_QUERY = gql`
   query AllStates {
-    permits {
+    permits(filter: { imageUrl: { isNull: false } }) {
       nodes {
         state
       }
