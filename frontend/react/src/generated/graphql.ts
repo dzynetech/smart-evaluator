@@ -397,7 +397,7 @@ export type Permit = Node & {
   name?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
-  notes?: Maybe<Scalars['String']>;
+  notes: Scalars['String'];
   permitData?: Maybe<Scalars['JSON']>;
   permitDataBackup?: Maybe<Scalars['String']>;
   /** Reads a single `Source` that is related to this `Permit`. */
