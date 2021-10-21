@@ -1,0 +1,1 @@
+ALTER TABLE smart.permits ALTER COLUMN notes DROP NOT NULL;

@@ -13,6 +13,7 @@ const ALL_PERMITS_QUERY = gql`
     $state: String
     $zip: String
     $permitData: String
+    $note: String
   ) {
     permits(
       orderBy: $order
@@ -28,6 +29,7 @@ const ALL_PERMITS_QUERY = gql`
           state: { includesInsensitive: $state }
           zip: { includesInsensitive: $zip }
           permitDataBackup: { includesInsensitive: $permitData }
+          notes: { includesInsensitive: $note }
           hasLocation: { equalTo: true }
         }
       }
