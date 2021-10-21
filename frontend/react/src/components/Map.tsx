@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Leaflet, { LeafletMouseEvent } from "leaflet";
+import Leaflet, { HeatLayer, LeafletMouseEvent } from "leaflet";
 import { useLazyQuery } from "@apollo/client";
 import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
@@ -33,7 +33,7 @@ function Map(props: Props) {
   const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
   const [showMarkers, setShowMarkers] = useState(true);
   const [showHeatmap, setShowHeatmap] = useState(false);
-  const [heatLayer, setHeatLayer] = useState(null);
+  const [heatLayer, setHeatLayer] = useState<Leaflet.HeatLayer | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
   const zoomCallbackRef = useRef<() => void>();
 
@@ -109,7 +109,7 @@ function Map(props: Props) {
 
       //setup heatmap
       if (showHeatmap) {
-        var heatmap_data: any = [];
+        var heatmap_data: HeatLayer.LatLngHeatTuple[] = [];
         locations.forEach((l) => {
           heatmap_data.push([l.y, l.x, 7]);
         });
@@ -123,7 +123,7 @@ function Map(props: Props) {
   //enable disable heatmap
   useEffect(() => {
     if (showHeatmap && locations.length > 0) {
-      var heatmap_data: any = [];
+      var heatmap_data: HeatLayer.LatLngHeatTuple[] = [];
       locations.forEach((l) => {
         heatmap_data.push([l.y, l.x, 7]);
       });
