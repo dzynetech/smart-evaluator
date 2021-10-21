@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 
 const STATES_QUERY = gql`
   query AllStates {
-    permits {
+    permits(filter: { imageUrl: { isNull: false } }) {
       nodes {
         state
       }
