@@ -32,7 +32,7 @@ interface Location {
 function Map(props: Props) {
   const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
   const [showMarkers, setShowMarkers] = useState(true);
-  const [showHeatmap, setShowHeatmap] = useState(true);
+  const [showHeatmap, setShowHeatmap] = useState(false);
   const [heatLayer, setHeatLayer] = useState<Leaflet.HeatLayer | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
   const zoomCallbackRef = useRef<() => void>();
