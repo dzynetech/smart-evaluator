@@ -83,8 +83,7 @@ function Permits(props: Props) {
     if (!data) {
       return;
     }
-    if (page * (permitsPerPage - 1) > data.permits.totalCount) {
-      debugger;
+    if (page > Math.ceil(data.permits.totalCount / permitsPerPage)) {
       setPage(1);
     }
   }, [data]);
