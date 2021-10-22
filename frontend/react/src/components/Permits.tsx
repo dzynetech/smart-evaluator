@@ -79,6 +79,16 @@ function Permits(props: Props) {
     }
   }, [activePermit]);
 
+  useEffect(() => {
+    if (!data) {
+      return;
+    }
+    if (page * (permitsPerPage - 1) > data.permits.totalCount) {
+      debugger;
+      setPage(1);
+    }
+  }, [data]);
+
   return (
     <>
       <div className="site">
