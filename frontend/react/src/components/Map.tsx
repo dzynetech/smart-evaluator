@@ -32,7 +32,7 @@ interface Location {
 function Map(props: Props) {
   const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
   const [showMarkers, setShowMarkers] = useState(true);
-  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [showHeatmap, setShowHeatmap] = useState(true);
   const [heatLayer, setHeatLayer] = useState<Leaflet.HeatLayer | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
   const zoomCallbackRef = useRef<() => void>();
@@ -107,33 +107,29 @@ function Map(props: Props) {
       });
       setLocations(locs);
 
-      //setup heatmap
-      if (showHeatmap) {
-        var heatmap_data: HeatLayer.LatLngHeatTuple[] = [];
-        locations.forEach((l) => {
-          heatmap_data.push([l.y, l.x, 7]);
-        });
-        const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
-        heat.addTo(map);
-        setHeatLayer(heat);
+      // setup heatmap
+      if (heatLayer) {
+        map.removeLayer(heatLayer);
       }
+      var heatmap_data: HeatLayer.LatLngHeatTuple[] = [];
+      locs.forEach((l) => {
+        heatmap_data.push([l.y, l.x, 7]);
+      });
+      const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
+      if (showHeatmap) {
+        heat.addTo(map);
+      }
+      setHeatLayer(heat);
     }
   }, [data]);
 
   //enable disable heatmap
   useEffect(() => {
-    if (showHeatmap && locations.length > 0) {
-      var heatmap_data: HeatLayer.LatLngHeatTuple[] = [];
-      locations.forEach((l) => {
-        heatmap_data.push([l.y, l.x, 7]);
-      });
-      const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
-      heat.addTo(map);
-      setHeatLayer(heat);
+    if (showHeatmap && heatLayer) {
+      heatLayer.addTo(map);
     }
     if (!showHeatmap && heatLayer) {
       map.removeLayer(heatLayer);
-      setHeatLayer(null);
     }
   }, [showHeatmap]);
 
