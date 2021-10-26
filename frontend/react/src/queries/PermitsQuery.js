@@ -31,7 +31,7 @@ const PERMITS_QUERY = gql`
           street: { includesInsensitive: $street }
           state: { includesInsensitive: $state }
           zip: { includesInsensitive: $zip }
-          permitDataBackup: { includesInsensitive: $permitData }
+          permitDataText: { includesInsensitive: $permitData }
           notes: { includesInsensitive: $note }
           hasLocation: { equalTo: true }
         }

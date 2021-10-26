@@ -3,7 +3,6 @@ const SOURCES_QUERY = gql`
   query GetAllSources {
     sources {
       nodes {
-        description
         id
         name
       }
