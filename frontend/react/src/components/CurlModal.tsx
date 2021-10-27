@@ -56,7 +56,7 @@ function CurlModal(props: Props) {
                 -H "Authorization: Bearer {props.jwt}" \<br />
                 -d '&#123;"query": {modifyQuery(props.query)}, "variables":{" "}
                 {props.variables}
-                ,"operationName":"MyQuery"&#125;' \<br />
+                ,"operationName":"PermitsQuery"&#125;' \<br />
                 http://{window.location.host}/graphql
               </code>
             </div>
