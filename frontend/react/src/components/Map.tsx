@@ -69,9 +69,31 @@ function Map(props: Props) {
         coordinates: JSON.parse(p.node.bounds.geojson).coordinates,
       };
       const polygon = Leaflet.geoJSON(geojsonFeature, {
-        style: { fill: false },
+        style: { fillOpacity: 0 }, // need fill to allow mousing over bounded region
       });
       polygon.addTo(map);
+      if (p.node) {
+        polygon.on("mouseover", (e: Leaflet.LeafletMouseEvent) => {
+          if (p.node) {
+            props.setPermitForModal({
+              id: p.node.id,
+              x: e.containerPoint.y,
+              y: e.containerPoint.x,
+              overMarker: true,
+            });
+          }
+        });
+        polygon.on("mouseout", (e: Leaflet.LeafletMouseEvent) => {
+          if (p.node) {
+            props.setPermitForModal({
+              id: p.node.id,
+              x: e.containerPoint.y,
+              y: e.containerPoint.x,
+              overMarker: false,
+            });
+          }
+        });
+      }
     });
   }, [data, map]);
 

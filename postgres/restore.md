@@ -16,11 +16,17 @@ mv smart.sql docker-entrypoint-initdb.d/
 4. Modify the smart.sql file
   - add the lines `DROP SCHEMA PUBLIC cascade;CREATE SCHEMA PUBLIC;` to the top.
   - replace the user with 'postgres'
+  - add users:
+    ```
+    CREATE ROLE smart_anonymous;
+    CREATE ROLE smart_user;
+    ```
 
-4. stop the docker containers. remove all containers, and delete all volumes.
+
+5. stop the docker containers. remove all containers, and delete all volumes.
 ```
-docker container prune
-docker volume prune
+docker container prune -f
+docker volume prune -f
 ```
 5. Move the file into postgres folder.
 6. `docker-compose up postgres`
