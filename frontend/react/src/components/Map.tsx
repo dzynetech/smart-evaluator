@@ -1,7 +1,12 @@
 import React, { useState, useEffect, useRef } from "react";
 import Leaflet, { HeatLayer, LeafletMouseEvent } from "leaflet";
 import { useLazyQuery } from "@apollo/client";
-import { computeMarkers, circleWithText } from "../utils/LocationGrouping";
+import {
+  computeMarkers,
+  circleWithText,
+  individualMarkers,
+  MarkerObj,
+} from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
 import useMap from "./dzyne_components/hooks/useMap";
 import "../HeatLayer";
@@ -29,10 +34,15 @@ interface Location {
   y: number;
 }
 
+enum Overlay {
+  GroupedMarkers,
+  UngroupedMarkers,
+  Heatmap,
+}
+
 function Map(props: Props) {
   const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
-  const [showMarkers, setShowMarkers] = useState(true);
-  const [showHeatmap, setShowHeatmap] = useState(false);
+  const [overlay, setOverlay] = useState(Overlay.GroupedMarkers);
   const [heatLayer, setHeatLayer] = useState<Leaflet.HeatLayer | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
   const zoomCallbackRef = useRef<() => void>();
@@ -54,7 +64,7 @@ function Map(props: Props) {
     zoomCallbackRef.current = updateMarkers;
     map.on("zoomend", zoomCallbackRef.current);
     updateMarkers();
-  }, [map, showMarkers, props.activePermit, locations]);
+  }, [map, overlay, props.activePermit, locations]);
 
   useEffect(() => {
     if (!data || !map) {
@@ -138,7 +148,7 @@ function Map(props: Props) {
         heatmap_data.push([l.y, l.x, 7]);
       });
       const heat = Leaflet.heatLayer(heatmap_data, { radius: 25 });
-      if (showHeatmap) {
+      if (overlay == Overlay.Heatmap) {
         heat.addTo(map);
       }
       setHeatLayer(heat);
@@ -147,25 +157,28 @@ function Map(props: Props) {
 
   //enable disable heatmap
   useEffect(() => {
-    if (showHeatmap && heatLayer) {
+    if (overlay == Overlay.Heatmap && heatLayer) {
       heatLayer.addTo(map);
     }
-    if (!showHeatmap && heatLayer) {
+    if (overlay != Overlay.Heatmap && heatLayer) {
       map.removeLayer(heatLayer);
     }
-  }, [showHeatmap]);
+  }, [overlay]);
 
   //enable disable markers
   useEffect(() => {
     if (!data) {
       return;
     }
-    if (showMarkers) {
+    if (
+      overlay == Overlay.GroupedMarkers ||
+      overlay == Overlay.UngroupedMarkers
+    ) {
       updateMarkers();
     } else {
       removeOldMarkers(map);
     }
-  }, [showMarkers]);
+  }, [overlay]);
 
   //resize map to show all markers
   useEffect(() => {
@@ -182,18 +195,21 @@ function Map(props: Props) {
   }, [data]);
 
   function updateMarkers() {
-    if (!showMarkers) {
-      return;
-    }
     props.setZoomTarget(undefined);
     const zoom = map.getZoom();
     const lat = map.getCenter().lat;
-    const markerLocations = computeMarkers(
-      zoom,
-      lat,
-      locations,
-      props.activePermit
-    );
+    let markerLocations: MarkerObj[] = [];
+    if (overlay == Overlay.GroupedMarkers) {
+      markerLocations = computeMarkers(
+        zoom,
+        lat,
+        locations,
+        props.activePermit
+      );
+    } else if (overlay == Overlay.UngroupedMarkers) {
+      markerLocations = individualMarkers(locations, props.activePermit);
+    }
+
     removeOldMarkers(map);
     props.setPermitForModal(null);
     for (let m of markerLocations) {
@@ -267,17 +283,23 @@ function Map(props: Props) {
         <div id="map-controls" className="leaflet-bottom leaflet-right">
           <button
             className="btn btn-light"
-            onClick={() => setShowMarkers((x) => !x)}
+            onClick={() => setOverlay(Overlay.GroupedMarkers)}
           >
-            markers
+            Grouped Markers
+          </button>
+          <button
+            className="btn btn-light"
+            onClick={() => setOverlay(Overlay.UngroupedMarkers)}
+          >
+            Invidual Markers
           </button>
           <button
             className="btn btn-light"
             onClick={(e) => {
-              setShowHeatmap((x) => !x);
+              setOverlay(Overlay.Heatmap);
             }}
           >
-            heatmap
+            Heatmap
           </button>
         </div>
       </div>

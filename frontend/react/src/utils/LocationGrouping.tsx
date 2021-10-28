@@ -7,7 +7,7 @@ interface Location {
   y: number;
 }
 
-interface MarkerObj {
+export interface MarkerObj {
   x: number;
   y: number;
   ids: number[];
@@ -45,6 +45,27 @@ function haversineDistance(
 
 function deg2rad(deg: number) {
   return deg * (Math.PI / 180);
+}
+
+export function individualMarkers(
+  locations: Location[],
+  activePermit: Permit | null
+): MarkerObj[] {
+  const markers: MarkerObj[] = [];
+  for (const l of locations) {
+    if (l.id == activePermit?.id) {
+      continue;
+    }
+    let marker: MarkerObj = {
+      x: l.x,
+      y: l.y,
+      r: 12,
+      ids: [l.id],
+      active: false,
+    };
+    markers.push(marker);
+  }
+  return markers;
 }
 
 export function computeMarkers(
