@@ -79,7 +79,7 @@ function Map(props: Props) {
         coordinates: JSON.parse(p.node.bounds.geojson).coordinates,
       };
       const polygon = Leaflet.geoJSON(geojsonFeature, {
-        style: { fillOpacity: 0 }, // need fill to allow mousing over bounded region
+        style: { fill: false },
       });
       polygon.addTo(map);
       if (p.node) {
