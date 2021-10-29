@@ -1,8 +1,8 @@
 import { gql } from "@apollo/client";
 
 //permits query without pagination
-const ALL_PERMITS_QUERY = gql`
-  query AllPermitsQuery(
+const UNPAGED_PERMITS_QUERY = gql`
+  query UnpagedPermitsQuery(
     $order: [PermitsOrderBy!]
     $classification: ClassificationFilter
     $sourceId: IntFilter
@@ -67,4 +67,4 @@ const ALL_PERMITS_QUERY = gql`
     }
   }
 `;
-export default ALL_PERMITS_QUERY;
+export default UNPAGED_PERMITS_QUERY;

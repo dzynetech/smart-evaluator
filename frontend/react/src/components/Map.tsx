@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef } from "react";
 import Leaflet, { HeatLayer, LeafletMouseEvent } from "leaflet";
-import { useLazyQuery } from "@apollo/client";
+import { useLazyQuery, useQuery } from "@apollo/client";
 import {
   computeMarkers,
   circleWithText,
@@ -12,13 +12,15 @@ import useMap from "./dzyne_components/hooks/useMap";
 import "../HeatLayer";
 
 import "leaflet/dist/leaflet.css";
-import ALL_PERMITS_QUERY from "../queries/AllPermitsQuery";
+import UNPAGED_PERMITS_QUERY from "../queries/UnpagedPermitsQuery";
+import ALL_BOUNDS_QUERY from "../queries/AllBoundsQuery";
 import UpdatablePermit from "../interfaces/UpdatablePermit";
 import PopupData from "../interfaces/PopupData";
 import { FilterVars } from "../interfaces/FilterVars";
 import { GeometryPoint, PermitsEdge } from "../generated/graphql";
 import { MultiPolygon } from "geojson";
-import removeOldMarkers from "../utils/removeMarkers";
+import { removeMarkers, removeGeoJSONs } from "../utils/removeMarkers";
+import { borderColorMap } from "../utils/Colors";
 
 interface Props {
   setPermitForModal: (popupData: PopupData | null) => void;
@@ -41,10 +43,12 @@ enum Overlay {
 }
 
 function Map(props: Props) {
-  const [getPermits, { error, data }] = useLazyQuery(ALL_PERMITS_QUERY);
+  const [getPermits, { error, data }] = useLazyQuery(UNPAGED_PERMITS_QUERY);
+  const { data: all_bounds_data } = useQuery(ALL_BOUNDS_QUERY);
   const [overlay, setOverlay] = useState(Overlay.GroupedMarkers);
   const [heatLayer, setHeatLayer] = useState<Leaflet.HeatLayer | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
+  const [filterHasChanged, setFillterHasChanged] = useState(true);
   const zoomCallbackRef = useRef<() => void>();
 
   if (error) console.log(error);
@@ -66,20 +70,26 @@ function Map(props: Props) {
     updateMarkers();
   }, [map, overlay, props.activePermit, locations]);
 
+  //draw boundaries
   useEffect(() => {
-    if (!data || !map) {
+    if (!all_bounds_data || !map) {
       return;
     }
-    data.permits.edges.forEach((p: PermitsEdge) => {
-      if (!p.node?.bounds) {
+    removeGeoJSONs(map);
+    all_bounds_data.permits.edges.forEach((p: PermitsEdge) => {
+      if (!p.node || !p.node.bounds) {
         return;
       }
       var geojsonFeature: MultiPolygon = {
         type: "MultiPolygon",
         coordinates: JSON.parse(p.node.bounds.geojson).coordinates,
       };
+      let color = "#3388ff"; //default boundary color
+      if (p.node.classification != "UNCLASSIFIED") {
+        color = borderColorMap[p.node.classification];
+      }
       const polygon = Leaflet.geoJSON(geojsonFeature, {
-        style: { fill: false },
+        style: { fill: false, color: color },
       });
       polygon.addTo(map);
       if (p.node) {
@@ -105,7 +115,7 @@ function Map(props: Props) {
         });
       }
     });
-  }, [data, map]);
+  }, [all_bounds_data, map]);
 
   //zoom to active permit when set
   useEffect(() => {
@@ -155,18 +165,16 @@ function Map(props: Props) {
     }
   }, [data]);
 
-  //enable disable heatmap
   useEffect(() => {
+    //enable disable heatmap
     if (overlay == Overlay.Heatmap && heatLayer) {
       heatLayer.addTo(map);
     }
     if (overlay != Overlay.Heatmap && heatLayer) {
       map.removeLayer(heatLayer);
     }
-  }, [overlay]);
 
-  //enable disable markers
-  useEffect(() => {
+    //enable disable markers
     if (!data) {
       return;
     }
@@ -176,7 +184,7 @@ function Map(props: Props) {
     ) {
       updateMarkers();
     } else {
-      removeOldMarkers(map);
+      removeMarkers(map);
     }
   }, [overlay]);
 
@@ -187,12 +195,17 @@ function Map(props: Props) {
         p.node?.location?.y,
         p.node?.location?.x,
       ]);
-      if (bounds.length > 0) {
+      if (bounds.length > 0 && filterHasChanged) {
         map.fitBounds(bounds);
+        setFillterHasChanged(false);
       }
       updateMarkers();
     }
   }, [data]);
+
+  useEffect(() => {
+    setFillterHasChanged(true);
+  }, [props.filterVars]);
 
   function updateMarkers() {
     props.setZoomTarget(undefined);
@@ -210,7 +223,7 @@ function Map(props: Props) {
       markerLocations = individualMarkers(locations, props.activePermit);
     }
 
-    removeOldMarkers(map);
+    removeMarkers(map);
     props.setPermitForModal(null);
     for (let m of markerLocations) {
       const marker = circleWithText(
