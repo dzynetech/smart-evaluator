@@ -5,6 +5,7 @@ interface Location {
   id: number;
   x: number;
   y: number;
+  color?: string;
 }
 
 export interface MarkerObj {
@@ -13,6 +14,7 @@ export interface MarkerObj {
   ids: number[];
   r: number;
   active: boolean;
+  color?: string;
 }
 
 function metersPerPixel(zoom: number, lat: number) {
@@ -62,6 +64,7 @@ export function individualMarkers(
       r: 12,
       ids: [l.id],
       active: false,
+      color: l.color,
     };
     markers.push(marker);
   }
@@ -144,9 +147,17 @@ export function computeMarkers(
   //return  array of: {x: y: r: ids:[]}
 }
 
-export function circleWithText(latLng: LatLngExpression, txt: string, radius: number) {
+export function circleWithText(
+  latLng: LatLngExpression,
+  txt: string,
+  radius: number,
+  color?: string
+) {
   var size = radius * 2;
   var style = `width: ${size}px; height: ${size}px;`;
+  if (color) {
+    style += `border-color:${color}`;
+  }
   var iconSize = size + 4;
   var icon = Leaflet.divIcon({
     html: `<span class="circle" style="${style}">${txt}</span>`,

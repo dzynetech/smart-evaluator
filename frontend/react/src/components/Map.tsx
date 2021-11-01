@@ -34,6 +34,7 @@ interface Location {
   id: number;
   x: number;
   y: number;
+  color: string;
 }
 
 enum Overlay {
@@ -144,6 +145,7 @@ function Map(props: Props) {
             id: p.node.id,
             x: p.node.location.x,
             y: p.node.location.y,
+            color: borderColorMap[p.node.classification],
           });
         }
       });
@@ -226,7 +228,12 @@ function Map(props: Props) {
     removeMarkers(map);
     props.setPermitForModal(null);
     for (let m of markerLocations) {
-      const marker = circleWithText([m.y, m.x], String(m.ids.length), m.r);
+      const marker = circleWithText(
+        [m.y, m.x],
+        String(m.ids.length),
+        m.r,
+        m.color
+      );
       if (m.ids.length === 1) {
         marker.on("mouseover", (e: Leaflet.LeafletMouseEvent) => {
           props.setPermitForModal({
