@@ -72,6 +72,7 @@ a:hover {
   background: rgba(0, 57, 128, 0.8);
   color: #dbdcdd;
   border-color: #929292;
+  border-width: 2px;
 }
 
 .activeMarker {

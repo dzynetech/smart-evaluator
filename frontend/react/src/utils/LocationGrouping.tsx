@@ -148,30 +148,13 @@ export function circleWithText(
   latLng: LatLngExpression,
   txt: string,
   radius: number,
-  borderWidth: number,
-  active: boolean
+  borderWidth: number
 ) {
-  const extraClass = active ? "activeMarker" : "";
   var size = radius * 2;
-  var style =
-    'style="width: ' +
-    size +
-    "px; height: " +
-    size +
-    "px; border-width: " +
-    borderWidth +
-    'px;"';
+  var style = `width: ${size}px; height: ${size}px;`;
   var iconSize = size + borderWidth * 2;
   var icon = Leaflet.divIcon({
-    html:
-      '<span class="' +
-      "circle " +
-      extraClass +
-      '" ' +
-      style +
-      ">" +
-      txt +
-      "</span>",
+    html: `<span class="circle" style="${style}">${txt}</span>`,
     className: "",
     iconSize: [iconSize, iconSize],
   });
