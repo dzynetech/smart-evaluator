@@ -144,15 +144,10 @@ export function computeMarkers(
   //return  array of: {x: y: r: ids:[]}
 }
 
-export function circleWithText(
-  latLng: LatLngExpression,
-  txt: string,
-  radius: number,
-  borderWidth: number
-) {
+export function circleWithText(latLng: LatLngExpression, txt: string, radius: number) {
   var size = radius * 2;
   var style = `width: ${size}px; height: ${size}px;`;
-  var iconSize = size + borderWidth * 2;
+  var iconSize = size + 4;
   var icon = Leaflet.divIcon({
     html: `<span class="circle" style="${style}">${txt}</span>`,
     className: "",

@@ -226,7 +226,7 @@ function Map(props: Props) {
     removeMarkers(map);
     props.setPermitForModal(null);
     for (let m of markerLocations) {
-      const marker = circleWithText([m.y, m.x], String(m.ids.length), m.r, 2);
+      const marker = circleWithText([m.y, m.x], String(m.ids.length), m.r);
       if (m.ids.length === 1) {
         marker.on("mouseover", (e: Leaflet.LeafletMouseEvent) => {
           props.setPermitForModal({
