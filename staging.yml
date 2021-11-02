@@ -43,11 +43,12 @@ services:
   goaccess:
     image: nginx
     ports:
-      - "4184:80"
+      - "4184:443"
     volumes:
       - ./goaccess/html:/usr/share/nginx/html
       - ./goaccess/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
       - ./goaccess/nginx/htpasswd:/etc/nginx/.htpasswd
+      - ./letsencrypt:/etc/letsencrypt/
 
   # pgbackups:
   #   container_name: postgres_backup
