@@ -16,7 +16,7 @@ import useLocalStorage from "./hooks/useLocalStorage";
 
 var graphql_url = process.env.REACT_APP_GRAPHQL_URL;
 if (!graphql_url) {
-  graphql_url = "http://" + window.location.host + "/graphql";
+  graphql_url = "https://" + window.location.host + "/graphql";
 }
 
 function App() {

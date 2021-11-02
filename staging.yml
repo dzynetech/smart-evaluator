@@ -32,12 +32,13 @@ services:
     build: 
       context: ./frontend
     ports:
-      - "4183:80"
+      - "4183:443"
     depends_on:
       - node 
     volumes:
       - ./data:/usr/share/nginx/html/data
       - ./frontend/nginx/logs:/var/log/nginx
+      - ./letsencrypt:/etc/letsencrypt/
     
   goaccess:
     image: nginx
