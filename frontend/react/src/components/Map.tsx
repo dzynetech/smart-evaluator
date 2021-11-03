@@ -10,8 +10,10 @@ import {
 import { createMapLayers } from "../utils/MapLayers";
 import useMap from "./dzyne_components/hooks/useMap";
 import "../HeatLayer";
-
+import "leaflet-fullscreen/dist/Leaflet.fullscreen";
+import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
 import "leaflet/dist/leaflet.css";
+
 import UNPAGED_PERMITS_QUERY from "../queries/UnpagedPermitsQuery";
 import ALL_BOUNDS_QUERY from "../queries/AllBoundsQuery";
 import UpdatablePermit from "../interfaces/UpdatablePermit";
@@ -55,7 +57,7 @@ function Map(props: Props) {
 
   if (error) console.log(error);
 
-  const map = useMap("map", {}, {}, (map) => {
+  const map = useMap("map", { fullscreenControl: true }, {}, (map) => {
     createMapLayers(map);
   });
 
