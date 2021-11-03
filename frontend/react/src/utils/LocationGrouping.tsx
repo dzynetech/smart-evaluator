@@ -156,7 +156,7 @@ export function circleWithText(
   var size = radius * 2;
   var style = `width: ${size}px; height: ${size}px;`;
   if (color) {
-    style += `border-color:${color}`;
+    style += `background:${color}CC;border-color:#111;color:#111`;
   }
   var iconSize = size + 4;
   var icon = Leaflet.divIcon({

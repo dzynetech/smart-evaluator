@@ -15,7 +15,7 @@ export const colorMap: ColorMap = {
 };
 
 export const borderColorMap: ColorMap = {
-  UNCLASSIFIED: "#EEE",
+  UNCLASSIFIED: "#EEEEEE",
   CONSTRUCTION: " #00CC00",
   NOT_CONSTRUCTION: "#FF0000",
   POSSIBLE_CONSTRUCTION: "#DDDD00",
