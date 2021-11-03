@@ -38,6 +38,7 @@ services:
     volumes:
       - ./data:/usr/share/nginx/html/data
       - ./frontend/nginx/logs:/var/log/nginx
+      - ./letsencrypt:/etc/letsencrypt/
 
   pgbackups:
     container_name: postgres_backup
