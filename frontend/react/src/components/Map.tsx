@@ -230,8 +230,8 @@ function Map(props: Props) {
     for (let m of markerLocations) {
       const marker = circleWithText(
         [m.y, m.x],
-        String(m.ids.length),
-        m.r,
+        overlay == Overlay.GroupedMarkers ? String(m.ids.length) : "",
+        overlay == Overlay.GroupedMarkers ? m.r : 9,
         m.color
       );
       if (m.ids.length === 1) {
