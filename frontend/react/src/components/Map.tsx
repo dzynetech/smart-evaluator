@@ -38,6 +38,7 @@ interface Location {
 }
 
 enum Overlay {
+  None,
   GroupedMarkers,
   UngroupedMarkers,
   Heatmap,
@@ -291,26 +292,34 @@ function Map(props: Props) {
     }
   }
 
+  function changeOverlay(o: Overlay) {
+    if (overlay != o) {
+      setOverlay(o);
+    } else {
+      setOverlay(Overlay.None);
+    }
+  }
+
   return (
     <>
       <div id="map">
         <div id="map-controls" className="leaflet-bottom leaflet-right">
           <button
             className="btn btn-light"
-            onClick={() => setOverlay(Overlay.GroupedMarkers)}
+            onClick={() => changeOverlay(Overlay.GroupedMarkers)}
           >
             Grouped Markers
           </button>
           <button
             className="btn btn-light"
-            onClick={() => setOverlay(Overlay.UngroupedMarkers)}
+            onClick={() => changeOverlay(Overlay.UngroupedMarkers)}
           >
             Invidual Markers
           </button>
           <button
             className="btn btn-light"
             onClick={(e) => {
-              setOverlay(Overlay.Heatmap);
+              changeOverlay(Overlay.Heatmap);
             }}
           >
             Heatmap
