@@ -57,9 +57,31 @@ function Map(props: Props) {
 
   if (error) console.log(error);
 
-  const map = useMap("map", { fullscreenControl: true }, {}, (map) => {
-    createMapLayers(map);
-  });
+  const map = useMap(
+    "map",
+    {
+      fullscreenControl: {
+        pseudoFullscreen: true,
+      },
+    },
+    {},
+    (map) => {
+      createMapLayers(map);
+      map.on("fullscreenchange", () => {
+        const content = document.getElementById("permit-content");
+        const nav = document.getElementById("nav");
+        if (content && nav) {
+          if ((map as any).isFullscreen()) {
+            content.style.display = "none";
+            nav.style.display = "none";
+          } else {
+            content.style.display = "block";
+            nav.style.display = "block";
+          }
+        }
+      });
+    }
+  );
 
   //keep reclustering on zoom from becoming stale
   useEffect(() => {

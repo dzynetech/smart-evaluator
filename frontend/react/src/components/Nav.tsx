@@ -13,7 +13,7 @@ function Nav(props: Props) {
   const { data } = useQuery(USER_QUERY);
 
   return (
-    <nav className="navbar navbar-expand-lg navbar-light bg-light">
+    <nav id="nav" className="navbar navbar-expand-lg navbar-light bg-light">
       <a className="navbar-brand" href="/">
         SMART Site Evaluator
       </a>

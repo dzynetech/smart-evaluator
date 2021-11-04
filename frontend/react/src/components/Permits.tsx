@@ -108,14 +108,14 @@ function Permits(props: Props) {
         </div>
         <div id="main">
           <Nav active={"classify"} jwt={props.jwt} setJwt={props.setJwt} />
-          <div className="container-fluid">
-            {popupData && (
-              <PermitModal
-                {...popupData}
-                setPopupData={setPopupData}
-                setActivePermit={setActivePermit}
-              />
-            )}
+          {popupData && (
+            <PermitModal
+              {...popupData}
+              setPopupData={setPopupData}
+              setActivePermit={setActivePermit}
+            />
+          )}
+          <div id="permit-content" className="container-fluid">
             <div className="title">
               <div>
                 <h1>Construction sites</h1>
