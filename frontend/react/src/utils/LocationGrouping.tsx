@@ -61,7 +61,7 @@ export function individualMarkers(
     let marker: MarkerObj = {
       x: l.x,
       y: l.y,
-      r: 12,
+      r: 5.5,
       ids: [l.id],
       active: false,
       color: l.color,
@@ -156,7 +156,7 @@ export function circleWithText(
   var size = radius * 2;
   var style = `width: ${size}px; height: ${size}px;`;
   if (color) {
-    style += `background:${color}CC;border-color:#111;color:#111`;
+    style += `background:${color}CC;border-color:#000;color:#111;border-width:0.7px`;
   }
   var iconSize = size + 4;
   var icon = Leaflet.divIcon({
