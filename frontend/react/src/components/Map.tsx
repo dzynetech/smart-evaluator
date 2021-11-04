@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import Leaflet, { HeatLayer, LeafletMouseEvent } from "leaflet";
+import Leaflet, { HeatLatLngTuple, LeafletMouseEvent } from "leaflet";
 import { useLazyQuery, useQuery } from "@apollo/client";
 import {
   computeMarkers,
@@ -180,7 +180,7 @@ function Map(props: Props) {
       if (heatLayer) {
         map.removeLayer(heatLayer);
       }
-      var heatmap_data: HeatLayer.LatLngHeatTuple[] = [];
+      var heatmap_data: HeatLatLngTuple[] = [];
       locs.forEach((l) => {
         heatmap_data.push([l.y, l.x, 7]);
       });

@@ -9,6 +9,7 @@ import simpleheat from "simpleheat";
 // patched by Tom Harvey
 // https://github.com/Leaflet/Leaflet.heat/pull/78
 // not merged into offical leaflet.heat bc the project is dead
+// compatiable with TS types from @types/leaflet.heat  as of v0.2.1
 
 L.HeatLayer = (L.Layer ? L.Layer : L.Class).extend({
   // options: {
