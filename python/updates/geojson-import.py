@@ -31,7 +31,15 @@ def main():
     features = data['features']
     for feat in features:
         props = feat['properties']
-        del props['region_mod']
+        try:
+            del props['region_mod']
+        except:
+            pass
+
+        try:
+            site_id = props['site_id']
+        except:
+            continue
         geojson = json.dumps(feat['geometry'])
         permit_data = json.dumps(props)
         try:
@@ -39,9 +47,9 @@ def main():
         except:
             area = 0
         sql = "INSERT INTO smart.permits (bounds, permit_data,source_id,import_id,cost,sqft,city,state,street,street_number,zip,name,notes) "
-        sql += "VALUES (ST_GeomFromGeoJSON(%s),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id;"
+        sql += "VALUES (ST_Multi(ST_GeomFromGeoJSON(%s)),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id;"
         cursor.execute(sql, (geojson, permit_data,
-                       source_id, import_id, 0, area * meters_to_sqft, "", "", "", "","", props['site_id'], ""))
+                       source_id, import_id, 0, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
         id = cursor.fetchone()[0]
         print(id)
         sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s"
