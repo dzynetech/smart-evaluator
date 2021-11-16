@@ -5,11 +5,25 @@ import ViewRawJSON from "./ViewRawJSON";
 
 import "./PermitsFilter.css";
 import { Filter, FilterVars } from "../interfaces/FilterVars";
+import Select from "react-select";
+import { Classification } from "../generated/graphql";
 
 interface Props {
   setFilterVars: (filterVars: FilterVars | null) => void;
   filterVars: FilterVars | null;
 }
+interface ClassificationOption {
+  readonly value: string;
+  readonly label: string;
+}
+const classificationOptions: readonly ClassificationOption[] = [
+  { value: "ALL", label: "All" },
+  { value: "UNCLASSIFIED", label: "Unclassified" },
+  { value: "CONSTRUCTION", label: "Construction" },
+  { value: "NOT_CONSTRUCTION", label: "Not Construction" },
+  { value: "POSSIBLE_CONSTRUCTION", label: "Maybe Construction" },
+  { value: "DUPLICATE", label: "Duplicate" },
+];
 
 function PermitsFilter(props: Props) {
   const [street, setStreet] = useState("");
@@ -18,7 +32,9 @@ function PermitsFilter(props: Props) {
   const [zip, setZip] = useState("");
   const [minCost, setMinCost] = useState("");
   const [minSqft, setMinSqft] = useState("");
-  const [classification, setClassification] = useState("ALL");
+  const [classification, setClassification] = useState([
+    classificationOptions[0],
+  ]);
   const [source, setSource] = useState("ALL");
   const [order, setOrder] = useState("SQFT_DESC");
   const [permitData, setPermitData] = useState("");
@@ -32,12 +48,22 @@ function PermitsFilter(props: Props) {
     if (e) {
       e.preventDefault();
     }
-    var c: Filter | undefined;
-    if (classification === "ALL") {
-      c = undefined;
-    } else {
-      c = { equalTo: classification };
+    var c: any = [];
+    for (const v of classification) {
+      var f: any = {};
+      if (v.value == "ALL") {
+        f["classification"] = { isNull: false };
+      } else {
+        f["classification"] = { equalTo: v.value };
+      }
+      c.push(f);
     }
+    if (c.length == 0) {
+      var f: any = {};
+      f["classification"] = { isNull: false };
+      c.push(f);
+    }
+
     var sid: Filter | undefined;
     if (source === "ALL") {
       sid = undefined;
@@ -99,7 +125,7 @@ function PermitsFilter(props: Props) {
           <label className="my-1 mr-2" htmlFor="classification_filter">
             Classification:
           </label>
-          <select
+          {/* <select
             className="custom-select my-1 mr-sm-2"
             id="classification_filter"
             value={classification}
@@ -113,7 +139,13 @@ function PermitsFilter(props: Props) {
             <option value="NOT_CONSTRUCTION">Not Construction</option>
             <option value="POSSIBLE_CONSTRUCTION">Maybe Construction</option>
             <option value="DUPLICATE">Duplicate</option>
-          </select>
+          </select> */}
+          <Select
+            isMulti
+            defaultValue={classification}
+            onChange={(e) => setClassification(JSON.parse(JSON.stringify(e)))}
+            options={classificationOptions}
+          />
         </div>
         <div id="source-filter">
           <label className="my-1 mr-2" htmlFor="source_filter">
