@@ -1,11 +1,15 @@
 import { gql } from "@apollo/client";
 
 //permits query without pagination or source
-const ALL_BOUNDS_QUERY = gql`
-  query AllPermitsQuery {
+const BOUNDS_QUERY = gql`
+  query AllPermitsQuery($sourceId: IntFilter) {
     permits(
       filter: {
-        and: { imageUrl: { isNull: false }, hasBounds: { equalTo: true } }
+        and: {
+          imageUrl: { isNull: false }
+          hasBounds: { equalTo: true }
+          sourceId: $sourceId
+        }
       }
     ) {
       edges {
@@ -26,4 +30,4 @@ const ALL_BOUNDS_QUERY = gql`
     }
   }
 `;
-export default ALL_BOUNDS_QUERY;
+export default BOUNDS_QUERY;

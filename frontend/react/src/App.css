@@ -107,6 +107,15 @@ a:hover {
   pointer-events: auto;
 }
 
+#bounds-filter {
+  pointer-events: auto;
+}
+
+#bounds-filter-container {
+  margin-right: 5rem;
+  margin-top: .5rem;
+}
+
 .non-interactive {
   pointer-events: none;
 }

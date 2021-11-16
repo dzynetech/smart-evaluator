@@ -15,14 +15,15 @@ import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
 import "leaflet/dist/leaflet.css";
 
 import UNPAGED_PERMITS_QUERY from "../queries/UnpagedPermitsQuery";
-import ALL_BOUNDS_QUERY from "../queries/AllBoundsQuery";
+import BOUNDS_QUERY from "../queries/AllBoundsQuery";
 import UpdatablePermit from "../interfaces/UpdatablePermit";
 import PopupData from "../interfaces/PopupData";
-import { FilterVars } from "../interfaces/FilterVars";
+import { Filter, FilterVars } from "../interfaces/FilterVars";
 import { GeometryPoint, PermitsEdge } from "../generated/graphql";
 import { MultiPolygon } from "geojson";
 import { removeMarkers, removeGeoJSONs } from "../utils/removeMarkers";
 import { borderColorMap } from "../utils/Colors";
+import SourceDropdown from "./SourceDropdown";
 
 interface Props {
   setPermitForModal: (popupData: PopupData | null) => void;
@@ -48,11 +49,12 @@ enum Overlay {
 
 function Map(props: Props) {
   const [getPermits, { error, data }] = useLazyQuery(UNPAGED_PERMITS_QUERY);
-  const { data: all_bounds_data } = useQuery(ALL_BOUNDS_QUERY);
+  const [getBounds, { data: bounds_data }] = useLazyQuery(BOUNDS_QUERY);
   const [overlay, setOverlay] = useState(Overlay.GroupedMarkers);
   const [heatLayer, setHeatLayer] = useState<Leaflet.HeatLayer | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
   const [filterHasChanged, setFillterHasChanged] = useState(true);
+  const [boundarySource, setBoundarySource] = useState<string>("ALL");
   const zoomCallbackRef = useRef<() => void>();
 
   if (error) console.log(error);
@@ -98,11 +100,11 @@ function Map(props: Props) {
 
   //draw boundaries
   useEffect(() => {
-    if (!all_bounds_data || !map) {
+    if (!bounds_data || !map) {
       return;
     }
     removeGeoJSONs(map);
-    all_bounds_data.permits.edges.forEach((p: PermitsEdge) => {
+    bounds_data.permits.edges.forEach((p: PermitsEdge) => {
       if (!p.node || !p.node.bounds) {
         return;
       }
@@ -141,7 +143,7 @@ function Map(props: Props) {
         });
       }
     });
-  }, [all_bounds_data, map]);
+  }, [bounds_data, map]);
 
   //zoom to active permit when set
   useEffect(() => {
@@ -324,9 +326,31 @@ function Map(props: Props) {
     }
   }
 
+  useEffect(() => {
+    var sid: Filter | undefined;
+    if (boundarySource === "ALL") {
+      sid = undefined;
+    } else {
+      sid = { equalTo: Number(boundarySource) };
+    }
+    getBounds({
+      variables: {
+        sourceId: sid,
+      },
+    });
+  }, [boundarySource]);
+
   return (
     <>
       <div id="map">
+        <div id="bounds-filter-container" className="leaflet-top leaflet-right">
+          <div id="bounds-filter">
+            <SourceDropdown
+              source={boundarySource}
+              setSource={setBoundarySource}
+            />
+          </div>
+        </div>
         <div id="map-controls" className="leaflet-bottom leaflet-right">
           <button
             className="btn btn-light"
