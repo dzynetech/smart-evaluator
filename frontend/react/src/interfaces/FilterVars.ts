@@ -2,9 +2,16 @@ export interface Filter {
   equalTo: string | number;
 }
 
+export interface BooleanFilterElement {
+  classification: {
+    isNull?: boolean;
+    equalTo?: string;
+  };
+}
+
 export interface FilterVars {
   order: string;
-  classification: Filter | undefined;
+  classification: BooleanFilterElement[] | undefined;
   sourceId: Filter | undefined;
   min_sqft: number;
   min_cost: number;

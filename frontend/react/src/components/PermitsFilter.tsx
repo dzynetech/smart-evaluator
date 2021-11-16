@@ -4,9 +4,13 @@ import SourceDropdown from "./SourceDropdown";
 import ViewRawJSON from "./ViewRawJSON";
 
 import "./PermitsFilter.css";
-import { Filter, FilterVars } from "../interfaces/FilterVars";
+import {
+  BooleanFilterElement,
+  Filter,
+  FilterVars,
+} from "../interfaces/FilterVars";
 import Select from "react-select";
-import { Classification } from "../generated/graphql";
+import { BooleanFilter, Classification } from "../generated/graphql";
 
 interface Props {
   setFilterVars: (filterVars: FilterVars | null) => void;
@@ -48,20 +52,21 @@ function PermitsFilter(props: Props) {
     if (e) {
       e.preventDefault();
     }
-    var c: any = [];
+    var classificationFilter: BooleanFilterElement[] = [];
     for (const v of classification) {
-      var f: any = {};
+      var filterElement: BooleanFilterElement = { classification: {} };
       if (v.value == "ALL") {
-        f["classification"] = { isNull: false };
+        filterElement.classification = { isNull: false };
       } else {
-        f["classification"] = { equalTo: v.value };
+        filterElement.classification = { equalTo: v.value };
       }
-      c.push(f);
+      classificationFilter.push(filterElement);
     }
-    if (c.length == 0) {
-      var f: any = {};
-      f["classification"] = { isNull: false };
-      c.push(f);
+    if (classificationFilter.length == 0) {
+      var filterElement: BooleanFilterElement = {
+        classification: { isNull: false },
+      };
+      classificationFilter.push(filterElement);
     }
 
     var sid: Filter | undefined;
@@ -73,7 +78,7 @@ function PermitsFilter(props: Props) {
 
     props.setFilterVars({
       order: order,
-      classification: c,
+      classification: classificationFilter,
       sourceId: sid,
       min_sqft: Number(minSqft),
       min_cost: Number(minCost),
