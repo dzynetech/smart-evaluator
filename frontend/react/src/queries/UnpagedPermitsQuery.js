@@ -4,7 +4,7 @@ import { gql } from "@apollo/client";
 const UNPAGED_PERMITS_QUERY = gql`
   query UnpagedPermitsQuery(
     $order: [PermitsOrderBy!]
-    $classification: ClassificationFilter
+    $classification: [PermitFilter!]
     $sourceId: IntFilter
     $min_sqft: Float
     $min_cost: Float
@@ -22,7 +22,6 @@ const UNPAGED_PERMITS_QUERY = gql`
           imageUrl: { isNull: false }
           sqft: { greaterThanOrEqualTo: $min_sqft }
           cost: { greaterThanOrEqualTo: $min_cost }
-          classification: $classification
           sourceId: $sourceId
           city: { includesInsensitive: $city }
           street: { includesInsensitive: $street }
@@ -31,6 +30,7 @@ const UNPAGED_PERMITS_QUERY = gql`
           permitDataText: { includesInsensitive: $permitData }
           notes: { includesInsensitive: $note }
           hasLocation: { equalTo: true }
+          or: $classification
         }
       }
     ) {
