@@ -21,7 +21,6 @@ interface ClassificationOption {
   readonly label: string;
 }
 const classificationOptions: readonly ClassificationOption[] = [
-  { value: "ALL", label: "All" },
   { value: "UNCLASSIFIED", label: "Unclassified" },
   { value: "CONSTRUCTION", label: "Construction" },
   { value: "NOT_CONSTRUCTION", label: "Not Construction" },
@@ -36,9 +35,9 @@ function PermitsFilter(props: Props) {
   const [zip, setZip] = useState("");
   const [minCost, setMinCost] = useState("");
   const [minSqft, setMinSqft] = useState("");
-  const [classification, setClassification] = useState([
-    classificationOptions[0],
-  ]);
+  const [classification, setClassification] = useState<ClassificationOption[]>(
+    []
+  );
   const [source, setSource] = useState("ALL");
   const [order, setOrder] = useState("SQFT_DESC");
   const [permitData, setPermitData] = useState("");
@@ -55,11 +54,7 @@ function PermitsFilter(props: Props) {
     var classificationFilter: BooleanFilterElement[] = [];
     for (const v of classification) {
       var filterElement: BooleanFilterElement = { classification: {} };
-      if (v.value == "ALL") {
-        filterElement.classification = { isNull: false };
-      } else {
-        filterElement.classification = { equalTo: v.value };
-      }
+      filterElement.classification = { equalTo: v.value };
       classificationFilter.push(filterElement);
     }
     if (classificationFilter.length == 0) {
