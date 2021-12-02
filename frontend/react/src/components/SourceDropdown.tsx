@@ -5,7 +5,8 @@ import SOURCES_QUERY from "../queries/SourcesQuery";
 
 interface Props {
   source: string;
-  setSource: React.Dispatch<React.SetStateAction<string>>;
+  setSource: (source: string) => void;
+  noneOption?: boolean;
 }
 
 function SourceDropdown(props: Props) {
@@ -21,7 +22,7 @@ function SourceDropdown(props: Props) {
         props.setSource(e.target.value);
       }}
     >
-      <option value="NONE">None</option>
+      {props.noneOption && <option value="NONE">None</option>}
       <option value="ALL">All</option>
       {data &&
         data.sources.nodes.map((source: Source) => (

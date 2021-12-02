@@ -15,6 +15,7 @@ import { BooleanFilter, Classification } from "../generated/graphql";
 interface Props {
   setFilterVars: (filterVars: FilterVars | null) => void;
   filterVars: FilterVars | null;
+  setSourceFilterState: (state: string) => void; //used to pass source filter to map for bounds
 }
 interface ClassificationOption {
   readonly value: string;
@@ -151,7 +152,13 @@ function PermitsFilter(props: Props) {
           <label className="my-1 mr-2" htmlFor="source_filter">
             Source:
           </label>
-          <SourceDropdown source={source} setSource={setSource} />
+          <SourceDropdown
+            source={source}
+            setSource={(v: string) => {
+              setSource(v);
+              props.setSourceFilterState(v);
+            }}
+          />
         </div>
         <div id="street-filter">
           <label className="my-1 mr-2" htmlFor="streetFilter">

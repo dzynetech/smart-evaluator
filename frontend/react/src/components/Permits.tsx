@@ -31,6 +31,7 @@ function Permits(props: Props) {
   const [activePermit, setActivePermit] = useState<UpdatablePermit | null>(
     null
   );
+  const [sourceFilterState, setSourceFilterState] = useState("ALL");
   const [prevActivePermit, setPrevActivePermit] = useState<Permit | null>(null);
   const [popupData, setPopupData] = useState<PopupData | null>(null);
   const [getPermits, { error, data }] = useLazyQuery(PERMITS_QUERY, {
@@ -96,6 +97,7 @@ function Permits(props: Props) {
             <PermitsFilter
               setFilterVars={setFilterVars}
               filterVars={filterVars}
+              setSourceFilterState={setSourceFilterState}
             />
           </div>
           <Map
@@ -104,6 +106,7 @@ function Permits(props: Props) {
             activePermit={activePermit}
             zoomTarget={zoomTarget}
             setZoomTarget={setZoomTarget}
+            sourceFilterState={sourceFilterState}
           />
         </div>
         <div id="main">

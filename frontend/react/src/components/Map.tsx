@@ -31,6 +31,7 @@ interface Props {
   activePermit: UpdatablePermit | null;
   zoomTarget: GeometryPoint | undefined;
   setZoomTarget: (zoomTarget: GeometryPoint | undefined) => void;
+  sourceFilterState: string;
 }
 
 interface Location {
@@ -342,12 +343,22 @@ function Map(props: Props) {
     });
   }, [boundarySource]);
 
+  //set boundary source to source filter on source filter change
+  useEffect(() => {
+    if (props.sourceFilterState !== "ALL") {
+      setBoundarySource(props.sourceFilterState);
+    } else {
+      setBoundarySource("NONE");
+    }
+  }, [props.sourceFilterState]);
+
   return (
     <>
       <div id="map">
         <div id="bounds-filter-container" className="leaflet-top leaflet-right">
           <div id="bounds-filter">
             <SourceDropdown
+              noneOption
               source={boundarySource}
               setSource={setBoundarySource}
             />
