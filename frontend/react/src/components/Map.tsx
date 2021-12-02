@@ -327,6 +327,7 @@ function Map(props: Props) {
     }
   }
 
+  //update boundaries on map using boundary dropdown
   useEffect(() => {
     var sid: Filter | undefined;
     if (boundarySource === "ALL") {
@@ -356,6 +357,7 @@ function Map(props: Props) {
     <>
       <div id="map">
         <div id="bounds-filter-container" className="leaflet-top leaflet-right">
+          <h6>Boundary Layer:</h6>
           <div id="bounds-filter">
             <SourceDropdown
               noneOption

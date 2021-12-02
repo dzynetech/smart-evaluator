@@ -114,8 +114,13 @@ a:hover {
 #bounds-filter-container {
   margin-right: 5rem;
   margin-top: .5rem;
+  display: inline-flex;
 }
 
+#bounds-filter-container h6{
+ margin-top: .75rem; 
+ margin-right: .25rem;
+}
 .non-interactive {
   pointer-events: none;
 }
