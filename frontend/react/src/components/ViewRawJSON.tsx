@@ -1,6 +1,6 @@
 import { useQuery } from "@apollo/client";
 import { FilterVars } from "../interfaces/FilterVars";
-import UNPAGED_PERMITS_QUERY from "../queries/AllBoundsQuery";
+import UNPAGED_PERMITS_QUERY from "../queries/UnpagedPermitsQuery";
 
 interface Props {
   filterVars: FilterVars | null;
