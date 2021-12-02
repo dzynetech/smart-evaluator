@@ -54,7 +54,7 @@ function Map(props: Props) {
   const [heatLayer, setHeatLayer] = useState<Leaflet.HeatLayer | null>(null);
   const [locations, setLocations] = useState<Location[]>([]);
   const [filterHasChanged, setFillterHasChanged] = useState(true);
-  const [boundarySource, setBoundarySource] = useState<string>("ALL");
+  const [boundarySource, setBoundarySource] = useState<string>("NONE");
   const zoomCallbackRef = useRef<() => void>();
 
   if (error) console.log(error);
@@ -330,6 +330,8 @@ function Map(props: Props) {
     var sid: Filter | undefined;
     if (boundarySource === "ALL") {
       sid = undefined;
+    } else if (boundarySource === "NONE") {
+      sid = { equalTo: -1 };
     } else {
       sid = { equalTo: Number(boundarySource) };
     }

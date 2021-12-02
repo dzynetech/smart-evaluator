@@ -21,6 +21,7 @@ function SourceDropdown(props: Props) {
         props.setSource(e.target.value);
       }}
     >
+      <option value="NONE">None</option>
       <option value="ALL">All</option>
       {data &&
         data.sources.nodes.map((source: Source) => (
