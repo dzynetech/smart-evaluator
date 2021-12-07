@@ -69,8 +69,7 @@ function SourceStats(props : Props) {
             <br />
             <b>Not Construction:</b> {data.not_construction.totalCount}
             <br />
-            <b>Possible Construction:</b>
-            {data.possible_construction.totalCount}
+            <b>Possible Construction:</b> {data.possible_construction.totalCount}
             <br />
             <b>Duplicate:</b> {data.duplicate.totalCount}
             <br />
