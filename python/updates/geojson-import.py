@@ -35,7 +35,8 @@ def main():
             del props['region_mod']
         except:
             pass
-
+        if props['type'] == "region":
+            continue
         try:
             site_id = props['site_id']
         except:
