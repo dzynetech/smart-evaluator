@@ -1,7 +1,7 @@
 import { gql } from "@apollo/client";
 const SOURCES_QUERY = gql`
   query GetAllSources {
-    sources {
+    sources(orderBy: NAME_ASC) {
       nodes {
         id
         name
