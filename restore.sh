@@ -11,9 +11,9 @@ SCRIPT_DIR=$ROOT_DIR
 
 gunzip -c $1 > "${SCRIPT_DIR}/restore.sql"
 cd $SCRIPT_DIR
-printf '%s\n%s\n' "create extension postgis;DROP SCHEMA PUBLIC cascade; CREATE SCHEMA PUBLIC; CREATE ROLE smart_anonymous; CREATE ROLE smart_user" "$(cat restore.sql)" > restore.sql
 # delete the create schema public line
-# sed -i '/^CREATE SCHEMA public/d' restore.sql
+sed -i '/^CREATE SCHEMA public/d' restore.sql
+printf '%s\n%s\n' "DROP SCHEMA PUBLIC cascade; CREATE SCHEMA PUBLIC; create extension postgis; CREATE ROLE smart_anonymous; CREATE ROLE smart_user;" "$(cat restore.sql)" > restore.sql
 mv "${SCRIPT_DIR}/restore.sql" "${ROOT_DIR}/postgres/smart.sql"
 
 cd $ROOT_DIR

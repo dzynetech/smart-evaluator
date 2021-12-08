@@ -56,7 +56,7 @@ services:
       - secrets
     environment:
       - POSTGRES_HOST=postgres
-      - POSTGRES_EXTRA_OPTS=-Z9 --schema=public --blobs
+      - POSTGRES_EXTRA_OPTS=-Z9 --blobs
       - SCHEDULE=@every 6h00m00s
       - BACKUP_KEEP_DAYS=7
       - BACKUP_KEEP_WEEKS=12
