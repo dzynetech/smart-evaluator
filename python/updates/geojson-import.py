@@ -23,6 +23,17 @@ def main():
 
     with open(sys.argv[1]) as f:
         data = json.load(f)
+        try:
+            if "CRS84" not in data['crs']['properties']['name'] != "":
+                import geopandas
+                gdf = geopandas.read_file("epgs32619.geojson")
+                gdf_wgs84 = gdf.to_crs("epsg:4326")
+                json_reprojected = gdf_wgs84.to_json(indent=2)
+                data = json.loads(json_reprojected)
+
+        except:
+            # just assume json is in EPGS84 format already
+            pass
 
     sql = f"INSERT INTO smart.sources(name) VALUES('{sys.argv[1]}') RETURNING id"
     cursor.execute(sql)
