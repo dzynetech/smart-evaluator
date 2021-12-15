@@ -74,7 +74,7 @@ function Map(props: Props) {
         const content = document.getElementById("permit-content");
         const nav = document.getElementById("nav");
         if (content && nav) {
-          if ((map as any).isFullscreen()) {
+          if (map.isFullscreen()) {
             content.style.display = "none";
             nav.style.display = "none";
           } else {
