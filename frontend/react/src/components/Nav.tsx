@@ -1,16 +1,26 @@
 import { useHistory } from "react-router-dom";
 import { useQuery } from "@apollo/client";
 import USER_QUERY from "../queries/UserQuery";
+import { useEffect } from "react";
 
 interface Props {
-  active : string,
-  jwt: string | null,
-  setJwt: (jwt: string | null)=>void
+  active: string;
+  jwt: string | null;
+  setJwt: (jwt: string | null) => void;
 }
 
 function Nav(props: Props) {
   const history = useHistory();
-  const { data } = useQuery(USER_QUERY);
+  const { data, error } = useQuery(USER_QUERY);
+
+  // redirect on expired JWT
+  useEffect(() => {
+    if (error?.message.includes("status code 401")) {
+      localStorage.clear();
+      history.push("/login");
+      window.location.reload();
+    }
+  }, [error]);
 
   return (
     <nav id="nav" className="navbar navbar-expand-lg navbar-light bg-light">
