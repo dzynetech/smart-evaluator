@@ -13,6 +13,7 @@ import Login from "./components/Login";
 import RequireLogin from "./components/RequireLogin";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import useLocalStorage from "./hooks/useLocalStorage";
+import useLocalStorageWithExpiry from "./hooks/useLocalStorageWithExpiry";
 
 var graphql_url = process.env.REACT_APP_GRAPHQL_URL;
 if (!graphql_url) {
@@ -20,7 +21,8 @@ if (!graphql_url) {
 }
 
 function App() {
-  const [jwt, setJwt] = useLocalStorage<string>("jwt", null);
+  const [jwt, setJwt] = useLocalStorageWithExpiry<string>("jwt", null);
+  const ttl = 60 * 60 * 24 * 29;
   const httpLink = createHttpLink({
     uri: graphql_url,
   });
@@ -46,17 +48,38 @@ function App() {
       <Router>
         <Switch>
           <Route path="/login">
-            <Nav active={"login"} jwt={jwt} setJwt={setJwt} />
-            <Login setJwt={setJwt} />
+            <Nav
+              active={"login"}
+              jwt={jwt}
+              setJwt={(jwt) => {
+                setJwt(jwt, ttl);
+              }}
+            />
+            <Login
+              setJwt={(jwt) => {
+                setJwt(jwt, ttl);
+              }}
+            />
           </Route>
           <Route path="/stats">
             <RequireLogin jwt={jwt} />
-            <Nav active={"stats"} jwt={jwt} setJwt={setJwt} />
+            <Nav
+              active={"stats"}
+              jwt={jwt}
+              setJwt={(jwt) => {
+                setJwt(jwt, ttl);
+              }}
+            />
             <Stats />
           </Route>
           <Route path="/">
             <RequireLogin jwt={jwt} />
-            <Permits jwt={jwt} setJwt={setJwt} />
+            <Permits
+              jwt={jwt}
+              setJwt={(jwt) => {
+                setJwt(jwt, ttl);
+              }}
+            />
           </Route>
         </Switch>
       </Router>
