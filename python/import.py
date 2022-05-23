@@ -70,6 +70,8 @@ def main():
             data.append(source_id)
             columns.append("permit_data")
             data.append(create_permit_json(headers,  row))
+            columns.append("notes")
+            data.append("")
 
             # parse out street no from street if there is no street number
             if "street_number" not in sql_columns:
