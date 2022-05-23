@@ -1,14 +1,15 @@
 {
     "filename": "global_power_plant_database.csv",
     "dataset_name": "powerplants",
-    "cost_col": 36,
-    "sqft_col": 36,
-    "street_number_col": 36,
+    "cost_col": 14,
+    "sqft_col": 14,
+    "street_number_col": 14,
     "street_col": 1,
     "city_col": 1,
     "state_col": 1,
     "zip_col": 0,
     "latitude_col": 5,
     "longitude_col": 6,
-    "location_accuracy_col": 36
+    "location_accuracy_col": 14,
+    "issue_date_col": 15
 }

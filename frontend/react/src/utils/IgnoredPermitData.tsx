@@ -31,6 +31,7 @@ const ignoredPermitData = [
   "property_id",
   "parcel_id",
   "comments",
+  "nothing",
 ];
 
 export default ignoredPermitData;
