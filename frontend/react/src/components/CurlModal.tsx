@@ -57,7 +57,7 @@ function CurlModal(props: Props) {
                 -d '&#123;"query": {modifyQuery(props.query)}, "variables":{" "}
                 {props.variables}
                 ,"operationName":"PermitsQuery"&#125;' \<br />
-                https://{window.location.host}/graphql
+                http://{window.location.host}/graphql
               </code>
             </div>
             <div className="modal-footer">
