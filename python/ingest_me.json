@@ -1,0 +1,990 @@
+{
+	"count": 39,
+	"timerange": {
+		"min": 1389751561,
+		"max": 1621650428
+	},
+	"bbox": {
+		"xmin": 128.663678,
+		"xmax": 128.93361,
+		"ymin": 37.654803,
+		"ymax": 37.80888600000001
+	},
+	"results": [
+		{
+			"id": 27,
+			"site": "KR_R001_012",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.89619799999997,
+				"xmax": 128.903335,
+				"ymin": 37.76147900000001,
+				"ymax": 37.76787699999999
+			}
+		},
+		{
+			"id": 28,
+			"site": "KR_R001_002",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1400205493,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.663678,
+				"xmax": 128.665263,
+				"ymin": 37.66214699999999,
+				"ymax": 37.66390999999998
+			}
+		},
+		{
+			"id": 21,
+			"site": "KR_R002_017",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621650428,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.716934,
+				"xmax": 128.719261,
+				"ymin": 37.65901399999998,
+				"ymax": 37.66035499999999
+			}
+		},
+		{
+			"id": 6,
+			"site": "KR_R002_000",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1409882329,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.855282,
+				"xmax": 128.85675899999998,
+				"ymin": 37.80690499999999,
+				"ymax": 37.80888600000001
+			}
+		},
+		{
+			"id": 3,
+			"site": "KR_R001_004",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1463018664,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.716934,
+				"xmax": 128.719261,
+				"ymin": 37.65901399999998,
+				"ymax": 37.66035499999999
+			}
+		},
+		{
+			"id": 2,
+			"site": "KR_R002_019",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621650428,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.680719,
+				"xmax": 128.682832,
+				"ymin": 37.654803,
+				"ymax": 37.656233999999976
+			}
+		},
+		{
+			"id": 31,
+			"site": "KR_R001_010",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.93179499999997,
+				"xmax": 128.93361,
+				"ymin": 37.772669999999984,
+				"ymax": 37.77447
+			}
+		},
+		{
+			"id": 20,
+			"site": "KR_R001_006",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1391133957,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.680719,
+				"xmax": 128.682832,
+				"ymin": 37.654803,
+				"ymax": 37.656233999999976
+			}
+		},
+		{
+			"id": 39,
+			"site": "KR_R001_018",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.862333,
+				"xmax": 128.86403599999997,
+				"ymin": 37.737585,
+				"ymax": 37.739745
+			}
+		},
+		{
+			"id": 8,
+			"site": "KR_R001_005",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1391133957,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.694225,
+				"xmax": 128.696656,
+				"ymin": 37.657527999999985,
+				"ymax": 37.659712
+			}
+		},
+		{
+			"id": 10,
+			"site": "KR_R002_011",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1391133957,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.868002,
+				"xmax": 128.86936199999997,
+				"ymin": 37.73849,
+				"ymax": 37.739572
+			}
+		},
+		{
+			"id": 29,
+			"site": "KR_R001_009",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.896634,
+				"xmax": 128.89878899999997,
+				"ymin": 37.77426599999998,
+				"ymax": 37.77525699999998
+			}
+		},
+		{
+			"id": 18,
+			"site": "KR_R002_012",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1389751561,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.862333,
+				"xmax": 128.86403599999997,
+				"ymin": 37.737585,
+				"ymax": 37.739745
+			}
+		},
+		{
+			"id": 30,
+			"site": "KR_R001_000",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1391133957,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.706117,
+				"xmax": 128.70780999999997,
+				"ymin": 37.669734000000005,
+				"ymax": 37.67183200000001
+			}
+		},
+		{
+			"id": 14,
+			"site": "KR_R002_003",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1409882329,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.896634,
+				"xmax": 128.89878899999997,
+				"ymin": 37.77426599999998,
+				"ymax": 37.77525699999998
+			}
+		},
+		{
+			"id": 19,
+			"site": "KR_R001_016",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.863463,
+				"xmax": 128.86561699999996,
+				"ymin": 37.740646000000005,
+				"ymax": 37.74172899999999
+			}
+		},
+		{
+			"id": 15,
+			"site": "KR_R001_007",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621650428,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.903204,
+				"xmax": 128.904339,
+				"ymin": 37.78012299999999,
+				"ymax": 37.78138400000002
+			}
+		},
+		{
+			"id": 12,
+			"site": "KR_R002_008",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1389751561,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.864341,
+				"xmax": 128.87397899999996,
+				"ymin": 37.75622399999999,
+				"ymax": 37.763795
+			}
+		},
+		{
+			"id": 36,
+			"site": "KR_R002_005",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1389751561,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.87145899999996,
+				"xmax": 128.873388,
+				"ymin": 37.77099899999998,
+				"ymax": 37.77234999999998
+			}
+		},
+		{
+			"id": 9,
+			"site": "KR_R002_001",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1486866135,
+				"max": 1621390632
+			},
+			"bbox": {
+				"xmin": 128.903204,
+				"xmax": 128.904339,
+				"ymin": 37.78012299999999,
+				"ymax": 37.78138400000002
+			}
+		},
+		{
+			"id": 22,
+			"site": "KR_R002_007",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1505182495,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.86207,
+				"xmax": 128.863771,
+				"ymin": 37.758473,
+				"ymax": 37.75946499999998
+			}
+		},
+		{
+			"id": 1,
+			"site": "KR_R002_009",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1389751561,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.86514,
+				"xmax": 128.86956299999997,
+				"ymin": 37.752266999999996,
+				"ymax": 37.755508999999996
+			}
+		},
+		{
+			"id": 7,
+			"site": "KR_R001_015",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.86514,
+				"xmax": 128.86956299999997,
+				"ymin": 37.752266999999996,
+				"ymax": 37.755508999999996
+			}
+		},
+		{
+			"id": 37,
+			"site": "KR_R002_015",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621650428,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.663678,
+				"xmax": 128.665263,
+				"ymin": 37.66214699999999,
+				"ymax": 37.66390999999998
+			}
+		},
+		{
+			"id": 25,
+			"site": "KR_R002_006",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1389751561,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.89619799999997,
+				"xmax": 128.903335,
+				"ymin": 37.76147900000001,
+				"ymax": 37.76787699999999
+			}
+		},
+		{
+			"id": 23,
+			"site": "KR_R001_003",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1391133957,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.666956,
+				"xmax": 128.672562,
+				"ymin": 37.66040499999999,
+				"ymax": 37.66291399999999
+			}
+		},
+		{
+			"id": 16,
+			"site": "KR_R001_017",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.868002,
+				"xmax": 128.86936199999997,
+				"ymin": 37.73849,
+				"ymax": 37.739572
+			}
+		},
+		{
+			"id": 13,
+			"site": "KR_R002_013",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621650428,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.706117,
+				"xmax": 128.70780999999997,
+				"ymin": 37.669734000000005,
+				"ymax": 37.67183200000001
+			}
+		},
+		{
+			"id": 32,
+			"site": "KR_R002_014",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621650428,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.70390399999997,
+				"xmax": 128.71140899999997,
+				"ymin": 37.66452799999998,
+				"ymax": 37.669565
+			}
+		},
+		{
+			"id": 35,
+			"site": "KR_R001_001",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1391133957,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.70390399999997,
+				"xmax": 128.71140899999997,
+				"ymin": 37.66452799999998,
+				"ymax": 37.669565
+			}
+		},
+		{
+			"id": 33,
+			"site": "KR_R002_004",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1492050227,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.93179499999997,
+				"xmax": 128.93361,
+				"ymin": 37.772669999999984,
+				"ymax": 37.77447
+			}
+		},
+		{
+			"id": 34,
+			"site": "KR_R001_011",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.87145899999996,
+				"xmax": 128.873388,
+				"ymin": 37.77099899999998,
+				"ymax": 37.77234999999998
+			}
+		},
+		{
+			"id": 11,
+			"site": "KR_R002_018",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621650428,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.694225,
+				"xmax": 128.696656,
+				"ymin": 37.657527999999985,
+				"ymax": 37.659712
+			}
+		},
+		{
+			"id": 5,
+			"site": "KR_R002_010",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1389751561,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.863463,
+				"xmax": 128.86561699999996,
+				"ymin": 37.740646000000005,
+				"ymax": 37.74172899999999
+			}
+		},
+		{
+			"id": 4,
+			"site": "KR_R001_014",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.864341,
+				"xmax": 128.87397899999996,
+				"ymin": 37.75622399999999,
+				"ymax": 37.763795
+			}
+		},
+		{
+			"id": 26,
+			"site": "KR_R002_016",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621650428,
+				"max": 1621650428
+			},
+			"bbox": {
+				"xmin": 128.666956,
+				"xmax": 128.672562,
+				"ymin": 37.66040499999999,
+				"ymax": 37.66291399999999
+			}
+		},
+		{
+			"id": 38,
+			"site": "KR_R001_008",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.89901099999997,
+				"xmax": 128.901279,
+				"ymin": 37.775798,
+				"ymax": 37.77994099999998
+			}
+		},
+		{
+			"id": 24,
+			"site": "KR_R001_013",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1621389523,
+				"max": 1621389523
+			},
+			"bbox": {
+				"xmin": 128.86207,
+				"xmax": 128.863771,
+				"ymin": 37.758473,
+				"ymax": 37.75946499999998
+			}
+		},
+		{
+			"id": 17,
+			"site": "KR_R002_002",
+			"configuration": {
+				"thresh": 0.2,
+				"predcfg": "623badb3",
+				"trackcfg": "abd043ec"
+			},
+			"performer": {
+				"team_name": "Kitware",
+				"short_code": "KIT"
+			},
+			"score": 1.0,
+			"timestamp": 1649779979,
+			"timerange": {
+				"min": 1389751561,
+				"max": 1621389499
+			},
+			"bbox": {
+				"xmin": 128.89901099999997,
+				"xmax": 128.901279,
+				"ymin": 37.775798,
+				"ymax": 37.77994099999998
+			}
+		}
+	]
+}

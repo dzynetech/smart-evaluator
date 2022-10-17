@@ -34,6 +34,7 @@ const ignoredPermitData = [
   "nothing",
   "",
   "zero",
+  "bbox",
 ];
 
 export default ignoredPermitData;
