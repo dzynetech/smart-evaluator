@@ -21,7 +21,7 @@ function PermitDataTable(props: Props) {
         Object.entries(CleanPermitData(props.permit.permitData)).map(
           ([key, value]) => (
             <React.Fragment key={key}>
-              <b>{key}:</b> {value}
+              <b>{key}:</b> { typeof value === "string" ? value : JSON.stringify(value)}
               <br />
             </React.Fragment>
           )
