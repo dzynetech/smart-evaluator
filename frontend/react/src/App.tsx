@@ -14,6 +14,7 @@ import RequireLogin from "./components/RequireLogin";
 import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
 import useLocalStorage from "./hooks/useLocalStorage";
 import useLocalStorageWithExpiry from "./hooks/useLocalStorageWithExpiry";
+import Ingest from "./components/Ingest"
 
 var graphql_url = process.env.REACT_APP_GRAPHQL_URL;
 if (!graphql_url) {
@@ -71,6 +72,17 @@ function App() {
               }}
             />
             <Stats />
+          </Route>
+          <Route path="/ingest">
+            <RequireLogin jwt={jwt} />
+            <Nav
+              active={"ingest"}
+              jwt={jwt}
+              setJwt={(jwt) => {
+                setJwt(jwt, ttl);
+              }}
+            />
+            <Ingest />
           </Route>
           <Route path="/">
             <RequireLogin jwt={jwt} />
