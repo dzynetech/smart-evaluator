@@ -73,7 +73,7 @@ function App() {
             />
             <Stats />
           </Route>
-          <Route path="/ingest">
+          <Route path="/import">
             <RequireLogin jwt={jwt} />
             <Nav
               active={"ingest"}
