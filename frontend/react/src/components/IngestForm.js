@@ -105,7 +105,7 @@ export default function IngestForm() {
 								type="file" onChange={handleChange} />
 						</div>
 						<button
-							className="btn btn-primary float-right mt-2"
+							className="btn btn-primary float-right mt-3"
 							type="submit"
 						>
 							Upload Mission
