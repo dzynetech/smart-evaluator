@@ -90,7 +90,7 @@ export default function MissionUploadForm({ col }) {
 				return
 			}
 			if (result.file) {
-				sendMissionToASM(result.file)
+				// sendMissionToASM(result.file)
 			}
 		}
 		catch (error) {
