@@ -1,21 +1,23 @@
+import { useQuery } from '@apollo/client';
 import { CheckCircleIcon } from '@heroicons/react/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/solid'
 import React, { useEffect, useContext, useState } from 'react'
+import USER_QUERY from '../queries/UserQuery';
 
 import { classNames } from '../utils/classNames';
 
 export default function MissionUploadForm({ col }) {
 
-	const [awaitingMissionDataMessage, setAwaitingMissionDataMessage] = useState(false)
+	const [uploading, setUploading] = useState(false)
 	const [error, setError] = useState("")
 	const [success, setSuccess] = useState(null)
 	const [showModal, setShowModal] = useState(false)
 	const [file, setFile] = useState()
 	const [uploadProgress, setUploadProgress] = useState(0)
+	const [source, setSource] = useState("")
 
+  const { data: userData} = useQuery(USER_QUERY);
 
-	function sendMissionToASM(filename) {
-	}
 
 	function handleChange(e) {
 		setSuccess(false)
@@ -26,14 +28,19 @@ export default function MissionUploadForm({ col }) {
 	async function handleSubmit(e) {
 		e.preventDefault()
 		setSuccess(false)
+		setError(false)
 		if (!file) {
 			setError("Select a mission file to upload")
 			return
 		}
-		setAwaitingMissionDataMessage(true)
-		let url = "https://" + window.location.host + '/todo'
+		setUploading(true)
+		let url = "http://127.0.0.1:5000/ingest"
 		const formData = new FormData();
 		formData.append('file', file);
+		formData.append('source',source)
+		if (userData?.currentUser?.id) {
+			formData.append('user_id',userData.currentUser.id)
+		}
 		// await uploadFileFetchAPI(url, formData)
 		uploadFileAjaxAPI(url, formData)
 	}
@@ -54,21 +61,21 @@ export default function MissionUploadForm({ col }) {
 	}
 
 	function completeHandler(event) {
+		setUploading(false)
 		if (event.srcElement.status === 200) {
 			const result = JSON.parse(event.srcElement.response)
 			if (result.error) {
-				setAwaitingMissionDataMessage(false)
 				setUploadProgress(0)
 				setError(result.error)
-			} else if (result.file) {
-				sendMissionToASM(result.file)
+			} else if (result.success) {
+				setSuccess(result.success)	
 			}
 		}
 	}
 
 	function abortHandler(event) {
 		setError("Error: Cannot reach upload server")
-		setAwaitingMissionDataMessage(false)
+		setUploading(false)
 		setUploadProgress(0)
 	}
 
@@ -78,7 +85,7 @@ export default function MissionUploadForm({ col }) {
 			const result = await resp.json()
 			console.log(result);
 			if (result.error) {
-				setAwaitingMissionDataMessage(false)
+				setUploading(false)
 				setError(result.error)
 				return
 			}
@@ -87,7 +94,7 @@ export default function MissionUploadForm({ col }) {
 			}
 		}
 		catch (error) {
-			setAwaitingMissionDataMessage(false)
+			setUploading(false)
 			if (error instanceof TypeError) {
 				setError("Error: Cannot reach upload server")
 			} else {
@@ -107,18 +114,14 @@ export default function MissionUploadForm({ col }) {
 						</label>
 						<div className="mt-1">
 							<input
-								type="text"
-								name="source"
-								className="block w-full rounded-md py-1 border-gray-300 shadow-sm focus:border-indigo-500 focus:ring-indigo-500 sm:text-sm"
+								type="text" name="source" className="form-control"
+								value={source}
+								onChange={(e)=>{setSource(e.target.value)}}
 							/>
 						</div>
 					</div>
 					<label htmlFor="filepath" className="flex items-center text font-medium text-gray-700">
 						JSON File
-						<div className="mx-1 flex items-center pointer-events-none">
-							{error && <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />}
-							{success && <CheckCircleIcon className="h-5 w-5 text-green-500" aria-hidden="true" />}
-						</div>
 					</label>
 					<div className={col ? "" : "flex items-center"}>
 						<div className="mt-1 mr-2 relative rounded-md shadow-sm">
@@ -127,16 +130,15 @@ export default function MissionUploadForm({ col }) {
 								type="file" onChange={handleChange} />
 						</div>
 						<button
-							className={classNames(col ? "mt-3 float-right mr-3" : "", "ml-auto inline-flex action-button")}
+							className="btn btn-primary float-right mt-2"
 							type="submit"
-							disabled={awaitingMissionDataMessage}
 						>
 							Upload Mission
 						</button>
 					</div>
 				</form>
 				<div className='min-h-[20px] mt-2 text-sm'>
-					{awaitingMissionDataMessage &&
+					{uploading && 
 						<div className={classNames(col ? "grid space-y-1" : 'flex items-center')}>
 							<p className='mx-2 border-r pr-1'>{uploadProgress < 100 ? "Uploading " + uploadProgress + "%" : "Verifying..."}</p>
 							<div className="mx-2 flex-auto bg-gray-300 h-2">
@@ -144,16 +146,14 @@ export default function MissionUploadForm({ col }) {
 							</div>
 						</div>
 					}
-					{success &&
-						<p onClick={() => { setShowModal(true) }} className="text-blue-600 underline cursor-pointer inline">
-							View
-						</p>
-					}
-					{error &&
-						<p className="text-red-600">
-							{error}
-						</p>
-					}
+						<div className="mx-1 flex items-center pointer-events-none">
+							{error && <ExclamationCircleIcon className="h-5 w-5 text-red-500" aria-hidden="true" />}
+							{success && <CheckCircleIcon className="h-5 w-5 text-green-500" aria-hidden="true" />}
+							<div className='grid place-items-center'>
+								{success && <p> {success}	</p> }
+								{error && <p className="text-red-600"> {error} </p> }
+							</div>
+						</div>
 				</div>
 			</div>
 		</>
