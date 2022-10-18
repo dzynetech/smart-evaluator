@@ -98,4 +98,4 @@ def bbox_to_geojson(bbox):
     return geojson
 
 if __name__ == "__main__":
-    app.run(port=4199)
+    app.run(host="0.0.0.0", port=4199)
