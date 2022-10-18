@@ -34,7 +34,7 @@ export default function MissionUploadForm({ col }) {
 			return
 		}
 		setUploading(true)
-		let url = "http://" + window.location.host + ":4199/ingest"
+		let url = "http://" + window.location.hostname + ":4199/ingest"
 		const formData = new FormData();
 		formData.append('file', file);
 		formData.append('source',source)
