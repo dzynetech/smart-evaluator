@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 from datetime import datetime
 import os
-import sys
 import json
+from time import time
 import uuid
 import psycopg2
 from flask import Flask, request
@@ -15,12 +15,19 @@ import_id = uuid.uuid4().hex[:16]
 app = Flask(__name__)
 CORS(app)
 
+while True:
+    try:
+        connection = psycopg2.connect(
+            user=os.getenv("DB_USER") or "postgres",
+            password=os.getenv("DB_PASSWORD") or "postgres",
+            host=os.getenv("DB_HOST") or "127.0.0.1", port="5432", database="smart")
+        cursor = connection.cursor()
+        break
+    except psycopg2.OperationalError:
+        print("Waiting for database to start up...")
+        time.sleep(1)
 
-connection = psycopg2.connect(
-    user=os.getenv("DB_USER") or "postgres",
-    password=os.getenv("DB_PASSWORD") or "postgres",
-    host=os.getenv("DB_HOST") or "127.0.0.1", port="5432", database="smart")
-cursor = connection.cursor()
+
 
 @app.route('/ingest', methods = ['POST','OPTIONS'])
 def upload_file():
