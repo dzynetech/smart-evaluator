@@ -1,0 +1,4 @@
+psycopg2
+geopandas
+flask
+flask-cors
