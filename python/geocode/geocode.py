@@ -7,7 +7,7 @@ import json
 import time
 import signal
 
-API_KEY = "d1310b9b9eb7d5916bbd6443d66d0be7e7d4034"
+API_KEY = os.getenv("GEOCODIO_API_KEY")
 geocode_rate = 100  # per hour (100 per hour is within free tier limit)
 connection = None
 

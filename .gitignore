@@ -1,6 +1,7 @@
 node_modules/
 .pyc
 secrets
+.env
 node/frontend/data/
 backup/
 frontend/react/build/
