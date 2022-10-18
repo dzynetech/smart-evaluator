@@ -20,9 +20,17 @@ services:
     depends_on:
       - postgres
    
-  python:
+  ingest:
     build:
-      context: ./python
+      context: ./python/ingest_server
+    env_file:
+      - secrets
+    depends_on:
+      - postgres
+
+  geocode:
+    build:
+      context: ./python/geocode
     env_file:
       - secrets
     depends_on:

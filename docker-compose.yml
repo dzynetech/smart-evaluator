@@ -30,17 +30,27 @@ services:
       - /usr/src/app/node_modules
       - ./data:/data
   
-  python:
+  ingest:
     build:
-      context: ./python
+      context: ./python/ingest_server
     environment:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: postgres
     depends_on:
       - postgres
-    volumes: 
-      - ./python:/app
+    ports:
+      - "4199:4199"
+
+  geocode:
+    build:
+      context: ./python/geocode
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+    depends_on:
+      - postgres
 
   react:
     build: 

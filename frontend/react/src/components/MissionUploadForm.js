@@ -35,6 +35,10 @@ export default function MissionUploadForm({ col }) {
 		}
 		setUploading(true)
 		let url ="/ingest" //"http://" + window.location.hostname + ":4199/ingest"
+		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
+			url = "http://localhost:4199/ingest"
+		}
+
 		const formData = new FormData();
 		formData.append('file', file);
 		formData.append('source',source)
