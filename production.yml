@@ -32,7 +32,8 @@ services:
     build: 
       context: ./frontend
     ports:
-      - "4180:443"
+      - "4180:80"
+     #- "4180:443"
     depends_on:
       - node 
     volumes:
@@ -66,7 +67,8 @@ services:
   goaccess:
     image: nginx
     ports:
-      - "4181:443"
+      # - "4181:443"
+      - "4181:80"
     volumes:
       - ./goaccess/html:/usr/share/nginx/html
       - ./goaccess/nginx/nginx.conf:/etc/nginx/conf.d/default.conf
