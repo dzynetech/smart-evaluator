@@ -6,7 +6,7 @@ import StatsFilter from "./StatsFilter";
 import SOURCES_QUERY from "../queries/SourcesQuery";
 import "./Stats.css";
 import { Source } from "../generated/graphql";
-import MissionUploadForm from "./MissionUploadForm";
+import IngestForm from "./IngestForm";
 
 export default function Ingest() {
   const [minSqft, setMinSqft] = useState(0);
@@ -21,7 +21,7 @@ export default function Ingest() {
     <>
       <h1 className="text-center">Data Ingest</h1>
       <div className="mx-auto max-w-xl">
-        <MissionUploadForm col={true} />
+        <IngestForm />
       </div>
     </>
   );
