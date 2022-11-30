@@ -2,15 +2,15 @@
 from datetime import datetime
 import os
 import json
-from time import time
+import time 
 import uuid
 import psycopg2
 from flask import Flask, request
 from flask_cors import CORS
+import requests 
 
 
 meters_to_sqft = 10.76391042
-import_id = uuid.uuid4().hex[:16]
 
 app = Flask(__name__)
 CORS(app)
@@ -40,19 +40,52 @@ def upload_file():
     except:
         user_id = None
     try:
-        count = ingest(f.stream,source,user_id)
+        data = json.load(f.stream)
+        count = ingest(data,source,user_id)
     except Exception as e:
         return json.dumps({'error': str(e) })
     return json.dumps({'success': f"Imported {count} permits." })
 		
 
+@app.route('/autoingest', methods = ['POST','OPTIONS'])
+def autoingest():
+    if request.method != 'POST':
+        return ""
 
-def ingest(f,source,user_id):
+    source = request.json['source']
+    user = request.json['username']
+    password = request.json['password']
+    url = request.json['url']
     try:
-        with f:
-            data = json.load(f)
-            sites = data['results']
+        user_id = request.json['user_id']
+    except:
+        user_id = None
+
+    # get json file from url
+    session = requests.Session()
+    session.auth = (user, password)
+    try:
+        response = session.get(url)
+        if response.status_code == 401:
+            return json.dumps({'error': 'Bad username or password'})
+    except:
+        return json.dumps({'error': 'Connection to URL failed.' })
+
+
+    # do actual ingest
+    try:
+        count = ingest(response.json(),source,user_id)
+    except Exception as e:
+        return json.dumps({'error': str(e) })
+    return json.dumps({'success': f"Imported {count} permits." })
+
+
+def ingest(data,source,user_id):
+    try:
+        import_id = uuid.uuid4().hex[:16]
         print("Import ID:",import_id)
+
+        sites = data['results']
 
         sql = f"INSERT INTO smart.sources(name) VALUES(%s) RETURNING id"
         cursor.execute(sql,(source,))

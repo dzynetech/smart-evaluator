@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { PlusIcon as PlusIconMini } from "@heroicons/react/solid";
 import QuittableModal from "./QuitableModal";
 import IngestForm from "./IngestForm";
+import Ingest from "./Ingest";
 
 interface Props {
   active: string;
@@ -108,7 +109,7 @@ function Nav(props: Props) {
       <QuittableModal open={showModal} setOpen={setShowModal}>
         <h3 className="text-center">Data Ingest</h3>
         <div className="mx-auto max-w-sm">
-          <IngestForm />
+          <Ingest/>
         </div>
       </QuittableModal>
     </>
