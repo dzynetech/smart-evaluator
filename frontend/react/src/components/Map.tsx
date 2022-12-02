@@ -8,8 +8,8 @@ import {
   MarkerObj,
 } from "../utils/LocationGrouping";
 import { createMapLayers } from "../utils/MapLayers";
-import useMap from "./dzyne_components/hooks/useMap";
-import "./dzyne_components/map/2d/HeatLayer/HeatLayer";
+import useMap from "./dzyne/useMap";
+import "./dzyne/HeatLayer";
 import "leaflet-fullscreen/dist/Leaflet.fullscreen";
 import "leaflet-fullscreen/dist/leaflet.fullscreen.css";
 import "leaflet/dist/leaflet.css";
