@@ -1,12 +1,12 @@
-import { useQuery } from '@apollo/client';
+import { useApolloClient, useQuery } from '@apollo/client';
 import { CheckCircleIcon } from '@heroicons/react/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/solid'
 import React, { useState } from 'react'
+import SOURCES_QUERY from '../queries/SourcesQuery';
 import USER_QUERY from '../queries/UserQuery';
 import { classNames } from '../utils/classNames';
 
 export default function IngestForm() {
-
 	const [uploading, setUploading] = useState(false)
 	const [error, setError] = useState("")
 	const [success, setSuccess] = useState(null)
@@ -14,6 +14,7 @@ export default function IngestForm() {
 	const [uploadProgress, setUploadProgress] = useState(0)
 	const [source, setSource] = useState("")
 
+	const client = useApolloClient()
 	const { data: userData } = useQuery(USER_QUERY);
 
 	function handleChange(e) {
@@ -69,6 +70,7 @@ export default function IngestForm() {
 				setError(result.error)
 			} else if (result.success) {
 				setSuccess(result.success)
+				client.refetchQueries({include:[SOURCES_QUERY]})
 			}
 		}
 	}

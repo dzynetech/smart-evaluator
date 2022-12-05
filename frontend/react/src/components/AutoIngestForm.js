@@ -1,7 +1,8 @@
-import { useQuery } from '@apollo/client';
+import { useApolloClient, useQuery } from '@apollo/client';
 import { CheckCircleIcon } from '@heroicons/react/solid'
 import { ExclamationCircleIcon } from '@heroicons/react/solid'
 import React, { useState } from 'react'
+import SOURCES_QUERY from '../queries/SourcesQuery';
 import USER_QUERY from '../queries/UserQuery';
 import { classNames } from '../utils/classNames';
 
@@ -15,6 +16,7 @@ export default function AutoIngestForm() {
 	const [username, setUsername] = useState("")
 	const [password, setPassword] = useState("")
 
+	const client = useApolloClient()
 	const { data: userData } = useQuery(USER_QUERY);
 
 	async function handleSubmit(e) {
@@ -48,6 +50,7 @@ export default function AutoIngestForm() {
 		}
 		finally {
 			setLoading(false)
+			client.refetchQueries({include:[SOURCES_QUERY]})
 		}
 	}
 
