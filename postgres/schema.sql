@@ -1217,3 +1217,7 @@ CREATE EVENT TRIGGER postgraphile_watch_drop ON sql_drop
 
 
 ALTER EVENT TRIGGER postgraphile_watch_drop OWNER TO "postgres";
+
+
+-- Add dummy user
+SELECT smart_private.register_user('smart', 'smart');
