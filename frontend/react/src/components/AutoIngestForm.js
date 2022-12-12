@@ -28,6 +28,7 @@ export default function AutoIngestForm() {
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 			autoingest_url = "http://localhost:4199/autoingest"
 		}
+		url = addLimit(url)
 		const data = { username, password, source, url: url }
 		if (userData?.currentUser?.id) {
 			data['user_id'] = userData.currentUser.id
@@ -52,6 +53,13 @@ export default function AutoIngestForm() {
 			setLoading(false)
 			client.refetchQueries({include:[SOURCES_QUERY]})
 		}
+	}
+
+	function addLimit(url_string) {
+		const url= new URL(url_string)
+		url.searchParams.set("limit",0)
+		debugger
+		return url.href
 	}
 
 	return (
