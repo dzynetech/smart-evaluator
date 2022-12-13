@@ -1,0 +1,111 @@
+[{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "site",
+        "region_id": "US_R001",
+        "site_id": "US_R001_0002",
+        "version": "2.0.3",
+        "mgrs": "17RMP",
+        "status": "system_confirmed",
+        "start_date": "1983-03-25",
+        "end_date": "1984-09-08",
+        "score": 0.75,
+        "model_content": "proposed",
+        "originator": "xyz"
+      },
+      "geometry": {
+        "type": "Polygon",
+        "coordinates": [
+          [
+            [80.7,0.7],[80.75,0.7],[80.75,0.75],[80.7,0.75],[80.7,0.7]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "observation",
+        "observation_date": "1983-03-25",
+        "sensor_name": "WorldView",
+        "source": "WorldviewFile-1980-03-25.NTF",
+        "current_phase": "Site Preparation, Site Preparation",
+        "score": 0.42,
+        "is_occluded": "False, False",
+        "is_site_boundary": "True, True",
+        "misc_info": {"Intermediate File":"s3://path/to/s3/file"}
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [80.7,0.7],[80.72,0.7],[80.72,0.72],[80.7,0.72],[80.7,0.7]
+            ]
+          ],
+          [
+            [
+              [80.73,0.73],[80.75,0.73],[80.75,0.75],[80.7,0.75],[80.73,0.73]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "observation",
+        "observation_date": "1983-10-30",
+        "sensor_name": "null",
+        "source": "null",
+        "current_phase": "Active Construction, Site Preparation",
+        "score": 0.58,
+        "is_occluded": "False, False",
+        "is_site_boundary": "True, False",
+        "misc_info": {"Change Map":"s3://path/to/change/map"}
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [80.7,0.7],[80.75,0.7],[80.75,0.75],[80.7,0.75],[80.7,0.7]
+            ]
+          ],
+          [
+            [
+              [80.73,0.73],[80.75,0.73],[80.75,0.75],[80.7,0.75],[80.73,0.73]
+            ]
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "properties": {
+        "type": "observation",
+        "observation_date": "1984-09-08",
+        "sensor_name": "Sentinel-2",
+        "source": "T17RMP_20150608T160359_TCI",
+        "current_phase": "Post Construction",
+        "score": 0.77,
+        "is_occluded": "False",
+        "is_site_boundary": "True"
+      },
+      "geometry": {
+        "type": "MultiPolygon",
+        "coordinates": [
+          [
+            [
+              [80.7,0.7],[80.75,0.7],[80.75,0.75],[80.7,0.75],[80.7,0.7]
+            ]
+          ]
+        ]
+      }
+    }
+  ]
+}
+]
