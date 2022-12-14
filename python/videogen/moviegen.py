@@ -2,7 +2,6 @@
 import os
 import sys
 import psycopg2
-import json
 import time
 import signal
 import math
@@ -26,16 +25,13 @@ def main():
     print("Starting moviegen routine")
     while True:
         try:
-            updated_permit = moviegen_permit()
-            connection.commit()
-            if (updated_permit == False):
-                # all permits have lat/lon, don't check for at least a minute
+            did_update_permit = moviegen_permit()
+            if not did_update_permit:
+                # all permits have movies or are maxed out for retries. Recheck in a minute
                 time.sleep(60)
         except Exception as e:
             print("EXCEPTION: ", e)
-            #TODO: remove exit 
-            exit(1)
-
+            time.sleep(3)
 
 def moviegen_permit():
     global connection
@@ -50,8 +46,6 @@ def moviegen_permit():
     print(f"Generating video for permit {id}: {name} ({lat},{lng})")
     bbox = permit_data['bbox']
     xmin, ymin, xmax, ymax = get_bounds(lat,lng,bbox)
-
-
 
     host = "https://resonantgeodata.dev"
     directory = "output"
@@ -78,7 +72,7 @@ def moviegen_permit():
         cursor.execute(sql, (video_name,id))
         connection.commit()
         cursor.close()
-
+    return True
 
 def offset(lon, lat, mx, my):
     earth = 6378.137  # radius of the earth in kilometer
