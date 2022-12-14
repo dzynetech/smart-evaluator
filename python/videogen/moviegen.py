@@ -1,0 +1,137 @@
+#!/usr/bin/env python3
+import os
+import sys
+import psycopg2
+import json
+import time
+import signal
+import math
+
+
+def main():
+    global connection
+    while True:
+        try:
+            connection = psycopg2.connect(
+                user=os.getenv("DB_USER") or "postgres",
+                password=os.getenv("DB_PASSWORD") or "postgres",
+                host=os.getenv("DB_HOST") or "127.0.0.1", port="5432", database="smart")
+            break
+
+        except Exception as e:
+            print(e)
+            # just wait for postgres to be ready
+            time.sleep(10)
+
+    print("Starting moviegen routine")
+    while True:
+        try:
+            updated_permit = moviegen_permit()
+            connection.commit()
+            if (updated_permit == False):
+                # all permits have lat/lon, don't check for at least a minute
+                time.sleep(60)
+        except Exception as e:
+            print("EXCEPTION: ", e)
+            #TODO: remove exit 
+            exit(1)
+
+
+def moviegen_permit():
+    global connection
+    cursor = connection.cursor()
+    # create source in db
+    sql = 'SELECT id,name, ST_X (ST_Transform (location, 4326)) AS long, ST_Y (ST_Transform (location, 4326)) AS lat, permit_data, moviegen_retry FROM smart.permits where moviegen is true AND moviegen_retry < 3 limit 1'
+    cursor.execute(sql)
+    result = cursor.fetchone()
+    if (result is None):
+        return False
+    id,name,lng,lat,permit_data, retry_count = result 
+    print(f"Generating video for permit {id}: {name} ({lat},{lng})")
+    bbox = permit_data['bbox']
+    xmin, ymin, xmax, ymax = get_bounds(lat,lng,bbox)
+
+
+
+    host = "https://resonantgeodata.dev"
+    directory = "output"
+
+    st = time.time()
+    cmd = "$HOME/.local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(xmin, ymin, xmax, ymax, host, directory, id)
+    print(cmd)
+    result = os.system(cmd)
+    # get the end time
+    et = time.time()
+    elapsed_time = et - st
+    print('Execution time:', elapsed_time, 'seconds')
+
+    if result != 0:
+        print(f"Failed to generate video for {id}. Setting retry to: {retry_count+1}")
+        sql = "UPDATE smart.permits SET moviegen_retry = moviegen_retry + 1 WHERE id=%s"
+        cursor.execute(sql, (id,))
+        connection.commit()
+        cursor.close()
+    else:
+        video_name = f"{id}.avif"
+        print(f"Generated video {video_name} for {id}.")
+        sql = "UPDATE smart.permits SET moviegen=false,image_url=%s WHERE id=%s"
+        cursor.execute(sql, (video_name,id))
+        connection.commit()
+        cursor.close()
+
+
+def offset(lon, lat, mx, my):
+    earth = 6378.137  # radius of the earth in kilometer
+    pi = math.pi
+    m = (1 / ((2 * pi / 360) * earth)) / 1000  # 1 meter in degree
+
+    new_latitude = lat + (my * m)
+    new_longitude = lon + (mx * m) / math.cos(lat * (pi / 180))
+    return [new_longitude, new_latitude]
+
+def get_bounds(lat,lon, bbox):
+    mx = 470
+    my = 275
+    coords = []
+    coords.append(offset(lon, lat, -mx, -my))
+    coords.append(offset(lon, lat, -mx, +my))
+    coords.append(offset(lon, lat, mx, +my))
+    coords.append(offset(lon, lat, mx, -my))
+    coords.append(offset(lon, lat, -mx, -my))
+
+    xmin = bbox["xmin"]
+    ymin = bbox["ymin"]
+    xmax = bbox["xmax"]
+    ymax = bbox["ymax"]
+    #print(xmin, ymin, xmax, ymax)
+
+    centerx = (xmin + xmax)/2
+    centery = (ymin + ymax)/2
+
+    width = xmax - xmin
+    height = ymax - ymin
+
+    width = width * 2
+    height = height * 2
+
+    if width > height:
+        width = width * 2.1
+        height = width * 0.5
+    else:            
+        height = height * 1.2
+        width = height / 0.5
+
+    xmin = centerx - width/2
+    ymin = centery - height/2
+    xmax = centerx + width/2
+    ymax = centery + height/2
+    return (xmin, ymin, xmax, ymax)
+
+def on_container_stop(*args):
+    connection.close()
+    sys.exit(0)
+
+
+signal.signal(signal.SIGTERM, on_container_stop)
+if __name__ == '__main__':
+    main()

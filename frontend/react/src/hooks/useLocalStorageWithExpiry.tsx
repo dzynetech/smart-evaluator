@@ -1,4 +1,3 @@
-import { networkInterfaces } from "os";
 import { useState } from "react";
 
 function useLocalStorageWithExpiry<T>(
