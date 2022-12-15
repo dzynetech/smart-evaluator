@@ -42,6 +42,16 @@ services:
     ports:
       - "4199:4199"
 
+  moviegen:
+    build:
+      context: ./python/moviegen
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+    depends_on:
+      - postgres
+
   geocode:
     build:
       context: ./python/geocode

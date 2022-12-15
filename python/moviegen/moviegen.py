@@ -26,8 +26,9 @@ def main():
         try:
             did_update_permit = moviegen_permit()
             if not did_update_permit:
-                # all permits have movies or are maxed out for retries. Recheck in a minute
-                time.sleep(60)
+                cooldown_s= 60
+                print(f"No permits to generate videos for. Will recheck in {cooldown_s} seconds.")
+                time.sleep(cooldown_s)
         except Exception as e:
             print("EXCEPTION: ", e)
             time.sleep(3)
@@ -69,7 +70,7 @@ def moviegen_permit():
         print(f"Generated video {video_name} for {id}.")
 
         print("Converting avif to mp4")
-        cmd = 'ffmpeg -y -i {}.avif -vf "scale=\'min(800,trunc(iw/2)*2)\':-2, setpts=200*PTS" {}.mp4'.format(id, id)
+        cmd = 'ffmpeg -y -i {}/{}.avif -vf "scale=\'min(800,trunc(iw/2)*2)\':-2, setpts=200*PTS" {}/{}.mp4'.format(directory, id, directory, id)
         print(cmd)
         os.system(cmd)
 
@@ -78,6 +79,7 @@ def moviegen_permit():
         cursor.execute(sql, (video_name,id))
         connection.commit()
         cursor.close()
+        print("Complete")
 
     return True
 
