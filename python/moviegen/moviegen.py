@@ -6,7 +6,6 @@ import time
 import signal
 import math
 
-
 def main():
     global connection
     while True:
@@ -68,10 +67,18 @@ def moviegen_permit():
     else:
         video_name = f"{id}.avif"
         print(f"Generated video {video_name} for {id}.")
+
+        print("Converting avif to mp4")
+        cmd = 'ffmpeg -y -i {}.avif -vf "scale=\'min(800,trunc(iw/2)*2)\':-2, setpts=200*PTS" {}.mp4'.format(id, id)
+        print(cmd)
+        os.system(cmd)
+
+        print("Updating Database")
         sql = "UPDATE smart.permits SET moviegen=false,image_url=%s WHERE id=%s"
         cursor.execute(sql, (video_name,id))
         connection.commit()
         cursor.close()
+
     return True
 
 def offset(lon, lat, mx, my):
