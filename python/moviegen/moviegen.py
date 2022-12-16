@@ -30,7 +30,7 @@ def main():
             did_update_permit = moviegen_permit()
             if not did_update_permit:
                 cooldown_s= 60
-                print(f"No permits to generate videos for. Will recheck in {cooldown_s} seconds.")
+                # print(f"No permits to generate videos for. Will recheck in {cooldown_s} seconds.")
                 time.sleep(cooldown_s)
         except Exception as e:
             print("EXCEPTION: ", e)
