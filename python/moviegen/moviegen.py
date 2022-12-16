@@ -61,7 +61,7 @@ def moviegen_permit():
             pass
     
     st = time.time()
-    cmd = "$HOME/.local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(xmin, ymin, xmax, ymax, host, directory, id)
+    cmd = "/usr/local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(xmin, ymin, xmax, ymax, host, directory, id)
     print(cmd)
     result = os.system(cmd)
     # get the end time
