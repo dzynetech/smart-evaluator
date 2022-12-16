@@ -60,22 +60,19 @@ def moviegen_permit():
         except FileExistsError:
             pass
     
-    st = time.time()
-    cmd = "/usr/local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(xmin, ymin, xmax, ymax, host, directory, id)
-    print(cmd)
-    result = os.system(cmd)
-    # get the end time
-    et = time.time()
-    elapsed_time = et - st
-    print('Execution time:', elapsed_time, 'seconds')
+    try:
+        st = time.time()
+        cmd = "/usr/local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(xmin, ymin, xmax, ymax, host, directory, id)
+        print(cmd)
+        result = os.system(cmd)
+        # get the end time
+        et = time.time()
+        elapsed_time = et - st
+        print('Execution time:', elapsed_time, 'seconds')
     
-    if result != 0:
-        print(f"Failed to generate video for {id}. Setting retry to: {retry_count+1}")
-        sql = "UPDATE smart.permits SET moviegen_retry = moviegen_retry + 1 WHERE id=%s"
-        cursor.execute(sql, (id,))
-        connection.commit()
-        cursor.close()
-    else:
+        if result != 0:
+            raise Exception("rdwatch gave non-zero exit code")
+
         video_name = f"{id}.mp4"
         print(f"Generated video for {id}.")
 
@@ -97,6 +94,14 @@ def moviegen_permit():
         connection.commit()
         cursor.close()
         print("Complete")
+
+    except Exception as e: 
+        print("EXCEPTION:",e)
+        print(f"Failed to generate video for {id}. Setting retry to: {retry_count+1}")
+        sql = "UPDATE smart.permits SET moviegen_retry = moviegen_retry + 1 WHERE id=%s"
+        cursor.execute(sql, (id,))
+        connection.commit()
+        cursor.close()
 
     return True
 
