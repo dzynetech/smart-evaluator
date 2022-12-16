@@ -5,6 +5,7 @@ import psycopg2
 import time
 import signal
 import math
+import json
 
 def main():
     global connection
@@ -21,6 +22,7 @@ def main():
             # just wait for postgres to be ready
             time.sleep(10)
 
+    login()
     print("Starting moviegen routine")
     while True:
         try:
@@ -129,6 +131,19 @@ def get_bounds(lat,lon, bbox):
     xmax = centerx + width/2
     ymax = centery + height/2
     return (xmin, ymin, xmax, ymax)
+
+def login():
+    login_data = {
+        'username': os.getenv("RDWATCH_USERNAME"),
+        'password': os.getenv("RDWATCH_PASSWORD")
+    }
+    try:
+        os.makedirs("/root/.config")
+    except FileExistsError:
+        pass
+    with open("/root/.config/rdwatch",'w') as f:
+        json.dump(login_data,f)
+
 
 def on_container_stop(*args):
     connection.close()

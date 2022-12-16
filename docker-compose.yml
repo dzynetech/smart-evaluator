@@ -49,6 +49,8 @@ services:
       DB_USER: postgres
       DB_PASSWORD: postgres
       DB_HOST: postgres
+      RDWATCH_USERNAME: $RDWATCH_USERNAME
+      RDWATCH_PASSWORD: $RDWATCH_PASSWORD
     depends_on:
       - postgres
 
