@@ -6,6 +6,7 @@ import time
 import signal
 import math
 import json
+import pathlib
 
 def main():
     global connection
@@ -39,19 +40,26 @@ def moviegen_permit():
     global connection
     cursor = connection.cursor()
     # create source in db
-    sql = 'SELECT id,name, ST_X (ST_Transform (location, 4326)) AS long, ST_Y (ST_Transform (location, 4326)) AS lat, permit_data, moviegen_retry FROM smart.permits where moviegen is true AND moviegen_retry < 3 limit 1'
+    sql = 'SELECT id,name, ST_X (ST_Transform (location, 4326)) AS long, ST_Y (ST_Transform (location, 4326)) AS lat, source_id, permit_data, moviegen_retry FROM smart.permits where moviegen is true AND moviegen_retry < 3 limit 1'
     cursor.execute(sql)
     result = cursor.fetchone()
     if (result is None):
         return False
-    id,name,lng,lat,permit_data, retry_count = result 
+    id,name,lng,lat,source_id,permit_data, retry_count = result 
     print(f"Generating video for permit {id}: {name} ({lat},{lng})")
     bbox = permit_data['bbox']
     xmin, ymin, xmax, ymax = get_bounds(lat,lng,bbox)
 
     host = "https://resonantgeodata.dev"
-    directory = "output"
 
+    directory = "output"
+    if os.path.exists("/data"):
+        directory = os.path.join("/data",f"moviegen_{source_id}")
+        try:
+            os.makedirs(directory)
+        except FileExistsError:
+            pass
+    
     st = time.time()
     cmd = "$HOME/.local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(xmin, ymin, xmax, ymax, host, directory, id)
     print(cmd)
@@ -60,7 +68,7 @@ def moviegen_permit():
     et = time.time()
     elapsed_time = et - st
     print('Execution time:', elapsed_time, 'seconds')
-
+    
     if result != 0:
         print(f"Failed to generate video for {id}. Setting retry to: {retry_count+1}")
         sql = "UPDATE smart.permits SET moviegen_retry = moviegen_retry + 1 WHERE id=%s"
@@ -68,13 +76,20 @@ def moviegen_permit():
         connection.commit()
         cursor.close()
     else:
-        video_name = f"{id}.avif"
-        print(f"Generated video {video_name} for {id}.")
+        video_name = f"{id}.mp4"
+        print(f"Generated video for {id}.")
 
         print("Converting avif to mp4")
         cmd = 'ffmpeg -y -i {}/{}.avif -vf "scale=\'min(800,trunc(iw/2)*2)\':-2, setpts=200*PTS" {}/{}.mp4'.format(directory, id, directory, id)
         print(cmd)
         os.system(cmd)
+
+        if directory != "output":
+            src = pathlib.PurePath(directory).name
+            src = os.path.join(src,video_name)
+            dest = os.path.join("/data",video_name)
+            print(f"Symlinking {src} to {dest}")
+            os.symlink(src,dest)
 
         print("Updating Database")
         sql = "UPDATE smart.permits SET moviegen=false,image_url=%s WHERE id=%s"
