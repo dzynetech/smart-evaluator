@@ -44,7 +44,7 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: frontend
-          file: Dockerfile.dev
+          file: frontend/Dockerfile.dev
           push: true
           tags: bjubes/smart-ui-dev:${{ github.ref_name }}
         timeout-minutes: 240
