@@ -23,35 +23,36 @@ jobs:
       - name: "Build Push Node"
         uses: docker/build-push-action@v3
         with:
-          file: node/Dockerfile
+          context: node
           push: true
           tags: bjubes/smart-node:${{ github.ref_name }}
         timeout-minutes: 240
       - name: "Build Push Ingest"
         uses: docker/build-push-action@v3
         with:
-          file: python/ingest_server/Dockerfile
+          context: python/ingest_server
           push: true
           tags: bjubes/smart-ingest:${{ github.ref_name }}
         timeout-minutes: 240
       - name: "Build Push Geocode"
         uses: docker/build-push-action@v3
         with:
-          file: python/geocode/Dockerfile
+          context: python/geocode
           push: true
           tags: bjubes/smart-geocode:${{ github.ref_name }}
         timeout-minutes: 240
       - name: "Build Push dev UI"
         uses: docker/build-push-action@v3
         with:
-          file: frontend/Dockerfile.dev
+          context: frontend
+          file: Dockerfile.dev
           push: true
           tags: bjubes/smart-ui-dev:${{ github.ref_name }}
         timeout-minutes: 240
-      - name: "Build Push UI"
+      - name: "Build Push prod UI"
         uses: docker/build-push-action@v3
         with:
-          file: frontend/Dockerfile
+          context: frontend
           push: true
           tags: bjubes/smart-ui:${{ github.ref_name }}
         timeout-minutes: 240
