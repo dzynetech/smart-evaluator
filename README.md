@@ -5,16 +5,17 @@ A Web based frontend that enables a user to evaluate the correctness of a source
 The evaluator runs as a series of docker containers. Use the start.sh and stop.sh script to orchestrate them accordingly.
 
 ### Secrets
-All secret env variables should be put in a `secrets` file in the root directory. This includes:
+In production, all secret env variables should be put in a `secrets` file in the root directory.
+For local dev and AWS deployments, all secret env variables should be put in `.env` file in the root directory. 
+The file should look like:
 ```
 DB_USER=
 DB_PASSWORD=
 DB_HOST=
-HTTP_USERNAME=
-HTTP_PASSWORD=
 JWT_SECRET=
 GEOCODIO_API_KEY=
 ```
+
 ### Create a new user:
 
 Run in psql:

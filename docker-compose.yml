@@ -3,8 +3,8 @@ services:
   postgres:
     image: postgis/postgis 
     environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: postgres
+      POSTGRES_USER: $DB_USER
+      POSTGRES_PASSWORD: $DB_PASSWORD
       POSTGRES_DB: smart
     ports: 
       - '5432:5432' 
@@ -16,11 +16,9 @@ services:
     build:
       context: ./node
     environment:
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: postgres
-      HTTP_USERNAME: admin
-      HTTP_PASSWORD: admin
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST 
     depends_on:
       - postgres
     ports:
@@ -34,9 +32,9 @@ services:
     build:
       context: ./python/ingest_server
     environment:
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: postgres
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST 
     depends_on:
       - postgres
     ports:
@@ -46,9 +44,9 @@ services:
     build:
       context: ./python/geocode
     environment:
-      DB_USER: postgres
-      DB_PASSWORD: postgres
-      DB_HOST: postgres
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST 
     depends_on:
       - postgres
 
