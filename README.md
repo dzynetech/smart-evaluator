@@ -7,9 +7,6 @@ The evaluator runs as a series of docker containers. Use the start.sh and stop.s
 ### Secrets
 All secret env variables should be put in a `secrets` file in the root directory. This includes:
 ```
-POSTGRES_USER=
-POSTGRES_PASSWORD=
-POSTGRES_DB=
 DB_USER=
 DB_PASSWORD=
 DB_HOST=
