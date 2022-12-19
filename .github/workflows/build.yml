@@ -1,9 +1,5 @@
 on:
   workflow_dispatch:
-  push:
-    branches:
-      - develop
-      - master
   pull_request:
 jobs:
   build:
