@@ -23,11 +23,11 @@ export default function Settings() {
           <input
             type="checkbox"
             className="w-8 h-8 custom-control-input"
-            id="customSwitches"
+            id="autoplay"
             checked={autoplayVideos}
             onChange={(e) => toggleAutoplayVideos()}
           />
-          <label className="custom-control-label" for="customSwitches"></label>
+          <label className="custom-control-label" htmlFor="autoplay"></label>
         </div>
       </Switch.Group>
     </>
