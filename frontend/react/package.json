@@ -24,7 +24,8 @@
     "simpleheat": "^0.4.0",
     "subscriptions-transport-ws": "^0.11.0",
     "typescript": "^4.4.4",
-    "web-vitals": "^1.1.2"
+    "web-vitals": "^1.1.2",
+    "zustand": "^4.1.5"
   },
   "scripts": {
     "start": "react-scripts start",
