@@ -48,6 +48,13 @@ jobs:
           push: ${{ env.PUSH }}
           tags: dzynetech/smart-ingest:${{ env.TAG }}
         timeout-minutes: 240
+      - name: "Build (and push) Moviegen"
+        uses: docker/build-push-action@v3
+        with:
+          context: python/moviegen
+          push: ${{ env.PUSH }}
+          tags: dzynetech/smart-moviegen:${{ env.TAG }}
+        timeout-minutes: 240
       - name: "Build (and push) Geocode"
         uses: docker/build-push-action@v3
         with:
