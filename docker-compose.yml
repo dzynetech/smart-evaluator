@@ -26,7 +26,7 @@ services:
     volumes: 
       - ./node:/usr/src/app
       - /usr/src/app/node_modules
-      - ./data:/data
+      - ./data:/data:z
   
   ingest:
     build:
@@ -39,6 +39,20 @@ services:
       - postgres
     ports:
       - "4199:4199"
+
+  moviegen:
+    build:
+      context: ./python/moviegen
+    environment:
+      DB_USER: postgres
+      DB_PASSWORD: postgres
+      DB_HOST: postgres
+      RDWATCH_USERNAME: $RDWATCH_USERNAME
+      RDWATCH_PASSWORD: $RDWATCH_PASSWORD
+    volumes: 
+      - ./data:/data:z
+    depends_on:
+      - postgres
 
   geocode:
     build:

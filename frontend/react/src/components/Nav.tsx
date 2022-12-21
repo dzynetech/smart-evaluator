@@ -6,6 +6,8 @@ import { PlusIcon as PlusIconMini } from "@heroicons/react/solid";
 import QuittableModal from "./QuitableModal";
 import IngestForm from "./IngestForm";
 import Ingest from "./Ingest";
+import Settings from "./Settings";
+
 
 interface Props {
   active: string;
@@ -18,6 +20,7 @@ function Nav(props: Props) {
   const { data, error } = useQuery(USER_QUERY);
 
   const [showModal, setShowModal] = useState(false)
+  const [showSettingsModal, setShowSettingsModal] = useState(false)
 
   // redirect on expired JWT
   useEffect(() => {
@@ -58,11 +61,19 @@ function Nav(props: Props) {
           </ul>
           {/* right menu  */}
           <ul className="navbar-nav">
+            {props.jwt && (
+              <button className="p-0 m-0 mr-3 btn btn-link text-gray-500"
+              onClick={()=>setShowSettingsModal(s=>!s)}>
+                <h4 className="p-0 m-0">
+                <i className="bi bi-gear-wide-connected w-16 h-16"></i>
+                </h4>
+              </button>
+            )}
             {props.jwt && data?.currentUser?.username && (
               <button
                 type="button"
                 className="mr-2 inline-flex items-center rounded-md border border-transparent px-3 py-2 text-sm font-medium leading-4 bg-white text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2"
-                onClick={()=>setShowModal(true)}
+                onClick={() => setShowModal(true)}
               >
                 <PlusIconMini
                   className="-ml-0.5 mr-2 h-4 w-4"
@@ -73,23 +84,22 @@ function Nav(props: Props) {
             )}
             {props.jwt && data && (
               <li className="nav-item">
-                <a className="nav-link non-interactive" href="#">
-                  Signed in as {data.currentUser.username}
-                </a>
+                  <span className="m-1 p-[6px] nav-link non-interactive">
+                    Signed in as {data.currentUser.username}
+                  </span>
               </li>
             )}
             {props.jwt && (
               <li className="nav-item">
-                <a
-                  className="nav-link"
-                  href="#"
+                <button
+                  className="btn btn-link nav-link"
                   onClick={() => {
                     props.setJwt(null);
                     history.push("/login");
                   }}
                 >
                   Log Out
-                </a>
+                </button>
               </li>
             )}
             {!props.jwt && (
@@ -109,7 +119,13 @@ function Nav(props: Props) {
       <QuittableModal open={showModal} setOpen={setShowModal}>
         <h3 className="text-center">Data Ingest</h3>
         <div className="mx-auto max-w-sm">
-          <Ingest/>
+          <Ingest />
+        </div>
+      </QuittableModal>
+      <QuittableModal open={showSettingsModal} setOpen={setShowSettingsModal}>
+        <h3 className="text-center">Settings</h3>
+        <div className="mx-auto max-w-sm">
+          <Settings />
         </div>
       </QuittableModal>
     </>

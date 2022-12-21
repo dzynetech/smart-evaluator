@@ -3,6 +3,7 @@ node_modules/
 secrets
 .env
 node/frontend/data/
+python/moviegen/output/
 backup/
 frontend/react/build/
 goaccess/nginx/htpasswd
