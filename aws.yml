@@ -11,7 +11,7 @@ services:
       - ./postgres:/docker-entrypoint-initdb.d
 
   node:
-    image: bjubes/smart-node:develop
+    image: dzynetech/smart-node:develop
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -21,7 +21,7 @@ services:
       - postgres
    
   ingest:
-    image: bjubes/smart-ingest:develop
+    image: dzynetech/smart-ingest:develop
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -30,7 +30,7 @@ services:
       - postgres
 
   geocode:
-    image: bjubes/smart-geocode:develop
+    image: dzynetech/smart-geocode:develop
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -40,7 +40,7 @@ services:
       - postgres
 
   nginx:
-    image: bjubes/smart-ui:develop
+    image: dzynetech/smart-ui:develop
     ports:
       - "80:80"
      #- "4180:443"
