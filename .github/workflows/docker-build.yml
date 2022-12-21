@@ -14,7 +14,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - name: Set Env Variables
       - run: |
           TAG=${{ env.TAG }}
           PUSH=true
