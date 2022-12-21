@@ -443,6 +443,8 @@ CREATE TABLE smart.permits (
     geocode_data text,
     location public.geometry(Point,4326),
     image_url character varying(255),
+    moviegen boolean NOT NULL DEFAULT true,
+    moviegen_retry integer NOT NULL DEFAULT 0,
     data jsonb,
     has_location boolean GENERATED ALWAYS AS ((location IS NOT NULL)) STORED,
     notes text NOT NULL,

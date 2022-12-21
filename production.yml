@@ -28,6 +28,16 @@ services:
     depends_on:
       - postgres
 
+  moviegen:
+    build:
+      context: ./python/moviegen
+    env_file:
+      - secrets
+    volumes: 
+      - ./data:/data:z
+    depends_on:
+      - postgres
+
   geocode:
     build:
       context: ./python/geocode

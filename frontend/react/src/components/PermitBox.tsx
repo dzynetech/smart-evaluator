@@ -27,7 +27,7 @@ function PermitBox(props: Props) {
   const autoplayVideo = useSettingsStore(s=>s.videoAutoplay)
 
   const image_dir = "/data/";
-  const mp4_filename = image_dir + props.permit.imageUrl + ".mp4";
+  const video_filename = image_dir + props.permit.imageUrl;
   const borderColor = borderColorMap[props.permit.classification];
   const backgroundColor = colorMap[props.permit.classification];
 
@@ -51,7 +51,7 @@ function PermitBox(props: Props) {
           <div className="permit-grid">
             <div className="video">
               <video ref={videoRef} autoPlay={autoplayVideo} loop muted controls width={512}>
-                <source src={mp4_filename} type="video/mp4" />
+                <source src={video_filename} type="video/mp4" />
                 Your browser does not support the video tag.
               </video>
             </div>
