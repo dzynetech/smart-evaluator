@@ -14,7 +14,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v2
-      - run: |
+      - name: Setup Environment Variables
+        run: |
           TAG=${{ env.TAG }}
           PUSH=true
           if [[ github.ref != 'refs/heads/master' && github.ref != 'refs/heads/develop' ]]; then
@@ -32,28 +33,28 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: "Build Push Node"
+      - name: "Build (and push) Node"
         uses: docker/build-push-action@v3
         with:
           context: node
           push: ${{ env.PUSH }}
           tags: dzynetech/smart-node:${{ env.TAG }}
         timeout-minutes: 240
-      - name: "Build Push Ingest"
+      - name: "Build (and push) Ingest"
         uses: docker/build-push-action@v3
         with:
           context: python/ingest_server
           push: ${{ env.PUSH }}
           tags: dzynetech/smart-ingest:${{ env.TAG }}
         timeout-minutes: 240
-      - name: "Build Push Geocode"
+      - name: "Build (and push) Geocode"
         uses: docker/build-push-action@v3
         with:
           context: python/geocode
           push: ${{ env.PUSH }}
           tags: dzynetech/smart-geocode:${{ env.TAG }}
         timeout-minutes: 240
-      - name: "Build Push dev UI"
+      - name: "Build (and push) dev UI"
         uses: docker/build-push-action@v3
         with:
           context: frontend
@@ -61,7 +62,7 @@ jobs:
           push: ${{ env.PUSH }}
           tags: dzynetech/smart-ui-dev:${{ env.TAG }}
         timeout-minutes: 240
-      - name: "Build Push prod UI"
+      - name: "Build (and push) prod UI"
         uses: docker/build-push-action@v3
         with:
           context: frontend
