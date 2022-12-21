@@ -1,5 +1,6 @@
-name: Publish Docker Images
+name: Build Docker Images
 on: 
+  pull_request:
   push:
     branches:
       - master
@@ -16,6 +17,7 @@ jobs:
       - uses: docker/setup-buildx-action@v2
       - name: Login to DockerHub
         uses: docker/login-action@v2
+        if: github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop'
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
@@ -23,35 +25,35 @@ jobs:
         uses: docker/build-push-action@v3
         with:
           context: node
-          push: true
-          tags: bjubes/smart-node:${{ github.ref_name }}
+          push: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+          tags: dzynetech/smart-node:${{ github.ref_name }}
         timeout-minutes: 240
       - name: "Build Push Ingest"
         uses: docker/build-push-action@v3
         with:
           context: python/ingest_server
-          push: true
-          tags: bjubes/smart-ingest:${{ github.ref_name }}
+          push: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+          tags: dzynetech/smart-ingest:${{ github.ref_name }}
         timeout-minutes: 240
       - name: "Build Push Geocode"
         uses: docker/build-push-action@v3
         with:
           context: python/geocode
-          push: true
-          tags: bjubes/smart-geocode:${{ github.ref_name }}
+          push: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+          tags: dzynetech/smart-geocode:${{ github.ref_name }}
         timeout-minutes: 240
       - name: "Build Push dev UI"
         uses: docker/build-push-action@v3
         with:
           context: frontend
           file: frontend/Dockerfile.dev
-          push: true
-          tags: bjubes/smart-ui-dev:${{ github.ref_name }}
+          push: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+          tags: dzynetech/smart-ui-dev:${{ github.ref_name }}
         timeout-minutes: 240
       - name: "Build Push prod UI"
         uses: docker/build-push-action@v3
         with:
           context: frontend
-          push: true
-          tags: bjubes/smart-ui:${{ github.ref_name }}
+          push: ${{ github.ref == 'refs/heads/master' || github.ref == 'refs/heads/develop' }}
+          tags: dzynetech/smart-ui:${{ github.ref_name }}
         timeout-minutes: 240
