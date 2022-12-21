@@ -7,13 +7,13 @@ on:
       - develop
 
 jobs:
-  build-push:
+  docker-build:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Setup Environment Variables
         run: |
           TAG=${{ github.ref_name }}
