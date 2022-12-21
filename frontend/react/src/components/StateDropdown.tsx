@@ -22,16 +22,15 @@ function StateDropdown(props: Props) {
 
   useEffect(() => {
     if (data) {
-      var states: string[] = [];
+      var states = new Set<string>()
       var permits: Permit[] = data.permits.nodes;
       var x = [...new Set(permits)];
       x.forEach((obj) => {
-        if (obj) {
-          states.push(obj.state!);
+        if (obj && obj.state) {
+          states.add(obj.state!);
         }
       });
-      states.sort();
-      setStates(states);
+      setStates([...states].sort())
     }
   }, [data]);
 

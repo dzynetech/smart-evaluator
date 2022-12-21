@@ -1,0 +1,72 @@
+name: Build Docker Images
+on: 
+  pull_request:
+  push:
+    branches:
+      - master
+      - develop
+
+jobs:
+  build-push:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Setup Environment Variables
+        run: |
+          TAG=${{ github.ref_name }}
+          PUSH=true
+          echo ${{ github.ref }}
+          if [[ ${{ github.ref }} != 'refs/heads/master' && ${{ github.ref }} != 'refs/heads/develop' ]]; then
+            PUSH=false
+            TAG=temp
+          fi
+          echo "PUSH: $PUSH"
+          echo "DOCKER TAG: $TAG"
+          echo "PUSH=$PUSH" >> $GITHUB_ENV
+          echo "TAG=$TAG" >> $GITHUB_ENV
+      - uses: docker/setup-buildx-action@v2
+      - name: Login to DockerHub
+        uses: docker/login-action@v2
+        if: env.PUSH == 'true'
+        with:
+          username: ${{ secrets.DOCKER_USERNAME }}
+          password: ${{ secrets.DOCKER_PASSWORD }}
+      - name: "Build (and push) Node"
+        uses: docker/build-push-action@v3
+        with:
+          context: node
+          push: ${{ env.PUSH }}
+          tags: dzynetech/smart-node:${{ env.TAG }}
+        timeout-minutes: 240
+      - name: "Build (and push) Ingest"
+        uses: docker/build-push-action@v3
+        with:
+          context: python/ingest_server
+          push: ${{ env.PUSH }}
+          tags: dzynetech/smart-ingest:${{ env.TAG }}
+        timeout-minutes: 240
+      - name: "Build (and push) Geocode"
+        uses: docker/build-push-action@v3
+        with:
+          context: python/geocode
+          push: ${{ env.PUSH }}
+          tags: dzynetech/smart-geocode:${{ env.TAG }}
+        timeout-minutes: 240
+      - name: "Build (and push) dev UI"
+        uses: docker/build-push-action@v3
+        with:
+          context: frontend
+          file: frontend/Dockerfile.dev
+          push: ${{ env.PUSH }}
+          tags: dzynetech/smart-ui-dev:${{ env.TAG }}
+        timeout-minutes: 240
+      - name: "Build (and push) prod UI"
+        uses: docker/build-push-action@v3
+        with:
+          context: frontend
+          push: ${{ env.PUSH }}
+          tags: dzynetech/smart-ui:${{ env.TAG }}
+        timeout-minutes: 240
