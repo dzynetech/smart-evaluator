@@ -29,6 +29,20 @@ services:
     depends_on:
       - postgres
 
+  moviegen:
+    build:
+      context: ./python/moviegen
+    environment:
+      - DB_USER
+      - DB_PASSWORD
+      - DB_HOST
+      - RDWATCH_USERNAME
+      - RDWATCH_PASSWORD
+    volumes: 
+      - ./data:/data:z
+    depends_on:
+      - postgres
+
   geocode:
     image: dzynetech/smart-geocode:develop
     environment:
@@ -47,7 +61,7 @@ services:
     depends_on:
       - node 
     volumes:
-      - ./data:/usr/share/nginx/html/data
+      - ./data:/usr/share/nginx/html/data:z
       - ./frontend/nginx/logs:/var/log/nginx
       - ./letsencrypt:/etc/letsencrypt/
 
