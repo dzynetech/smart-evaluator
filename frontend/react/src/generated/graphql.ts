@@ -394,19 +394,21 @@ export type Permit = Node & {
   issueDate?: Maybe<Scalars['Date']>;
   location?: Maybe<GeometryPoint>;
   locationAccuracy?: Maybe<Scalars['Float']>;
+  moviegen?: Maybe<Scalars['Boolean']>;
+  moviegenRetry?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
   notes: Scalars['String'];
   permitData?: Maybe<Scalars['JSON']>;
-  permitDataBackup?: Maybe<Scalars['String']>;
+  permitDataText?: Maybe<Scalars['String']>;
   /** Reads a single `Source` that is related to this `Permit`. */
   source?: Maybe<Source>;
   sourceId?: Maybe<Scalars['Int']>;
   sqft: Scalars['Float'];
   state?: Maybe<Scalars['String']>;
   street?: Maybe<Scalars['String']>;
-  streetNumber?: Maybe<Scalars['String']>;
+  streetNumber: Scalars['String'];
   updatedAt: Scalars['Datetime'];
   zip?: Maybe<Scalars['String']>;
 };
@@ -445,14 +447,18 @@ export type PermitCondition = {
   location?: Maybe<Scalars['GeoJSON']>;
   /** Checks for equality with the object’s `locationAccuracy` field. */
   locationAccuracy?: Maybe<Scalars['Float']>;
+  /** Checks for equality with the object’s `moviegen` field. */
+  moviegen?: Maybe<Scalars['Boolean']>;
+  /** Checks for equality with the object’s `moviegenRetry` field. */
+  moviegenRetry?: Maybe<Scalars['Int']>;
   /** Checks for equality with the object’s `name` field. */
   name?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `notes` field. */
   notes?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `permitData` field. */
   permitData?: Maybe<Scalars['JSON']>;
-  /** Checks for equality with the object’s `permitDataBackup` field. */
-  permitDataBackup?: Maybe<Scalars['String']>;
+  /** Checks for equality with the object’s `permitDataText` field. */
+  permitDataText?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `sourceId` field. */
   sourceId?: Maybe<Scalars['Int']>;
   /** Checks for equality with the object’s `sqft` field. */
@@ -501,6 +507,10 @@ export type PermitFilter = {
   issueDate?: Maybe<DateFilter>;
   /** Filter by the object’s `locationAccuracy` field. */
   locationAccuracy?: Maybe<FloatFilter>;
+  /** Filter by the object’s `moviegen` field. */
+  moviegen?: Maybe<BooleanFilter>;
+  /** Filter by the object’s `moviegenRetry` field. */
+  moviegenRetry?: Maybe<IntFilter>;
   /** Filter by the object’s `name` field. */
   name?: Maybe<StringFilter>;
   /** Negates the expression. */
@@ -511,8 +521,8 @@ export type PermitFilter = {
   or?: Maybe<Array<PermitFilter>>;
   /** Filter by the object’s `permitData` field. */
   permitData?: Maybe<JsonFilter>;
-  /** Filter by the object’s `permitDataBackup` field. */
-  permitDataBackup?: Maybe<StringFilter>;
+  /** Filter by the object’s `permitDataText` field. */
+  permitDataText?: Maybe<StringFilter>;
   /** Filter by the object’s `sourceId` field. */
   sourceId?: Maybe<IntFilter>;
   /** Filter by the object’s `sqft` field. */
@@ -547,10 +557,12 @@ export type PermitPatch = {
   issueDate?: Maybe<Scalars['Date']>;
   location?: Maybe<Scalars['GeoJSON']>;
   locationAccuracy?: Maybe<Scalars['Float']>;
+  moviegen?: Maybe<Scalars['Boolean']>;
+  moviegenRetry?: Maybe<Scalars['Int']>;
   name?: Maybe<Scalars['String']>;
   notes?: Maybe<Scalars['String']>;
   permitData?: Maybe<Scalars['JSON']>;
-  permitDataBackup?: Maybe<Scalars['String']>;
+  permitDataText?: Maybe<Scalars['String']>;
   sourceId?: Maybe<Scalars['Int']>;
   sqft?: Maybe<Scalars['Float']>;
   state?: Maybe<Scalars['String']>;
@@ -616,15 +628,19 @@ export enum PermitsOrderBy {
   LocationAccuracyDesc = 'LOCATION_ACCURACY_DESC',
   LocationAsc = 'LOCATION_ASC',
   LocationDesc = 'LOCATION_DESC',
+  MoviegenAsc = 'MOVIEGEN_ASC',
+  MoviegenDesc = 'MOVIEGEN_DESC',
+  MoviegenRetryAsc = 'MOVIEGEN_RETRY_ASC',
+  MoviegenRetryDesc = 'MOVIEGEN_RETRY_DESC',
   NameAsc = 'NAME_ASC',
   NameDesc = 'NAME_DESC',
   Natural = 'NATURAL',
   NotesAsc = 'NOTES_ASC',
   NotesDesc = 'NOTES_DESC',
   PermitDataAsc = 'PERMIT_DATA_ASC',
-  PermitDataBackupAsc = 'PERMIT_DATA_BACKUP_ASC',
-  PermitDataBackupDesc = 'PERMIT_DATA_BACKUP_DESC',
   PermitDataDesc = 'PERMIT_DATA_DESC',
+  PermitDataTextAsc = 'PERMIT_DATA_TEXT_ASC',
+  PermitDataTextDesc = 'PERMIT_DATA_TEXT_DESC',
   PrimaryKeyAsc = 'PRIMARY_KEY_ASC',
   PrimaryKeyDesc = 'PRIMARY_KEY_DESC',
   SourceIdAsc = 'SOURCE_ID_ASC',
@@ -647,6 +663,7 @@ export enum PermitsOrderBy {
 export type Query = Node & {
   __typename?: 'Query';
   currentUser?: Maybe<User>;
+  isAnnotator?: Maybe<Scalars['Boolean']>;
   /** Fetches an object given its globally unique `ID`. */
   node?: Maybe<Node>;
   /** The root query type must be a `Node` to work well with Relay 1 mutations. This just resolves to `query`. */
@@ -734,7 +751,6 @@ export type QuerySourcesArgs = {
 /** The datasource permits were imported from */
 export type Source = Node & {
   __typename?: 'Source';
-  description?: Maybe<Scalars['String']>;
   hasUrbanscapeVideos?: Maybe<Scalars['Boolean']>;
   id: Scalars['Int'];
   name: Scalars['String'];
@@ -759,8 +775,6 @@ export type SourcePermitsArgs = {
 
 /** A condition to be used against `Source` object types. All fields are tested for equality and combined with a logical ‘and.’ */
 export type SourceCondition = {
-  /** Checks for equality with the object’s `description` field. */
-  description?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `hasUrbanscapeVideos` field. */
   hasUrbanscapeVideos?: Maybe<Scalars['Boolean']>;
   /** Checks for equality with the object’s `id` field. */
@@ -773,8 +787,6 @@ export type SourceCondition = {
 export type SourceFilter = {
   /** Checks for all expressions in this list. */
   and?: Maybe<Array<SourceFilter>>;
-  /** Filter by the object’s `description` field. */
-  description?: Maybe<StringFilter>;
   /** Filter by the object’s `hasUrbanscapeVideos` field. */
   hasUrbanscapeVideos?: Maybe<BooleanFilter>;
   /** Filter by the object’s `id` field. */
@@ -811,8 +823,6 @@ export type SourcesEdge = {
 
 /** Methods to use when ordering `Source`. */
 export enum SourcesOrderBy {
-  DescriptionAsc = 'DESCRIPTION_ASC',
-  DescriptionDesc = 'DESCRIPTION_DESC',
   HasUrbanscapeVideosAsc = 'HAS_URBANSCAPE_VIDEOS_ASC',
   HasUrbanscapeVideosDesc = 'HAS_URBANSCAPE_VIDEOS_DESC',
   IdAsc = 'ID_ASC',
