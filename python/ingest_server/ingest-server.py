@@ -2,6 +2,8 @@
 from datetime import datetime
 import os
 import json
+import signal
+import sys
 import time 
 import uuid
 import psycopg2
@@ -12,6 +14,7 @@ import requests
 
 meters_to_sqft = 10.76391042
 
+connection = None
 app = Flask(__name__)
 CORS(app)
 
@@ -21,7 +24,6 @@ while True:
             user=os.getenv("DB_USER") or "postgres",
             password=os.getenv("DB_PASSWORD") or "postgres",
             host=os.getenv("DB_HOST") or "127.0.0.1", port="5432", database="smart")
-        cursor = connection.cursor()
         break
     except psycopg2.OperationalError:
         print("Waiting for database to start up...")
@@ -82,6 +84,7 @@ def autoingest():
 
 def ingest(data,source,user_id):
     try:
+        cursor = connection.cursor()
         import_id = uuid.uuid4().hex[:16]
         print("Import ID:",import_id)
 
@@ -124,6 +127,8 @@ def ingest(data,source,user_id):
     except psycopg2.DatabaseError as e:
         cursor.execute("ROLLBACK")
         raise e
+    finally:
+        cursor.close()
 
 def is_site(x):
     try:
@@ -134,6 +139,7 @@ def is_site(x):
 def new_ingest(data,import_id,source,user_id):
     try:
         print("Failing over to new ingest")
+        cursor = connection.cursor()
 
         sql = f"INSERT INTO smart.sources(name) VALUES(%s) RETURNING id"
         cursor.execute(sql,(source,))
@@ -173,11 +179,11 @@ def new_ingest(data,import_id,source,user_id):
             cursor.execute(sql, (id,))
 
         connection.commit()
-        # cursor.close()
-        # connection.close()
+        cursor.close()
         return len(data)
     except psycopg2.DatabaseError as e:
         cursor.execute("ROLLBACK")
+        cursor.close()
         raise e
 
 def bbox_to_geojson(bbox):
@@ -195,5 +201,18 @@ def bbox_to_geojson(bbox):
     geojson['coordinates'] = [[bounds]]
     return geojson
 
-if __name__ == "__main__":
+
+def on_container_stop(*args):
+    print("Stopping...")
+    if cursor is not None:
+        print("curosr close")
+        cursor.close()
+    if connection is not None:
+        print("con colse")
+        connection.close()
+    sys.exit(0)
+
+
+signal.signal(signal.SIGTERM, on_container_stop)
+if __name__ == '__main__':
     app.run(host="0.0.0.0", port=4199)
