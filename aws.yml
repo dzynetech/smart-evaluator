@@ -10,8 +10,8 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./postgres:/docker-entrypoint-initdb.d
 
-  node:
-    image: dzynetech/smart-node:$TAG
+  postgraphile:
+    image: dzynetech/smart-postgrahile:$TAG
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -58,7 +58,7 @@ services:
     ports:
       - "$UI_PORT:80"
     depends_on:
-      - node 
+      - postgraphile
     volumes:
       - ./data:/usr/share/nginx/html/data:z
       - ./frontend/nginx/logs:/var/log/nginx

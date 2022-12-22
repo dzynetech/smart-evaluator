@@ -12,9 +12,9 @@ services:
       - pgdata:/var/lib/postgresql/data
       - ./postgres:/docker-entrypoint-initdb.d
 
-  node:
+  postgraphile:
     build:
-      context: ./node
+      context: ./postgraphile
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -24,7 +24,7 @@ services:
     ports:
       - '3000:3000'
     volumes: 
-      - ./node:/usr/src/app
+      - ./postgraphile:/usr/src/app
       - /usr/src/app/node_modules
       - ./data:/data:z
   
@@ -71,7 +71,7 @@ services:
     ports:
       - "8000:3000"
     depends_on:
-      - node
+      - postgraphile 
     environment:
       REACT_APP_GRAPHQL_URL: http://localhost:3000/graphql
     volumes:
