@@ -11,7 +11,7 @@ services:
       - ./postgres:/docker-entrypoint-initdb.d
 
   node:
-    image: dzynetech/smart-node:develop
+    image: dzynetech/smart-node:$TAG
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -21,7 +21,7 @@ services:
       - postgres
    
   ingest:
-    image: dzynetech/smart-ingest:develop
+    image: dzynetech/smart-ingest:$TAG
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -31,7 +31,7 @@ services:
 
   moviegen:
     build:
-      context: ./python/moviegen
+    image: dzynetech/smart-moviegen:$TAG
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -44,7 +44,7 @@ services:
       - postgres
 
   geocode:
-    image: dzynetech/smart-geocode:develop
+    image: dzynetech/smart-geocode:$TAG
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -54,10 +54,9 @@ services:
       - postgres
 
   nginx:
-    image: dzynetech/smart-ui:develop
+    image: dzynetech/smart-ui:$TAG
     ports:
-      - "80:80"
-     #- "4180:443"
+      - "$UI_PORT:80"
     depends_on:
       - node 
     volumes:
@@ -73,8 +72,6 @@ services:
       - ./backup:/backups
     links:
       - postgres:postgres
-    ports:
-      - '4186:8081'
     depends_on:
       - postgres 
     environment:
@@ -84,7 +81,7 @@ services:
       - BACKUP_KEEP_DAYS=7
       - BACKUP_KEEP_WEEKS=12
       - BACKUP_KEEP_MONTHS=6
-      - HEALTHCHECK_PORT=8081
+      - HEALTHCHECK_PORT=80
 
 volumes:
   pgdata:
