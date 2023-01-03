@@ -28,7 +28,7 @@ export default function AutoIngestForm() {
 		if (!process.env.NODE_ENV || process.env.NODE_ENV === 'development') {
 			autoingest_url = "http://localhost:4199/autoingest"
 		}
-		url = addLimit(url)
+		setUrl(addLimit(url))
 		const data = { username, password, source, url: url }
 		if (userData?.currentUser?.id) {
 			data['user_id'] = userData.currentUser.id
@@ -56,10 +56,13 @@ export default function AutoIngestForm() {
 	}
 
 	function addLimit(url_string) {
-		const url= new URL(url_string)
-		url.searchParams.set("limit",0)
-		debugger
-		return url.href
+		try {
+			const url = new URL(url_string)
+			url.searchParams.set("limit", 0)
+			return url.href
+		} catch {
+			return url_string
+		}
 	}
 
 	return (
@@ -128,8 +131,8 @@ export default function AutoIngestForm() {
 						{error && <ExclamationCircleIcon className="h-6 w-6 text-red-500" aria-hidden="true" />}
 						{success && <CheckCircleIcon className="h-6 w-6 text-green-500" aria-hidden="true" />}
 						<div className='mx-1 grid place-items-center'>
-							{loading && <div class="flex justify-center items-center">
-								<div class="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
+							{loading && <div className="flex justify-center items-center">
+								<div className="spinner-border animate-spin inline-block w-8 h-8 border-4 rounded-full" role="status">
 								</div>
 							</div>
 							}

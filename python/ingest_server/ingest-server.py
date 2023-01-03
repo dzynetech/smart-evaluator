@@ -141,6 +141,7 @@ def new_ingest(data,import_id,source,user_id):
         print("Failing over to new ingest")
         cursor = connection.cursor()
 
+
         sql = f"INSERT INTO smart.sources(name) VALUES(%s) RETURNING id"
         cursor.execute(sql,(source,))
         source_id = cursor.fetchone()[0]
@@ -150,37 +151,37 @@ def new_ingest(data,import_id,source,user_id):
             sql = f"INSERT INTO smart_private.users_sources (user_id,source_id) VALUES(%s,%s)"
             cursor.execute(sql,(user_id,source_id))
 
-        for feature_site in data:
-            features = feature_site['features']
-            site = None
-            for f in features:
-                if is_site(f):
-                    site = f
-                    break
+        features = data['features']
+        site = None
+        for f in features:
+            if is_site(f):
+                site = f
+                break
 
-            try:
-                site_id = site['properties']['site_id']
-            except:
-                site_id = "???"
-            permit_data = json.dumps(site)
-            area = 0
-            cost = 0
-            issue_date = site['properties']['start_date']
-            geojson = json.dumps(site['geometry'])
-            image_url ='test'
+        try:
+            site_id = site['properties']['site_id']
+        except:
+            site_id = "???"
+        permit_data = json.dumps(site['properties'])
+        area = 0
+        cost = 0
+        issue_date = site['properties']['start_date']
+        geojson = json.dumps(site['geometry'])
+        image_url ='test'
 
-            sql = "INSERT INTO smart.permits (bounds,permit_data,source_id,import_id,image_url,issue_date,cost,sqft,city,state,street,street_number,zip,name,notes) "
-            sql += "VALUES (ST_Multi(ST_GeomFromGeoJSON(%s)),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id;"
-            cursor.execute(sql, (geojson, permit_data,
-                        source_id, import_id, image_url, issue_date,cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
-            id = cursor.fetchone()[0]
-            print(id)
-            sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s"
-            cursor.execute(sql, (id,))
+        sql = "INSERT INTO smart.permits (bounds,permit_data,source_id,import_id,image_url,issue_date,cost,sqft,city,state,street,street_number,zip,name,notes) "
+        sql += "VALUES (ST_Multi(ST_GeomFromGeoJSON(%s)),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id;"
+        cursor.execute(sql, (geojson, permit_data,
+                    source_id, import_id, image_url, issue_date,cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
+        id = cursor.fetchone()[0]
+        print(id)
+        sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s"
+        cursor.execute(sql, (id,))
 
         connection.commit()
         cursor.close()
-        return len(data)
+        return 1 #len(data)
+
     except psycopg2.DatabaseError as e:
         cursor.execute("ROLLBACK")
         cursor.close()
