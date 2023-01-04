@@ -30,6 +30,21 @@ while True:
         time.sleep(1)
 
 
+@app.route('/bulk-ingest', methods = ['POST','OPTIONS'])
+def upload_bulk():
+    if request.method != 'POST':
+        return ""
+    source = request.form['source']
+    files = request.files.getlist("files")
+    try:
+        user_id = request.form['user_id']
+    except:
+        user_id = None
+    try:
+        count = bulk_ingest(files, source, user_id)
+    except Exception as e:
+        return json.dumps({'error': str(e) })
+    return json.dumps({'success': f"Imported {count} permits." })
 
 @app.route('/ingest', methods = ['POST','OPTIONS'])
 def upload_file():
@@ -186,6 +201,60 @@ def new_ingest(data,import_id,source,user_id):
         cursor.execute("ROLLBACK")
         cursor.close()
         raise e
+
+def bulk_ingest(files,source,user_id):
+    try:
+        import_id = uuid.uuid4().hex[:16]
+        print("Import ID:",import_id)
+        cursor = connection.cursor()
+
+        sql = f"INSERT INTO smart.sources(name) VALUES(%s) RETURNING id"
+        cursor.execute(sql,(source,))
+        source_id = cursor.fetchone()[0]
+
+        if user_id is not None:
+            # give this user access to that source
+            sql = f"INSERT INTO smart_private.users_sources (user_id,source_id) VALUES(%s,%s)"
+            cursor.execute(sql,(user_id,source_id))
+
+        for f in files:
+            data = json.load(f.stream)
+            features = data['features']
+            site = None
+            for f in features:
+                if is_site(f):
+                    site = f
+                    break
+
+            try:
+                site_id = site['properties']['site_id']
+            except:
+                site_id = "???"
+            permit_data = json.dumps(site['properties'])
+            area = 0
+            cost = 0
+            issue_date = site['properties']['start_date']
+            geojson = json.dumps(site['geometry'])
+            image_url ='test'
+
+            sql = "INSERT INTO smart.permits (bounds,permit_data,source_id,import_id,image_url,issue_date,cost,sqft,city,state,street,street_number,zip,name,notes) "
+            sql += "VALUES (ST_Multi(ST_GeomFromGeoJSON(%s)),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id;"
+            cursor.execute(sql, (geojson, permit_data,
+                        source_id, import_id, image_url, issue_date,cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
+            id = cursor.fetchone()[0]
+            print(id)
+            sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s"
+            cursor.execute(sql, (id,))
+
+        connection.commit()
+        cursor.close()
+        return len(files)
+
+    except psycopg2.DatabaseError as e:
+        cursor.execute("ROLLBACK")
+        cursor.close()
+        raise e
+
 
 def bbox_to_geojson(bbox):
     geojson = {
