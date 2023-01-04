@@ -8,6 +8,7 @@ import math
 import json
 import pathlib
 
+
 def main():
     global connection
     while True:
@@ -29,12 +30,13 @@ def main():
         try:
             did_update_permit = moviegen_permit()
             if not did_update_permit:
-                cooldown_s= 60
+                cooldown_s = 60
                 # print(f"No permits to generate videos for. Will recheck in {cooldown_s} seconds.")
                 time.sleep(cooldown_s)
         except Exception as e:
             print("EXCEPTION: ", e)
             time.sleep(3)
+
 
 def moviegen_permit():
     global connection
@@ -45,31 +47,49 @@ def moviegen_permit():
     result = cursor.fetchone()
     if (result is None):
         return False
-    id,name,lng,lat,source_id,permit_data, retry_count = result 
+    id, name, lng, lat, source_id, permit_data, retry_count = result
     print(f"Generating video for permit {id}: {name} ({lat},{lng})")
-    bbox = permit_data['bbox']
-    xmin, ymin, xmax, ymax = get_bounds(lat,lng,bbox)
+    try:
+        bbox = permit_data['bbox']
+        print("using bbox from permit data")
+    except KeyError:
+        sql = 'SELECT  ST_AsGeoJSON(ST_Envelope(bounds)) from smart.permits where id=%s'
+        cursor.execute(sql, (id,))
+        bound_json = cursor.fetchone()[0]
+        bound = json.loads(bound_json)
+        xmin = bound['coordinates'][0][0][0]
+        ymin = bound['coordinates'][0][0][1]
+        xmax = bound['coordinates'][0][2][0]
+        ymax = bound['coordinates'][0][1][1]
+        bbox = {
+            "xmin": xmin,
+            "ymin": ymin,
+            "xmax": xmax,
+            "ymax": ymax,
+        }
+        xmin, ymin, xmax, ymax = get_bounds(lat, lng, bbox)
 
     host = "https://resonantgeodata.dev"
 
     directory = "output"
     if os.path.exists("/data"):
-        directory = os.path.join("/data",f"moviegen_{source_id}")
+        directory = os.path.join("/data", f"moviegen_{source_id}")
         try:
             os.makedirs(directory)
         except FileExistsError:
             pass
-    
+
     try:
         st = time.time()
-        cmd = "/usr/local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(xmin, ymin, xmax, ymax, host, directory, id)
+        cmd = "/usr/local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(
+            xmin, ymin, xmax, ymax, host, directory, id)
         print(cmd)
         result = os.system(cmd)
         # get the end time
         et = time.time()
         elapsed_time = et - st
         print('Execution time:', elapsed_time, 'seconds')
-    
+
         if result != 0:
             raise Exception("rdwatch gave non-zero exit code")
 
@@ -77,26 +97,27 @@ def moviegen_permit():
         print(f"Generated video for {id}.")
 
         print("Converting avif to mp4")
-        cmd = 'ffmpeg -y -i {}/{}.avif -vf "scale=\'min(800,trunc(iw/2)*2)\':-2, setpts=200*PTS" {}/{}.mp4'.format(directory, id, directory, id)
+        cmd = 'ffmpeg -y -i {}/{}.avif -vf "scale=\'min(800,trunc(iw/2)*2)\':-2, setpts=200*PTS" {}/{}.mp4'.format(
+            directory, id, directory, id)
         print(cmd)
         os.system(cmd)
 
         if directory != "output":
             src = pathlib.PurePath(directory).name
-            src = os.path.join(src,video_name)
-            dest = os.path.join("/data",video_name)
+            src = os.path.join(src, video_name)
+            dest = os.path.join("/data", video_name)
             print(f"Symlinking {src} to {dest}")
-            os.symlink(src,dest)
+            os.symlink(src, dest)
 
         print("Updating Database")
         sql = "UPDATE smart.permits SET moviegen=false,image_url=%s WHERE id=%s"
-        cursor.execute(sql, (video_name,id))
+        cursor.execute(sql, (video_name, id))
         connection.commit()
         cursor.close()
         print("Complete")
 
-    except Exception as e: 
-        print("EXCEPTION:",e)
+    except Exception as e:
+        print("EXCEPTION:", e)
         print(f"Failed to generate video for {id}. Setting retry to: {retry_count+1}")
         sql = "UPDATE smart.permits SET moviegen_retry = moviegen_retry + 1 WHERE id=%s"
         cursor.execute(sql, (id,))
@@ -104,6 +125,7 @@ def moviegen_permit():
         cursor.close()
 
     return True
+
 
 def offset(lon, lat, mx, my):
     earth = 6378.137  # radius of the earth in kilometer
@@ -114,7 +136,8 @@ def offset(lon, lat, mx, my):
     new_longitude = lon + (mx * m) / math.cos(lat * (pi / 180))
     return [new_longitude, new_latitude]
 
-def get_bounds(lat,lon, bbox):
+
+def get_bounds(lat, lon, bbox):
     mx = 470
     my = 275
     coords = []
@@ -142,7 +165,7 @@ def get_bounds(lat,lon, bbox):
     if width > height:
         width = width * 2.1
         height = width * 0.5
-    else:            
+    else:
         height = height * 1.2
         width = height / 0.5
 
@@ -152,17 +175,19 @@ def get_bounds(lat,lon, bbox):
     ymax = centery + height/2
     return (xmin, ymin, xmax, ymax)
 
+
 def login():
+    home = str(pathlib.Path.home())
     login_data = {
         'username': os.getenv("RDWATCH_USERNAME"),
         'password': os.getenv("RDWATCH_PASSWORD")
     }
     try:
-        os.makedirs("/root/.config")
+        os.makedirs(f"{home}/.config")
     except FileExistsError:
         pass
-    with open("/root/.config/rdwatch",'w') as f:
-        json.dump(login_data,f)
+    with open(f"{home}/.config/rdwatch", 'w') as f:
+        json.dump(login_data, f)
 
 
 def on_container_stop(*args):
