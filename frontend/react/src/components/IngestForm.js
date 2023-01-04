@@ -117,7 +117,7 @@ export default function IngestForm() {
 				<div className='min-h-[20px] mt-2 text-sm'>
 					{uploading &&
 						<div className="grid space-y-1">
-							<p className='mx-2 border-r pr-1'>{uploadProgress < 100 ? "Uploading " + uploadProgress + "%" : "Verifying..."}</p>
+							<p className='mx-2 border-r pr-1'>{uploadProgress < 100 ? "Uploading " + uploadProgress + "%" : "Processing..."}</p>
 							<div className="mx-2 flex-auto bg-gray-300 h-2">
 								<div className="bg-blue-600 h-2" style={{ width: `${uploadProgress}%` }}></div>
 							</div>
