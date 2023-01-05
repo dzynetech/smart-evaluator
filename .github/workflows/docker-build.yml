@@ -34,12 +34,12 @@ jobs:
         with:
           username: ${{ secrets.DOCKER_USERNAME }}
           password: ${{ secrets.DOCKER_PASSWORD }}
-      - name: "Build (and push) Node"
+      - name: "Build (and push) Postgraphile"
         uses: docker/build-push-action@v3
         with:
-          context: node
+          context: postgraphile
           push: ${{ env.PUSH }}
-          tags: dzynetech/smart-node:${{ env.TAG }}
+          tags: dzynetech/smart-postgraphile:${{ env.TAG }}
         timeout-minutes: 240
       - name: "Build (and push) Ingest"
         uses: docker/build-push-action@v3
