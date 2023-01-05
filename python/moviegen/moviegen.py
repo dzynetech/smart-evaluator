@@ -50,36 +50,36 @@ def moviegen_permit():
     id, name, lng, lat, source_id, permit_data, retry_count = result
     print(f"Generating video for permit {id}: {name} ({lat},{lng})")
     try:
-        bbox = permit_data['bbox']
-        print("using bbox from permit data")
-    except KeyError:
-        sql = 'SELECT  ST_AsGeoJSON(ST_Envelope(bounds)) from smart.permits where id=%s'
-        cursor.execute(sql, (id,))
-        bound_json = cursor.fetchone()[0]
-        bound = json.loads(bound_json)
-        xmin = bound['coordinates'][0][0][0]
-        ymin = bound['coordinates'][0][0][1]
-        xmax = bound['coordinates'][0][2][0]
-        ymax = bound['coordinates'][0][1][1]
-        bbox = {
-            "xmin": xmin,
-            "ymin": ymin,
-            "xmax": xmax,
-            "ymax": ymax,
-        }
-        xmin, ymin, xmax, ymax = get_bounds(lat, lng, bbox)
-
-    host = "https://resonantgeodata.dev"
-
-    directory = "output"
-    if os.path.exists("/data"):
-        directory = os.path.join("/data", f"moviegen_{source_id}")
         try:
-            os.makedirs(directory)
-        except FileExistsError:
-            pass
+            bbox = permit_data['bbox']
+            print("using bbox from permit data")
+        except KeyError:
+            sql = 'SELECT  ST_AsGeoJSON(ST_Envelope(bounds)) from smart.permits where id=%s'
+            cursor.execute(sql, (id,))
+            bound_json = cursor.fetchone()[0]
+            bound = json.loads(bound_json)
+            xmin = bound['coordinates'][0][0][0]
+            ymin = bound['coordinates'][0][0][1]
+            xmax = bound['coordinates'][0][2][0]
+            ymax = bound['coordinates'][0][1][1]
+            bbox = {
+                "xmin": xmin,
+                "ymin": ymin,
+                "xmax": xmax,
+                "ymax": ymax,
+            }
+            xmin, ymin, xmax, ymax = get_bounds(lat, lng, bbox)
 
-    try:
+        host = "https://resonantgeodata.dev"
+
+        directory = "output"
+        if os.path.exists("/data"):
+            directory = os.path.join("/data", f"moviegen_{source_id}")
+            try:
+                os.makedirs(directory)
+            except FileExistsError:
+                pass
+
         st = time.time()
         cmd = "/usr/local/bin/rdwatch movie --bbox {} {} {} {} --host  {} --start-time 2014-01-01 --end-time 2022-12-01 --worldview --output {}/{}.avif".format(
             xmin, ymin, xmax, ymax, host, directory, id)
