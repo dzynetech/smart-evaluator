@@ -50,25 +50,17 @@ def moviegen_permit():
     id, name, lng, lat, source_id, permit_data, retry_count = result
     print(f"Generating video for permit {id}: {name} ({lat},{lng})")
     try:
-        try:
-            bbox = permit_data['bbox']
-            print("using bbox from permit data")
-        except KeyError:
-            sql = 'SELECT  ST_AsGeoJSON(ST_Envelope(bounds)) from smart.permits where id=%s'
-            cursor.execute(sql, (id,))
-            bound_json = cursor.fetchone()[0]
-            bound = json.loads(bound_json)
-            xmin = bound['coordinates'][0][0][0]
-            ymin = bound['coordinates'][0][0][1]
-            xmax = bound['coordinates'][0][2][0]
-            ymax = bound['coordinates'][0][1][1]
-            bbox = {
-                "xmin": xmin,
-                "ymin": ymin,
-                "xmax": xmax,
-                "ymax": ymax,
-            }
-            xmin, ymin, xmax, ymax = get_bounds(lat, lng, bbox)
+        sql = 'SELECT  ST_AsGeoJSON(ST_Envelope(bounds)) from smart.permits where id=%s'
+        cursor.execute(sql, (id,))
+        bound_json = cursor.fetchone()[0]
+        bound = json.loads(bound_json)
+        bbox = {
+            "xmin": bound['coordinates'][0][0][0],
+            "ymin": bound['coordinates'][0][0][1],
+            "xmax": bound['coordinates'][0][2][0],
+            "ymax": bound['coordinates'][0][1][1],
+        }
+        xmin, ymin, xmax, ymax = normalize_bounds(lat, lng, bbox)
 
         host = "https://resonantgeodata.dev"
 
@@ -137,7 +129,9 @@ def offset(lon, lat, mx, my):
     return [new_longitude, new_latitude]
 
 
-def get_bounds(lat, lon, bbox):
+# normalize_bounds take an existing bbox and expands it to be a north up
+# about 16 by 9ish frame for a video
+def normalize_bounds(lat, lon, bbox):
     mx = 470
     my = 275
     coords = []
