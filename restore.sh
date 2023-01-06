@@ -17,6 +17,6 @@ printf '%s\n%s\n' "DROP SCHEMA PUBLIC cascade; CREATE SCHEMA PUBLIC; create exte
 mv "${SCRIPT_DIR}/restore.sql" "${ROOT_DIR}/postgres/smart.sql"
 
 cd $ROOT_DIR
-docker-compose -f staging.yml down -v
+docker-compose -f production.yml down -v
 docker-compose down -v
-docker-compose -f staging.yml up postgres
+docker-compose -f production.yml up postgres
