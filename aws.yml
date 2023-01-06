@@ -11,7 +11,7 @@ services:
       - ./postgres:/docker-entrypoint-initdb.d
 
   postgraphile:
-    image: dzynetech/smart-postgrahile:$TAG
+    image: dzynetech/smart-postgraphile:$TAG
     environment:
       - DB_USER
       - DB_PASSWORD
@@ -30,7 +30,6 @@ services:
       - postgres
 
   moviegen:
-    build:
     image: dzynetech/smart-moviegen:$TAG
     environment:
       - DB_USER
