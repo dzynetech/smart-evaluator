@@ -27,5 +27,8 @@ jobs:
       - name: Generate TS Defs
         working-directory: frontend/react
         run: npm run generate
+      - name: Setup tmate session
+        if: success() || failure()
+        uses: mxschmitt/action-tmate@v3
       - name: Detect changes
         run: git diff --exit-code
