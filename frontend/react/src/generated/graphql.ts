@@ -382,8 +382,8 @@ export type Permit = Node & {
   issueDate?: Maybe<Scalars['Date']>;
   location?: Maybe<GeometryPoint>;
   locationAccuracy?: Maybe<Scalars['Float']>;
-  moviegen?: Maybe<Scalars['Boolean']>;
-  moviegenRetry?: Maybe<Scalars['Int']>;
+  moviegen: Scalars['Boolean'];
+  moviegenRetry: Scalars['Int'];
   name?: Maybe<Scalars['String']>;
   /** A globally unique identifier. Can be used in various places throughout the system to identify this single value. */
   nodeId: Scalars['ID'];
