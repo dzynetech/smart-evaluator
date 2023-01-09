@@ -1,4 +1,4 @@
-name: Verify GraphQL Typescript Definitions
+name: Check GraphQL Typescript Definitions
 on: 
   pull_request:
   push:
@@ -7,7 +7,7 @@ on:
       - develop
 
 jobs:
-  docker-build:
+  check-graphql-types:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -22,7 +22,7 @@ jobs:
       #   with:
       #     time: '30s'
       - name: Install graphql-codegen
-        run: npm install --only=dev
+        run: npm install
         working-directory: frontend/react
       - name: Generate TS Defs
         working-directory: frontend/react
