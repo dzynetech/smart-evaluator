@@ -17,10 +17,13 @@ jobs:
           node-version: 16
       - name: Start Postgraphile
         run: docker-compose up -d postgraphile
-      - name: Sleep for 30 seconds
-        uses: jakejarvis/wait-action@master
-        with:
-          time: '30s'
+      # - name: Sleep for 30 seconds
+      #   uses: jakejarvis/wait-action@master
+      #   with:
+      #     time: '30s'
+      - name: Install graphql-codegen
+        run: npm install --only=dev
+        working-directory: frontend/react
       - name: Generate TS Defs
         working-directory: frontend/react
         run: npm run generate
