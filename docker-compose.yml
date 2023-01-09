@@ -22,7 +22,7 @@ services:
     depends_on:
       - postgres
     ports:
-      - '3000:3000'
+      - '4000:3000'
     volumes: 
       - ./postgraphile:/usr/src/app
       - /usr/src/app/node_modules
@@ -69,11 +69,11 @@ services:
       context: ./frontend
       dockerfile: Dockerfile.dev
     ports:
-      - "8000:3000"
+      - "3000:3000"
     depends_on:
       - postgraphile 
     environment:
-      REACT_APP_GRAPHQL_URL: http://localhost:3000/graphql
+      REACT_APP_GRAPHQL_URL: http://localhost:4000/graphql
     volumes:
       - ./frontend/react:/app
       - ./data:/app/public/data
