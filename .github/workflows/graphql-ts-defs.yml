@@ -18,10 +18,10 @@ jobs:
       - name: Setup Env
         run: |
           tee .env << END 
-DB_USER=postgres
-DB_PASSWORD=postgres
-DB_HOST=postgres
-END
+          DB_USER=postgres
+          DB_PASSWORD=postgres
+          DB_HOST=postgres
+          END
       - name: Start Postgraphile
         run: docker-compose up -d postgraphile
       # - name: Sleep for 30 seconds
