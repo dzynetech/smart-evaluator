@@ -24,18 +24,11 @@ jobs:
           END
       - name: Start Postgraphile
         run: docker-compose up -d postgraphile
-      # - name: Sleep for 30 seconds
-      #   uses: jakejarvis/wait-action@master
-      #   with:
-      #     time: '30s'
       - name: Install graphql-codegen
         run: npm install
         working-directory: frontend/react
       - name: Generate TS Defs
         working-directory: frontend/react
         run: npm run generate
-      - name: Setup tmate session
-        if: success() || failure()
-        uses: mxschmitt/action-tmate@v3
       - name: Detect changes
         run: git diff --exit-code
