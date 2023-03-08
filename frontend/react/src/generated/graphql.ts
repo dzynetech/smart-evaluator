@@ -380,6 +380,7 @@ export type Permit = Node & {
   imageUrl?: Maybe<Scalars['String']>;
   importId: Scalars['String'];
   issueDate?: Maybe<Scalars['Date']>;
+  kmlUrl?: Maybe<Scalars['String']>;
   location?: Maybe<GeometryPoint>;
   locationAccuracy?: Maybe<Scalars['Float']>;
   moviegen: Scalars['Boolean'];
@@ -431,6 +432,8 @@ export type PermitCondition = {
   importId?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `issueDate` field. */
   issueDate?: Maybe<Scalars['Date']>;
+  /** Checks for equality with the object’s `kmlUrl` field. */
+  kmlUrl?: Maybe<Scalars['String']>;
   /** Checks for equality with the object’s `location` field. */
   location?: Maybe<Scalars['GeoJSON']>;
   /** Checks for equality with the object’s `locationAccuracy` field. */
@@ -493,6 +496,8 @@ export type PermitFilter = {
   importId?: Maybe<StringFilter>;
   /** Filter by the object’s `issueDate` field. */
   issueDate?: Maybe<DateFilter>;
+  /** Filter by the object’s `kmlUrl` field. */
+  kmlUrl?: Maybe<StringFilter>;
   /** Filter by the object’s `locationAccuracy` field. */
   locationAccuracy?: Maybe<FloatFilter>;
   /** Filter by the object’s `moviegen` field. */
@@ -543,6 +548,7 @@ export type PermitPatch = {
   imageUrl?: Maybe<Scalars['String']>;
   importId?: Maybe<Scalars['String']>;
   issueDate?: Maybe<Scalars['Date']>;
+  kmlUrl?: Maybe<Scalars['String']>;
   location?: Maybe<Scalars['GeoJSON']>;
   locationAccuracy?: Maybe<Scalars['Float']>;
   moviegen?: Maybe<Scalars['Boolean']>;
@@ -612,6 +618,8 @@ export enum PermitsOrderBy {
   ImportIdDesc = 'IMPORT_ID_DESC',
   IssueDateAsc = 'ISSUE_DATE_ASC',
   IssueDateDesc = 'ISSUE_DATE_DESC',
+  KmlUrlAsc = 'KML_URL_ASC',
+  KmlUrlDesc = 'KML_URL_DESC',
   LocationAccuracyAsc = 'LOCATION_ACCURACY_ASC',
   LocationAccuracyDesc = 'LOCATION_ACCURACY_DESC',
   LocationAsc = 'LOCATION_ASC',

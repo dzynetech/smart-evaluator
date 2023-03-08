@@ -57,6 +57,7 @@ const UNPAGED_PERMITS_QUERY = gql`
           issueDate
           notes
           imageUrl
+          kmlUrl
           name
           bounds {
             geojson

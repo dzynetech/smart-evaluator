@@ -448,6 +448,7 @@ CREATE TABLE smart.permits (
     data jsonb,
     has_location boolean GENERATED ALWAYS AS ((location IS NOT NULL)) STORED,
     notes text NOT NULL,
+    kml_url character varying(255),
     issue_date date,
     bounds public.geometry(MultiPolygon,4326),
     has_bounds boolean GENERATED ALWAYS AS ((bounds IS NOT NULL)) STORED,

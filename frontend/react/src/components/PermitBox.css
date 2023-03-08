@@ -47,9 +47,7 @@ td  {
 	margin-top: .5rem;
 	font-size: large;
 }
-.permit-title button {
-	margin-right: 1rem;
-}
+
 .permit-info {
 	grid-area: info;
 }
@@ -71,6 +69,7 @@ td  {
 	display:flex;
 	flex-direction: column;
 	justify-content: space-between;
+	align-items: center;
 }
 
 .selected {
