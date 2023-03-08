@@ -170,10 +170,10 @@ def new_ingest(data,import_id,source,user_id):
 
         features = data['features']
         site = None
-        kml = KMLDocument()
         for f in features:
             if is_site(f):
                 site = f
+                break
         try:
             site_id = site['properties']['site_id']
         except:
@@ -226,7 +226,7 @@ def bulk_ingest(files,source,user_id):
             for f in features:
                 if is_site(f):
                     site = f
-                    kml.outline_polygon = f["geometry"]["coordinates"] 
+                    kml.outline = f["geometry"]["coordinates"][0] 
                 else:
                     poly = Polygon(
                         f['properties']['current_phase'],

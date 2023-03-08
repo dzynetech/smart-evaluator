@@ -12,7 +12,7 @@ def xmlStyle(name, colorRGBA):
 
 class KMLDocument():
     def __init__(self):
-        self.outline_polygon = None
+        self.outline = None #should be array of points [lng,lat]
         self.polygons = []
         self.styles = [
             xmlStyle("No Activity", "FFFFFFFF"),
@@ -20,6 +20,7 @@ class KMLDocument():
             xmlStyle("Active Construction", "00ff0033"),
             xmlStyle("Post Construction", "FFFFFFFF"),
             xmlStyle("Unknown", "FFFFFFFF"),
+            xmlStyle("boundary", "FFFFFFFF"),
         ]
 
     def _header(self):
@@ -38,6 +39,15 @@ class KMLDocument():
         output = self._header()
         for style in self.styles:
             output += style
+        boundary = Polygon(
+            "Boundary",
+            self.outline,
+            '1900-01-01',
+            None,
+            'boundary'
+        )
+        # import pdb; pdb.set_trace()
+        output += boundary.export()
         for polygon in self.polygons:
             output += polygon.export()
         output += self._footer()
@@ -55,12 +65,14 @@ class Polygon():
         self.style = style
 
     def export(self):
-        coords= list(map(lambda x: f'{x[0]},{x[1]}', self.points))
-        import pdb; pdb.set_trace()
         return POLYGON.format(
             startDate = self.startDate,
             endDate = self.endDate,
             name = self.name,
             style= self.style,
-            coordinates = " ".join(coords)
+            coordinates = pointsToCoordinates(self.points)
         )
+
+def pointsToCoordinates(points):
+        coords= list(map(lambda x: f'{x[0]},{x[1]}', points))
+        return " ".join(coords)
