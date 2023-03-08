@@ -12,3 +12,4 @@ goaccess/html/index.html
 database.json
 data
 .DS_Store
+__pycache__

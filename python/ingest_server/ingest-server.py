@@ -11,6 +11,8 @@ from flask import Flask, request
 from flask_cors import CORS
 import requests 
 
+from kml_document import KMLDocument, Polygon
+
 
 meters_to_sqft = 10.76391042
 
@@ -168,11 +170,10 @@ def new_ingest(data,import_id,source,user_id):
 
         features = data['features']
         site = None
+        kml = KMLDocument()
         for f in features:
             if is_site(f):
                 site = f
-                break
-
         try:
             site_id = site['properties']['site_id']
         except:
@@ -221,11 +222,24 @@ def bulk_ingest(files,source,user_id):
             data = json.load(f.stream)
             features = data['features']
             site = None
+            kml = KMLDocument()
             for f in features:
                 if is_site(f):
                     site = f
-                    break
+                    kml.outline_polygon = f["geometry"]["coordinates"] 
+                else:
+                    poly = Polygon(
+                        f['properties']['current_phase'],
+                        f['geometry']['coordinates'][0][0],
+                        f['properties']['observation_date'],
+                        None,
+                        "style_name_here"
+                    )
+                    kml.add_polygon(poly)
 
+            with open('test.kml','w') as f:
+                f.write(kml.export())
+        
             try:
                 site_id = site['properties']['site_id']
             except:
