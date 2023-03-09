@@ -234,7 +234,7 @@ def bulk_ingest(files,source,user_id):
                         f['properties']['current_phase'],
                         f['geometry']['coordinates'][0][0],
                         f['properties']['observation_date'],
-                        PHASE_DICT[f['properties']['current_phase']]
+                        parse_phase(f['properties']['current_phase'])
                     )
                     kml.add_polygon(poly)
 
@@ -262,7 +262,7 @@ def bulk_ingest(files,source,user_id):
             kml.set_center(center)
             try:
                 with open(get_kml_path(id),'w') as f:
-                    f.write(kml.export())
+                    f.write(kml.export(site_id))
                 sql = "UPDATE smart.permits SET kml_url=%s where id=%s"
                 cursor.execute(sql, (f"/data/kml/{id}.kml",id))
             except:
@@ -284,6 +284,19 @@ PHASE_DICT = {
     "Post Construction": "post-construction",
     "Unknown": "unknown"
 }
+
+def parse_phase(phase):
+    try:
+        return PHASE_DICT[phase]
+    except:
+        try:
+            first_phase = phase.split(",")[0]
+            return PHASE_DICT[first_phase]
+        except:
+            print("uknown phase: ",phase)
+            return "unknown"
+
+
 
 def bbox_to_geojson(bbox):
     geojson = {
