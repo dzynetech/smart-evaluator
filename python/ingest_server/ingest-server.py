@@ -232,13 +232,10 @@ def bulk_ingest(files,source,user_id):
                         f['properties']['current_phase'],
                         f['geometry']['coordinates'][0][0],
                         f['properties']['observation_date'],
-                        None,
                         "style_name_here"
                     )
                     kml.add_polygon(poly)
 
-            with open('test.kml','w') as f:
-                f.write(kml.export())
         
             try:
                 site_id = site['properties']['site_id']
@@ -256,9 +253,13 @@ def bulk_ingest(files,source,user_id):
             cursor.execute(sql, (geojson, permit_data,
                         source_id, import_id, image_url, issue_date,cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
             id = cursor.fetchone()[0]
-            print(id)
-            sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s"
+            print("Imported Permit:",id)
+            sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s RETURNING ST_X (ST_Transform (location, 4326)) AS long, ST_Y (ST_Transform (location, 4326)) AS lat"
             cursor.execute(sql, (id,))
+            center = cursor.fetchone()
+            kml.set_center(center)
+            with open(get_kml_path(id),'w') as f:
+                f.write(kml.export())
 
         connection.commit()
         cursor.close()
@@ -285,6 +286,17 @@ def bbox_to_geojson(bbox):
     geojson['coordinates'] = [[bounds]]
     return geojson
 
+def get_kml_path(id): 
+    if os.path.exists("/data"):
+        directory = os.path.join("/data", "kml")
+    else:
+        directory = "output"
+    try:
+        os.makedirs(directory)
+    except FileExistsError:
+        pass
+    return os.path.join(directory,f"{id}.kml")
+    
 
 def on_container_stop(*args):
     print("Stopping...")

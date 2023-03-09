@@ -1,6 +1,6 @@
 import re
 from kml import *
-from datetime import datetime
+from datetime import datetime, timedelta
 
 
 def xmlStyle(name, colorRGBA):
@@ -12,6 +12,7 @@ def xmlStyle(name, colorRGBA):
 
 class KMLDocument():
     def __init__(self):
+        self.center = None
         self.outline = None #should be array of points [lng,lat]
         self.polygons = []
         self.styles = [
@@ -24,8 +25,8 @@ class KMLDocument():
         ]
 
     def _header(self):
-        lat = 30
-        lng = -72
+        lat = self.center[1]
+        lng = self.center[0]
         date = self.polygons[0].startDate
         return HEADER.format(lat=lat, lng=lng, date=date)
 
@@ -34,6 +35,9 @@ class KMLDocument():
 
     def add_polygon(self,poly):
         self.polygons.append(poly)
+    
+    def set_center(self,center):
+        self.center = center
 
     def export(self):
         output = self._header()
@@ -43,31 +47,38 @@ class KMLDocument():
             "Boundary",
             self.outline,
             '1900-01-01',
-            None,
             'boundary'
         )
         # import pdb; pdb.set_trace()
         output += boundary.export()
-        for polygon in self.polygons:
-            output += polygon.export()
+        for i in range(len(self.polygons)):
+            poly = self.polygons[i]
+            try:
+                next = self.polygons[i+1]
+            except:
+                next = None
+            output += poly.export(next)
         output += self._footer()
         return output
 
 
 class Polygon():
-    def __init__(self, name, points, startDate, endDate, style):
+    def __init__(self, name, points, startDate, style):
         self.points = points
         self.startDate = startDate  # "2019-03-15"
-        self.endDate = endDate
-        if (self.endDate is None):
-            self.endDate = datetime.now().strftime('%Y-%m-%d')
         self.name = name,
         self.style = style
 
-    def export(self):
+    def export(self,next_poly=None):
+        if (next_poly is None):
+            endDate = datetime.now().strftime('%Y-%m-%d')
+        else:
+            endDate = next_poly.startDate
+            endDate = datetime.fromisoformat(endDate) - timedelta(days=1)
+            endDate = endDate.strftime('%Y-%m-%d')
         return POLYGON.format(
             startDate = self.startDate,
-            endDate = self.endDate,
+            endDate = endDate,
             name = self.name,
             style= self.style,
             coordinates = pointsToCoordinates(self.points)
