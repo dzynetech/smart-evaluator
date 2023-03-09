@@ -18,8 +18,8 @@ class KMLDocument():
             xmlStyle("site-prep", "6666e1dd"),
             xmlStyle("active-construction", "00ff00dd"),
             xmlStyle("post-construction", "ffa500dd"),
-            xmlStyle("unknown", "ff0000dd"),
-            xmlStyle("boundary", "dddddddd"),
+            xmlStyle("unknown", "dddddddd"),
+            xmlStyle("boundary", "ff0000dd"),
         ]
 
     def _header(self,name="untitled"):
@@ -47,7 +47,7 @@ class KMLDocument():
         boundary = Polygon(
             "Boundary",
             self.outline,
-            '1900-01-01',
+            None,
             'boundary'
         )
         # import pdb; pdb.set_trace()
@@ -71,16 +71,22 @@ class Polygon():
         self.style = style
 
     def export(self,next_poly=None, date_name=False):
-        if (next_poly is None):
+        name = self.name
+        if date_name:
+            name =f"{self.name}: {self.startDate}"
+        if self.startDate is None:
+            return POLYGON.format(
+                name = name,
+                style= self.style,
+                coordinates = pointsToCoordinates(self.points)
+            )
+        if next_poly is None:
             endDate = datetime.now().strftime('%Y-%m-%d')
         else:
             endDate = next_poly.startDate
             endDate = datetime.fromisoformat(endDate) - timedelta(days=1)
             endDate = endDate.strftime('%Y-%m-%d')
-        name = self.name
-        if date_name:
-            name =f"{self.name}: {self.startDate}"
-        return POLYGON.format(
+        return POLYGON_TIMESPAN.format(
             startDate = self.startDate,
             endDate = endDate,
             name = name,

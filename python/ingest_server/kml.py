@@ -37,9 +37,24 @@ STYLE = """
         </PolyStyle>
     </Style>
 """
-
-
 POLYGON = """
+	<Placemark>
+		<name>{name}</name>
+		<styleUrl>#{style}</styleUrl>
+		<Polygon>
+			<tessellate>1</tessellate>
+			<outerBoundaryIs>
+				<LinearRing>
+					<coordinates>
+						{coordinates}
+					</coordinates>
+				</LinearRing>
+			</outerBoundaryIs>
+		</Polygon>
+	</Placemark>
+"""
+
+POLYGON_TIMESPAN = """
 	<Placemark>
 		<TimeSpan>
 			<begin>{startDate}</begin>
