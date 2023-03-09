@@ -228,11 +228,13 @@ def bulk_ingest(files,source,user_id):
                     site = f
                     kml.outline = f["geometry"]["coordinates"][0] 
                 else:
+                    if (f['properties']['current_phase'] is None):
+                        continue
                     poly = Polygon(
                         f['properties']['current_phase'],
                         f['geometry']['coordinates'][0][0],
                         f['properties']['observation_date'],
-                        "style_name_here"
+                        PHASE_DICT[f['properties']['current_phase']]
                     )
                     kml.add_polygon(poly)
 
@@ -258,8 +260,13 @@ def bulk_ingest(files,source,user_id):
             cursor.execute(sql, (id,))
             center = cursor.fetchone()
             kml.set_center(center)
-            with open(get_kml_path(id),'w') as f:
-                f.write(kml.export())
+            try:
+                with open(get_kml_path(id),'w') as f:
+                    f.write(kml.export())
+                sql = "UPDATE smart.permits SET kml_url=%s where id=%s"
+                cursor.execute(sql, (f"/data/kml/{id}.kml",id))
+            except:
+                print("Could not generate KML file for permit ",id)
 
         connection.commit()
         cursor.close()
@@ -270,6 +277,13 @@ def bulk_ingest(files,source,user_id):
         cursor.close()
         raise e
 
+PHASE_DICT = {
+    "No Activity": "no-activity",
+    "Site Preparation": "site-prep",
+    "Active Construction": "active-construction",
+    "Post Construction": "post-construction",
+    "Unknown": "unknown"
+}
 
 def bbox_to_geojson(bbox):
     geojson = {
