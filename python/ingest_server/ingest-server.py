@@ -60,7 +60,7 @@ def upload_file():
         user_id = None
     try:
         data = json.load(f.stream)
-        count = ingest(data,source,user_id)
+        count = multi_permit_ingest(data,source,user_id)
     except Exception as e:
         return json.dumps({'error': str(e) })
     return json.dumps({'success': f"Imported {count} permits." })
@@ -93,13 +93,15 @@ def autoingest():
 
     # do actual ingest
     try:
-        count = ingest(response.json(),source,user_id)
+        count = multi_permit_ingest(response.json(),source,user_id)
     except Exception as e:
         return json.dumps({'error': str(e) })
     return json.dumps({'success': f"Imported {count} permits." })
 
 
-def ingest(data,source,user_id):
+# multipermit ingest parses a single json file for multiple sources. Used by
+# resontant geodata files
+def multi_permit_ingest(data,source,user_id):
     try:
         cursor = connection.cursor()
         import_id = uuid.uuid4().hex[:16]
@@ -108,7 +110,7 @@ def ingest(data,source,user_id):
         try:
             sites = data['results']
         except (KeyError,TypeError):
-            return new_ingest(data,import_id,source,user_id)
+            return new_multipermit_ingest(data,import_id,source,user_id)
 
         sql = f"INSERT INTO smart.sources(name) VALUES(%s) RETURNING id"
         cursor.execute(sql,(source,))
@@ -138,8 +140,6 @@ def ingest(data,source,user_id):
             cursor.execute(sql, (id,))
 
         connection.commit()
-        # cursor.close()
-        # connection.close()
         return len(sites)
     except psycopg2.DatabaseError as e:
         cursor.execute("ROLLBACK")
@@ -153,7 +153,8 @@ def is_site(x):
     except:
         return False
 
-def new_ingest(data,import_id,source,user_id):
+# subset of multipermit ingest using a newer json spec
+def new_multipermit_ingest(data,import_id,source,user_id):
     try:
         print("Failing over to new ingest")
         cursor = connection.cursor()
@@ -203,6 +204,8 @@ def new_ingest(data,import_id,source,user_id):
         cursor.close()
         raise e
 
+# bulk ingest takes many json files, each describing a single permit
+# uses kitware's Site Model Specification
 def bulk_ingest(files,source,user_id):
     try:
         import_id = uuid.uuid4().hex[:16]
@@ -327,9 +330,6 @@ def get_kml_path(id):
 
 def on_container_stop(*args):
     print("Stopping...")
-    if cursor is not None:
-        print("curosr close")
-        cursor.close()
     if connection is not None:
         print("con colse")
         connection.close()
