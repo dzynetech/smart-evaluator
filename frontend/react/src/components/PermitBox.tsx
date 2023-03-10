@@ -51,7 +51,7 @@ function PermitBox(props: Props) {
           style={{ borderColor: borderColor, backgroundColor: backgroundColor }}
           id={props.isModal ? undefined : String(props.permit.id)}
         >
-          <div className={classNames(hideVideos ? "no-videos" : "", "permit-grid")} >
+          <div className={classNames(hideVideos ? "no-videos" : "", "permit-grid")}>
             {!hideVideos && (
               <div className="video">
                 <video
@@ -124,7 +124,7 @@ function PermitBox(props: Props) {
               />
               <PermitNote permit={props.permit} />
             </div>
-            <div className="permit-data">
+            <div className="permit-data overflow-auto">
               <PermitData permit={props.permit} />
             </div>
             <div className="permit-sidebar text-center">
