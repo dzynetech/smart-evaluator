@@ -75,7 +75,7 @@ jobs:
         with:
           context: frontend
           build-args: |
-            commit_hash=${GITHUB_SHA}
+            commit_hash=${{ env.GITHUB_SHA }}
           push: ${{ env.PUSH }}
           tags: dzynetech/smart-ui:${{ env.TAG }}
         timeout-minutes: 240
