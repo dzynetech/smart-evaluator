@@ -1,6 +1,8 @@
 FROM node:16 as build
 
 WORKDIR /app
+ARG commit_hash
+ENV REACT_APP_COMMIT_HASH=${commit_hash}
 
 COPY ./react/package.json /app/package.json
 COPY ./react/package-lock.json /app/package-lock.json
