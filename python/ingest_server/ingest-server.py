@@ -4,12 +4,12 @@ import os
 import json
 import signal
 import sys
-import time 
+import time
 import uuid
 import psycopg2
 from flask import Flask, request
 from flask_cors import CORS
-import requests 
+import requests
 
 from kml_document import KMLDocument, Polygon
 
@@ -32,7 +32,7 @@ while True:
         time.sleep(1)
 
 
-@app.route('/bulk-ingest', methods = ['POST','OPTIONS'])
+@app.route('/bulk-ingest', methods=['POST', 'OPTIONS'])
 def upload_bulk():
     if request.method != 'POST':
         return ""
@@ -45,10 +45,11 @@ def upload_bulk():
     try:
         count = bulk_ingest(files, source, user_id)
     except Exception as e:
-        return json.dumps({'error': str(e) })
-    return json.dumps({'success': f"Imported {count} permits." })
+        return json.dumps({'error': str(e)})
+    return json.dumps({'success': f"Imported {count} permits."})
 
-@app.route('/ingest', methods = ['POST','OPTIONS'])
+
+@app.route('/ingest', methods=['POST', 'OPTIONS'])
 def upload_file():
     if request.method != 'POST':
         return ""
@@ -60,13 +61,13 @@ def upload_file():
         user_id = None
     try:
         data = json.load(f.stream)
-        count = multi_permit_ingest(data,source,user_id)
+        count = multi_permit_ingest(data, source, user_id)
     except Exception as e:
-        return json.dumps({'error': str(e) })
-    return json.dumps({'success': f"Imported {count} permits." })
-		
+        return json.dumps({'error': str(e)})
+    return json.dumps({'success': f"Imported {count} permits."})
 
-@app.route('/autoingest', methods = ['POST','OPTIONS'])
+
+@app.route('/autoingest', methods=['POST', 'OPTIONS'])
 def autoingest():
     if request.method != 'POST':
         return ""
@@ -88,38 +89,37 @@ def autoingest():
         if response.status_code == 401:
             return json.dumps({'error': 'Bad username or password'})
     except:
-        return json.dumps({'error': 'Connection to URL failed.' })
-
+        return json.dumps({'error': 'Connection to URL failed.'})
 
     # do actual ingest
     try:
-        count = multi_permit_ingest(response.json(),source,user_id)
+        count = multi_permit_ingest(response.json(), source, user_id)
     except Exception as e:
-        return json.dumps({'error': str(e) })
-    return json.dumps({'success': f"Imported {count} permits." })
+        return json.dumps({'error': str(e)})
+    return json.dumps({'success': f"Imported {count} permits."})
 
 
 # multipermit ingest parses a single json file for multiple sources. Used by
 # resontant geodata files
-def multi_permit_ingest(data,source,user_id):
+def multi_permit_ingest(data, source, user_id):
     try:
         cursor = connection.cursor()
         import_id = uuid.uuid4().hex[:16]
-        print("Import ID:",import_id)
+        print("Import ID:", import_id)
 
         try:
             sites = data['results']
-        except (KeyError,TypeError):
-            return new_multipermit_ingest(data,import_id,source,user_id)
+        except (KeyError, TypeError):
+            return new_multipermit_ingest(data, import_id, source, user_id)
 
         sql = f"INSERT INTO smart.sources(name) VALUES(%s) RETURNING id"
-        cursor.execute(sql,(source,))
+        cursor.execute(sql, (source,))
         source_id = cursor.fetchone()[0]
 
         if user_id is not None:
             # give this user access to that source
             sql = f"INSERT INTO smart_private.users_sources (user_id,source_id) VALUES(%s,%s)"
-            cursor.execute(sql,(user_id,source_id))
+            cursor.execute(sql, (user_id, source_id))
 
         for site in sites:
             site_id = site['site']
@@ -128,12 +128,12 @@ def multi_permit_ingest(data,source,user_id):
             cost = 0
             issue_date = datetime.fromtimestamp(site['timestamp'])
             geojson = json.dumps(bbox_to_geojson(site['bbox']))
-            image_url ='test'
+            image_url = 'test'
 
             sql = "INSERT INTO smart.permits (bounds,permit_data,source_id,import_id,image_url,issue_date,cost,sqft,city,state,street,street_number,zip,name,notes) "
             sql += "VALUES (ST_Multi(ST_GeomFromGeoJSON(%s)),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id;"
             cursor.execute(sql, (geojson, permit_data,
-                        source_id, import_id, image_url, issue_date,cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
+                                 source_id, import_id, image_url, issue_date, cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
             id = cursor.fetchone()[0]
             print(id)
             sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s"
@@ -147,6 +147,7 @@ def multi_permit_ingest(data,source,user_id):
     finally:
         cursor.close()
 
+
 def is_site(x):
     try:
         return x['properties']['type'] == "site"
@@ -154,20 +155,21 @@ def is_site(x):
         return False
 
 # subset of multipermit ingest using a newer json spec
-def new_multipermit_ingest(data,import_id,source,user_id):
+
+
+def new_multipermit_ingest(data, import_id, source, user_id):
     try:
         print("Failing over to new ingest")
         cursor = connection.cursor()
 
-
         sql = f"INSERT INTO smart.sources(name) VALUES(%s) RETURNING id"
-        cursor.execute(sql,(source,))
+        cursor.execute(sql, (source,))
         source_id = cursor.fetchone()[0]
 
         if user_id is not None:
             # give this user access to that source
             sql = f"INSERT INTO smart_private.users_sources (user_id,source_id) VALUES(%s,%s)"
-            cursor.execute(sql,(user_id,source_id))
+            cursor.execute(sql, (user_id, source_id))
 
         features = data['features']
         site = None
@@ -184,12 +186,12 @@ def new_multipermit_ingest(data,import_id,source,user_id):
         cost = 0
         issue_date = site['properties']['start_date']
         geojson = json.dumps(site['geometry'])
-        image_url ='test'
+        image_url = 'test'
 
         sql = "INSERT INTO smart.permits (bounds,permit_data,source_id,import_id,image_url,issue_date,cost,sqft,city,state,street,street_number,zip,name,notes) "
         sql += "VALUES (ST_Multi(ST_GeomFromGeoJSON(%s)),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id;"
         cursor.execute(sql, (geojson, permit_data,
-                    source_id, import_id, image_url, issue_date,cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
+                             source_id, import_id, image_url, issue_date, cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
         id = cursor.fetchone()[0]
         print(id)
         sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s"
@@ -197,7 +199,7 @@ def new_multipermit_ingest(data,import_id,source,user_id):
 
         connection.commit()
         cursor.close()
-        return 1 #len(data)
+        return 1  # len(data)
 
     except psycopg2.DatabaseError as e:
         cursor.execute("ROLLBACK")
@@ -206,20 +208,22 @@ def new_multipermit_ingest(data,import_id,source,user_id):
 
 # bulk ingest takes many json files, each describing a single permit
 # uses kitware's Site Model Specification
-def bulk_ingest(files,source,user_id):
+
+
+def bulk_ingest(files, source, user_id):
     try:
         import_id = uuid.uuid4().hex[:16]
-        print("Import ID:",import_id)
+        print("Import ID:", import_id)
         cursor = connection.cursor()
 
         sql = f"INSERT INTO smart.sources(name) VALUES(%s) RETURNING id"
-        cursor.execute(sql,(source,))
+        cursor.execute(sql, (source,))
         source_id = cursor.fetchone()[0]
 
         if user_id is not None:
             # give this user access to that source
             sql = f"INSERT INTO smart_private.users_sources (user_id,source_id) VALUES(%s,%s)"
-            cursor.execute(sql,(user_id,source_id))
+            cursor.execute(sql, (user_id, source_id))
 
         for f in files:
             data = json.load(f.stream)
@@ -229,7 +233,13 @@ def bulk_ingest(files,source,user_id):
             for f in features:
                 if is_site(f):
                     site = f
-                    kml.outline = f["geometry"]["coordinates"][0] 
+                    kml.boundary = Polygon(
+                        "Boundary: " + f['properties']['start_date'] + " to " + f['properties']['end_date'],
+                        f["geometry"]["coordinates"][0],
+                        f['properties']['start_date'],
+                        "boundary",
+                        f['properties']['end_date']
+                    )
                 else:
                     if (f['properties']['current_phase'] is None):
                         continue
@@ -241,7 +251,6 @@ def bulk_ingest(files,source,user_id):
                     )
                     kml.add_polygon(poly)
 
-        
             try:
                 site_id = site['properties']['site_id']
             except:
@@ -251,25 +260,25 @@ def bulk_ingest(files,source,user_id):
             cost = 0
             issue_date = site['properties']['start_date']
             geojson = json.dumps(site['geometry'])
-            image_url ='test'
+            image_url = 'test'
 
             sql = "INSERT INTO smart.permits (bounds,permit_data,source_id,import_id,image_url,issue_date,cost,sqft,city,state,street,street_number,zip,name,notes) "
             sql += "VALUES (ST_Multi(ST_GeomFromGeoJSON(%s)),%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s,%s) RETURNING id;"
             cursor.execute(sql, (geojson, permit_data,
-                        source_id, import_id, image_url, issue_date,cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
+                                 source_id, import_id, image_url, issue_date, cost, area * meters_to_sqft, "", "", "", "", "", site_id, ""))
             id = cursor.fetchone()[0]
-            print("Imported Permit:",id)
+            print("Imported Permit:", id)
             sql = "UPDATE smart.permits SET location = ST_Centroid(bounds) where id=%s RETURNING ST_X (ST_Transform (location, 4326)) AS long, ST_Y (ST_Transform (location, 4326)) AS lat"
             cursor.execute(sql, (id,))
             center = cursor.fetchone()
             kml.set_center(center)
             try:
-                with open(get_kml_path(id),'w') as f:
+                with open(get_kml_path(id), 'w') as f:
                     f.write(kml.export(site_id))
                 sql = "UPDATE smart.permits SET kml_url=%s where id=%s"
-                cursor.execute(sql, (f"/data/kml/{id}.kml",id))
+                cursor.execute(sql, (f"/data/kml/{id}.kml", id))
             except:
-                print("Could not generate KML file for permit ",id)
+                print("Could not generate KML file for permit ", id)
 
         connection.commit()
         cursor.close()
@@ -280,6 +289,7 @@ def bulk_ingest(files,source,user_id):
         cursor.close()
         raise e
 
+
 PHASE_DICT = {
     "No Activity": "no-activity",
     "Site Preparation": "site-prep",
@@ -287,6 +297,7 @@ PHASE_DICT = {
     "Post Construction": "post-construction",
     "Unknown": "unknown"
 }
+
 
 def parse_phase(phase):
     try:
@@ -296,9 +307,8 @@ def parse_phase(phase):
             first_phase = phase.split(",")[0]
             return PHASE_DICT[first_phase]
         except:
-            print("uknown phase: ",phase)
+            print("uknown phase: ", phase)
             return "unknown"
-
 
 
 def bbox_to_geojson(bbox):
@@ -307,16 +317,17 @@ def bbox_to_geojson(bbox):
         'coordinates': [[[]]],
     }
     bounds = []
-    bounds.append([bbox['xmin'],bbox['ymin']])
-    bounds.append([bbox['xmin'],bbox['ymax']])
-    bounds.append([bbox['xmax'],bbox['ymax']])
-    bounds.append([bbox['xmax'],bbox['ymin']])
-    bounds.append([bbox['xmin'],bbox['ymin']])
+    bounds.append([bbox['xmin'], bbox['ymin']])
+    bounds.append([bbox['xmin'], bbox['ymax']])
+    bounds.append([bbox['xmax'], bbox['ymax']])
+    bounds.append([bbox['xmax'], bbox['ymin']])
+    bounds.append([bbox['xmin'], bbox['ymin']])
 
     geojson['coordinates'] = [[bounds]]
     return geojson
 
-def get_kml_path(id): 
+
+def get_kml_path(id):
     if os.path.exists("/data"):
         directory = os.path.join("/data", "kml")
     else:
@@ -325,8 +336,8 @@ def get_kml_path(id):
         os.makedirs(directory)
     except FileExistsError:
         pass
-    return os.path.join(directory,f"{id}.kml")
-    
+    return os.path.join(directory, f"{id}.kml")
+
 
 def on_container_stop(*args):
     print("Stopping...")
