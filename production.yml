@@ -59,6 +59,8 @@ services:
   nginx:
     build: 
       context: ./frontend
+      args:
+        commit_hash: ${GITHUB_SHA}
     ports:
       - "$UI_PORT:80"
     depends_on:

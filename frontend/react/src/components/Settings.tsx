@@ -30,6 +30,7 @@ export default function Settings() {
           <label className="custom-control-label" htmlFor="autoplay"></label>
         </div>
       </Switch.Group>
+      {process.env.REACT_APP_COMMIT_HASH && <p className="text-sm mt-4 text-right text-gray-500 font-mono">Build {process.env.REACT_APP_COMMIT_HASH?.substring(0,8)}</p>}
     </>
   );
 }
