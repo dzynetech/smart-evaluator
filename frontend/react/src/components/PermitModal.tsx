@@ -8,33 +8,7 @@ import { borderColorMap } from "../utils/Colors";
 import PopupData from "../interfaces/PopupData";
 import UpdatablePermit from "../interfaces/UpdatablePermit";
 import { Permit } from "../generated/graphql";
-const PERMIT_QUERY = gql`
-  query PermitById($id: Int!) {
-    permit(id: $id) {
-      id
-      cost
-      city
-      sqft
-      state
-      street
-      streetNumber
-      source {
-        name
-      }
-      location {
-        x
-        y
-      }
-      zip
-      permitData
-      classification
-      issueDate
-      notes
-      imageUrl
-      name
-    }
-  }
-`;
+import PERMIT_QUERY from "../queries/PermitByIdQuery";
 
 interface Props extends PopupData {
   setPopupData: (popupData: PopupData | null) => void;

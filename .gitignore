@@ -4,6 +4,7 @@ secrets
 .env
 node/frontend/data/
 python/moviegen/output/
+python/ingest_server/output/
 backup/
 frontend/react/build/
 goaccess/nginx/htpasswd
@@ -12,3 +13,4 @@ goaccess/html/index.html
 database.json
 data
 .DS_Store
+__pycache__

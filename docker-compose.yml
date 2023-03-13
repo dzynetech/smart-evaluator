@@ -39,6 +39,10 @@ services:
       - postgres
     ports:
       - "4199:4199"
+    volumes: 
+      - ./python/ingest_server:/app
+      - ./data:/data:z
+    restart: always
 
   moviegen:
     build:

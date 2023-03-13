@@ -31,6 +31,17 @@ td  {
 "video actions data side";
 }
 
+div > .no-videos{
+	display:grid;
+	grid-gap: .5rem;
+	grid-template-columns: 0.5rem repeat(2,minmax(0,1fr)) 4vw;
+	grid-template-rows: auto auto auto ;
+	grid-template-areas:
+"video title title side"
+"video info data side"
+"video actions data side";
+}
+
 .video {
 	grid-area: video;
 }
@@ -47,9 +58,7 @@ td  {
 	margin-top: .5rem;
 	font-size: large;
 }
-.permit-title button {
-	margin-right: 1rem;
-}
+
 .permit-info {
 	grid-area: info;
 }
@@ -71,6 +80,7 @@ td  {
 	display:flex;
 	flex-direction: column;
 	justify-content: space-between;
+	align-items: center;
 }
 
 .selected {
