@@ -110,7 +110,7 @@ export default function IngestForm() {
 							className="btn btn-primary float-right mt-3"
 							type="submit"
 						>
-							Upload Mission
+							Upload Region
 						</button>
 					</div>
 				</form>

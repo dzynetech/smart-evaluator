@@ -73,17 +73,6 @@ function App() {
             />
             <Stats />
           </Route>
-          <Route path="/import">
-            <RequireLogin jwt={jwt} />
-            <Nav
-              active={"ingest"}
-              jwt={jwt}
-              setJwt={(jwt) => {
-                setJwt(jwt, ttl);
-              }}
-            />
-            <Ingest />
-          </Route>
           <Route path="/">
             <RequireLogin jwt={jwt} />
             <Permits

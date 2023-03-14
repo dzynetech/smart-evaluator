@@ -100,7 +100,7 @@ export default function BulkIngestForm() {
 						</div>
 					</div>
 					<label htmlFor="filepath" className="flex items-center text font-medium text-gray-700">
-						JSON File
+						JSON Files
 					</label>
 					<div>
 						<div className="mt-1 mr-2 relative rounded-md shadow-sm">
@@ -112,7 +112,7 @@ export default function BulkIngestForm() {
 							className="btn btn-primary float-right mt-3"
 							type="submit"
 						>
-							Upload Mission
+							Upload Sites
 						</button>
 					</div>
 				</form>

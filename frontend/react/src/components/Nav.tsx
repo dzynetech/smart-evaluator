@@ -118,7 +118,7 @@ function Nav(props: Props) {
       </nav>
       <QuittableModal open={showModal} setOpen={setShowModal}>
         <h3 className="text-center">Data Ingest</h3>
-        <div className="mx-auto max-w-sm">
+        <div className="mx-auto max-w-md">
           <Ingest />
         </div>
       </QuittableModal>
