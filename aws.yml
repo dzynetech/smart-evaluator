@@ -37,6 +37,7 @@ services:
       - DB_USER
       - DB_PASSWORD
       - DB_HOST
+      - RDWATCH_HOST
       - RDWATCH_USERNAME
       - RDWATCH_PASSWORD
     volumes: 

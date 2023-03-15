@@ -62,7 +62,7 @@ def moviegen_permit():
         }
         xmin, ymin, xmax, ymax = normalize_bounds(lat, lng, bbox)
 
-        host = "https://resonantgeodata.dev"
+        host = os.getenv("RDWATCH_HOST") or "https://resonantgeodata.dev"
 
         directory = "output"
         if os.path.exists("/data"):
