@@ -78,7 +78,7 @@ services:
       - ./goaccess/nginx/htpasswd:/etc/nginx/.htpasswd
       - ./letsencrypt:/etc/letsencrypt/
 
-  pgbackups:
+  pgbackup:
     container_name: postgres_backup
     image: prodrigestivill/postgres-backup-local
     restart: always
@@ -90,6 +90,9 @@ services:
       - postgres 
     environment:
       - POSTGRES_HOST=$DB_HOST
+      - POSTGRES_DB=smart
+      - POSTGRES_USER=$DB_USER
+      - POSTGRES_PASSWORD=$DB_PASSWORD
       - POSTGRES_EXTRA_OPTS=-Z9 --blobs
       - SCHEDULE=@every 6h00m00s
       - BACKUP_KEEP_DAYS=7
